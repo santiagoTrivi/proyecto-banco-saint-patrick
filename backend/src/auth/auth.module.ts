@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { AuthService } from './auth.service';
+import { AuthService } from './use-case/auth.service';
 import { AuthController } from './auth.controller';
-import { ClientService } from './client.service';
+import { ClientService } from './use-case/client.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { LoginUseCase } from './use-case/login-useCase';
 import { JWT_CONFIG } from 'src/config/jwt.cofig';

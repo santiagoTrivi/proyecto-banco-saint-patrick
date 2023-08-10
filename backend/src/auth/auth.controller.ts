@@ -1,8 +1,8 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { AuthService } from './auth.service';
+import { AuthService } from './use-case/auth.service';
 import { CreateClientDto } from './domain/dto/create-client.dto';
 import { UpdateAuthDto } from './domain/dto/update-auth.dto';
-import { ClientService } from './client.service';
+import { ClientService } from './use-case/client.service';
 import { CreateCardDto } from './domain/dto/create-card.dto';
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { LoginDto } from './domain/dto/login-dto';
