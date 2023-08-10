@@ -3,10 +3,10 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { ClientService } from './client.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Client, ClientSchema } from './schemas/client.schema';
-import { Card, CardSchema } from './schemas/card.schema';
 import { LoginUseCase } from './use-case/login-useCase';
 import { JWT_CONFIG } from 'src/config/jwt.cofig';
+import { Client, ClientSchema } from './domain/schemas/client.schema';
+import { Card, CardSchema } from './domain/schemas/card.schema';
 
 
 @Module({

@@ -1,11 +1,11 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { CreateClientDto } from './dto/create-client.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
+import { CreateClientDto } from './domain/dto/create-client.dto';
+import { UpdateAuthDto } from './domain/dto/update-auth.dto';
 import { ClientService } from './client.service';
-import { CreateCardDto } from './dto/create-card.dto';
+import { CreateCardDto } from './domain/dto/create-card.dto';
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { LoginDto } from './dto/login-dto';
+import { LoginDto } from './domain/dto/login-dto';
 import { LoginUseCase } from './use-case/login-useCase';
 
 
