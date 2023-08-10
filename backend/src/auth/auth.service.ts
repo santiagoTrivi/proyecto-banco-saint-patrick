@@ -1,19 +1,54 @@
-import { Injectable } from '@nestjs/common';
-import { CreateAuthDto } from './dto/create-auth.dto';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UpdateAuthDto } from './dto/update-auth.dto';
+import { CreateCardDto } from './dto/create-card.dto';
+import { Card, CardDocument } from './schemas/card.schema';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { hashSync, genSaltSync } from 'bcrypt';
+
+
 
 @Injectable()
 export class AuthService {
-  create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
+
+  constructor(
+    @InjectModel(Card.name)
+    private readonly cardModel: Model<CardDocument> 
+  ){}
+
+  async create(createCardDto: CreateCardDto) {
+
+    const checkCard = await this.cardModel.findOne({card_number: createCardDto.card_number});
+
+    if(checkCard) throw new HttpException('CARD_NUMBER ALREADY EXISTS', HttpStatus.UNAUTHORIZED)
+
+    const card = new Card();
+    const salt = genSaltSync();
+
+    card.card_number = createCardDto.card_number;
+    card.PIN = hashSync(createCardDto.PIN, salt);
+    card.current_balance = createCardDto.current_balance;
+    card.client = createCardDto.client;
+
+    return await this.cardModel.create(card);
+
   }
 
-  findAll() {
-    return `This action returns all auth`;
+  async findAll() {
+
+    return await this.cardModel
+    .find()
+    .select({__v: 0})
+    .populate({path: 'client', select: {__v: 0}})
+
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
+  async findByCardNumber(card_number: string) {
+    const card = await this.cardModel.findOne({card_number})
+    .select({__v: 0})
+    .populate({path: 'client', select: {__v: 0}})
+
+    return card.toObject();
   }
 
   update(id: number, updateAuthDto: UpdateAuthDto) {
