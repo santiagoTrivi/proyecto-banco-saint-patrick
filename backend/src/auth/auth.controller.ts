@@ -7,6 +7,7 @@ import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { AuthService } from './services/auth.service';
 import { LocalAuthGuard } from './guards/local.auth.guard';
+import { GetCardInfo } from './useCase/getCardInfo';
 
 
 @ApiTags('auth')
@@ -15,7 +16,8 @@ export class AuthController {
   constructor(
     private readonly cardService: CardService,
     private readonly clientService: ClientService,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly getCardInfo: GetCardInfo
     ) {}
   
   @ApiOperation({ description: 'Register a new client' })
@@ -50,7 +52,9 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Get('card')
   async getcard(@Request() req){
-    console.log(req.user)
+
+    return await this.getCardInfo.run(req.user.uuid);
+    
   }
 }
 

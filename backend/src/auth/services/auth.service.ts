@@ -13,7 +13,7 @@ export class AuthService {
 
     async validateCard(card_number: string, PIN: string): Promise<any> {
 
-        const card = await this.cardService.findByCardNumber(card_number);
+        const card = await this.cardService.findOne({card_number})
 
         if(!card) throw new HttpException('CARD_NOT_FOUND', HttpStatus.NOT_FOUND);
 
@@ -25,7 +25,7 @@ export class AuthService {
     }
 
     async login(card: any) {
-        const payload = { card_number: card.card_number, sub: card._id };
+        const payload = { card_number: card.card_number, uuid: card._id };
 
         return {
             access_token: await this.jwtService.sign(payload),

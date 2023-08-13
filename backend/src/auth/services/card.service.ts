@@ -43,8 +43,8 @@ export class CardService {
 
   }
 
-  async findByCardNumber(card_number: string) {
-    const card = await this.cardModel.findOne({card_number})
+  async findOne(query: any) {
+    const card = await this.cardModel.findOne(query)
     .select({__v: 0})
     .populate({path: 'client', select: {__v: 0}})
 
@@ -52,5 +52,7 @@ export class CardService {
 
     return card.toObject();
   }
+
+  
 
 }
