@@ -1,21 +1,21 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { AuthService } from './use-case/auth.service';
+import { Controller, Get, Post, Body, UseGuards, Request } from '@nestjs/common';
+import { CardService } from './services/card.service';
 import { CreateClientDto } from './domain/dto/create-client.dto';
-import { UpdateAuthDto } from './domain/dto/update-auth.dto';
-import { ClientService } from './use-case/client.service';
+import { ClientService } from './services/client.service';
 import { CreateCardDto } from './domain/dto/create-card.dto';
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { LoginDto } from './domain/dto/login-dto';
-import { LoginUseCase } from './use-case/login-useCase';
+import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
+import { AuthService } from './services/auth.service';
+import { LocalAuthGuard } from './guards/local.auth.guard';
 
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(
-    private readonly authService: AuthService,
+    private readonly cardService: CardService,
     private readonly clientService: ClientService,
-    private readonly loginUseCase: LoginUseCase
+    private readonly authService: AuthService
     ) {}
   
   @ApiOperation({ description: 'Register a new client' })
@@ -33,21 +33,25 @@ export class AuthController {
 
   @Post('card')
   register(@Body() CreateCardDto: CreateCardDto){
-    return this.authService.create(CreateCardDto);
+    return this.cardService.create(CreateCardDto);
   }
 
-  @Get('card')
+  @Get('cards')
   findAllCardd() {
-    return this.authService.findAll()
+    return this.cardService.findAll()
   }
 
+  @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Body() loginDto: LoginDto){ 
-    const access_token = await this.loginUseCase.run(loginDto)
-    
+  async login(@Request() req){ 
+    return await this.authService.login(req.card);
+  }
 
-    return {
-      access_token
-    }
+  @UseGuards(JwtAuthGuard)
+  @Get('card')
+  async getcard(@Request() req){
+    console.log(req.user)
   }
 }
+
+

@@ -1,14 +1,17 @@
 import { Module } from '@nestjs/common';
-import { AuthService } from './use-case/auth.service';
+import { CardService } from './services/card.service';
 import { AuthController } from './auth.controller';
-import { ClientService } from './use-case/client.service';
+import { ClientService } from './services/client.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { LoginUseCase } from './use-case/login-useCase';
 import { JWT_CONFIG } from 'src/config/jwt.cofig';
 import { Client, ClientSchema } from './domain/schemas/client.schema';
 import { Card, CardSchema } from './domain/schemas/card.schema';
-import { JwtAuthGuard } from 'src/shared/auth.guard';
-import { JwtStrategy } from 'src/shared/Auth.Stratergy';
+import { LocalStrategy } from './strategies/local.strategy';
+import { AuthService } from './services/auth.service';
+import { JwtModule, JwtService } from '@nestjs/jwt';
+import { PassportModule } from '@nestjs/passport';
+import { JwtStrategy } from './strategies/jwt.Strategy';
+
 
 
 @Module({
@@ -20,6 +23,12 @@ import { JwtStrategy } from 'src/shared/Auth.Stratergy';
     JWT_CONFIG()
   ],
   controllers: [AuthController],
-  providers: [ClientService, AuthService, LoginUseCase, JwtAuthGuard, JwtStrategy],
+  providers: [
+    ClientService, 
+    CardService,
+    AuthService,
+    LocalStrategy,
+    JwtStrategy
+  ],
 })
 export class AuthModule {}

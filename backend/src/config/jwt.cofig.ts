@@ -3,13 +3,13 @@ import { JwtModule } from "@nestjs/jwt"
 
 
 
-export const JWT_CONFIG = () => {
-    return JwtModule.registerAsync({
+export const JWT_CONFIG = async () => {
+    return await JwtModule.registerAsync({
         imports: [ConfigModule],
         inject: [ConfigService],
         useFactory: async (configService: ConfigService) => ({
-            secret: configService.get('PRIVATE_KEY'),
-            signOptions: {expiresIn: '15s'}
+            secret: configService.get<string>('PRIVATE_KEY'),
+            signOptions: {expiresIn: '60s'}
         })
     })
 }

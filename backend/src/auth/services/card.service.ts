@@ -9,7 +9,7 @@ import { Card, CardDocument } from '../domain/schemas/card.schema';
 
 
 @Injectable()
-export class AuthService {
+export class CardService {
 
   constructor(
     @InjectModel(Card.name)
@@ -48,14 +48,9 @@ export class AuthService {
     .select({__v: 0})
     .populate({path: 'client', select: {__v: 0}})
 
+    if(!card) return null;
+
     return card.toObject();
   }
 
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
-  }
 }

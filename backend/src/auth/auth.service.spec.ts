@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AuthService } from './use-case/auth.service';
+import { AuthService } from './services/card.service';
 
 describe('AuthService', () => {
   let service: AuthService;
