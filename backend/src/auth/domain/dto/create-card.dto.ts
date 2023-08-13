@@ -19,5 +19,7 @@ export class CreateCardDto implements ICard{
 
     @IsNotEmpty()
     client: any;
+
+    refreshToken?: string;
     
 }

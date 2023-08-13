@@ -8,6 +8,7 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { AuthService } from './services/auth.service';
 import { LocalAuthGuard } from './guards/local.auth.guard';
 import { GetCardInfo } from './useCase/getCardInfo';
+import { RefreshJwtGuard } from './guards/refresh.jwt.guard';
 
 
 @ApiTags('auth')
@@ -20,12 +21,7 @@ export class AuthController {
     private readonly getCardInfo: GetCardInfo
     ) {}
   
-  @ApiOperation({ description: 'Register a new client' })
-  @ApiBody({type: CreateClientDto})
-  @Post('client')
-  create(@Body() createClientDto: CreateClientDto) {
-    return this.clientService.register(createClientDto);
-  }
+  
 
   @ApiOperation({ description: 'Get all the clients' })
   @Get('client')
@@ -33,11 +29,7 @@ export class AuthController {
     return this.clientService.findAll();
   }
 
-  @Post('card')
-  register(@Body() CreateCardDto: CreateCardDto){
-    return this.cardService.create(CreateCardDto);
-  }
-
+  @ApiOperation({ description: 'Get all the cards' })
   @Get('cards')
   findAllCardd() {
     return this.cardService.findAll()
@@ -55,6 +47,22 @@ export class AuthController {
 
     return await this.getCardInfo.run(req.user.uuid);
     
+  }
+
+  @UseGuards(RefreshJwtGuard)
+  @Post('refresh-tokens')
+  async refreshTokens(@Request() req){
+    const [id, refresh_token] = [ req.user.uuid, req.user.refreshToken]; 
+    
+    return await this.authService.refreshTokens(id, refresh_token);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('logout')
+  async logout(@Request() req){
+
+    await this.authService.logout(req.user.uuid);
+
   }
 }
 

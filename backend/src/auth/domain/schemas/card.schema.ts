@@ -23,6 +23,9 @@ export class Card implements ICard{
   
     @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Client' })
     client: Client;
+
+    @Prop()
+    refreshToken?: string;
 }
 
 

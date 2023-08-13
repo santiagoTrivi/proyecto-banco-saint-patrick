@@ -8,4 +8,5 @@ export interface ICard {
     current_balance: number;
     client?: any;
     isActive?: boolean;
+    refreshToken?: string;
 }

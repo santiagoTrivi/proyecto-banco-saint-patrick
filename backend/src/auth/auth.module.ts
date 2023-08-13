@@ -12,6 +12,7 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './strategies/jwt.Strategy';
 import { GetCardInfo } from './useCase/getCardInfo';
+import { RefreshTokenStrategy } from './strategies/refresh.jwt.strategy';
 
 
 
@@ -30,7 +31,8 @@ import { GetCardInfo } from './useCase/getCardInfo';
     AuthService,
     LocalStrategy,
     JwtStrategy,
-    GetCardInfo
+    RefreshTokenStrategy,
+    GetCardInfo,
   ],
 })
 export class AuthModule {}

@@ -5,6 +5,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { hashSync, genSaltSync } from 'bcrypt';
 import { Card, CardDocument } from '../domain/schemas/card.schema';
+import { UpdateCardDto } from '../domain/dto/update-card.dto';
 
 
 
@@ -53,6 +54,11 @@ export class CardService {
     return card.toObject();
   }
 
+  async update( id: string, updateCardDto: UpdateCardDto){
+    return await this.cardModel
+      .findByIdAndUpdate(id, updateCardDto, { new: true })
+      .exec();
+  }
   
 
 }
