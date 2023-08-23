@@ -1,14 +1,26 @@
-import { IsNotEmpty, IsNumber } from 'class-validator';
-import { ITransfer } from '../interface/Itransfer';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { ICreateTransferDTO } from '../interface/ICreateTransferDTO';
+import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateTransferDto implements ITransfer {
+
+export class CreateTransferDto implements ICreateTransferDTO {
+  
+  @ApiProperty()
   @IsNotEmpty()
-  sender: any;
+  senderId: string;
 
+  @ApiProperty()
   @IsNotEmpty()
-  receiver: any;
+  receiver: string;
 
+  @ApiProperty()
   @IsNotEmpty()
   @IsNumber()
   amount: number;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  concept: string;
+
 }

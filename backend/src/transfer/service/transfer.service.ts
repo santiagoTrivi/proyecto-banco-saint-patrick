@@ -15,9 +15,20 @@ export class TransferService implements ITransferRepository<Transfer> {
   getTransfer(id: string): Promise<Transfer> {
     throw new Error('Method not implemented.');
   }
-  getTansfers(): Promise<Transfer>[] {
-    throw new Error('Method not implemented.');
+  
+  async getTansfers(): Promise<Transfer[]> {
+    
+    const globalMovements = await this.transferModel.find()
+    .select({__v:0})
+    .populate(
+      [
+        {path: 'senderId', select: {__v: 0}},
+        {path: 'receiverId', select: {__v: 0}}
+      ])
+
+      return globalMovements
   }
+  
   getTransferHistory(card: string): Promise<Transfer>[] {
     throw new Error('Method not implemented.');
   }

@@ -16,7 +16,7 @@ export class TransferFundsProcess {
   ) {}
 
   async run(createTransferDto: CreateTransferDto): Promise<Transfer> {
-    const { sender, receiver, amount } = createTransferDto;
+    const { senderId, receiver, amount, concept } = createTransferDto;
     const session = await this.cardModel.startSession();
     session.startTransaction();
 
@@ -24,7 +24,7 @@ export class TransferFundsProcess {
       const transaction = { session };
 
       const foundSender = await this.cardModel
-        .findById(sender)
+        .findById(senderId)
         .session(session)
         .exec();
 
@@ -32,24 +32,25 @@ export class TransferFundsProcess {
         throw new HttpException('NOT ENOUGH FUNDS', HttpStatus.BAD_REQUEST);
       }
 
-      const FoundReceiver = await this.cardModel
-        .findById(receiver)
+      const foundReceiver = await this.cardModel
+        .findOne({card_number: receiver})
         .session(session)
         .exec();
 
-      if (!foundSender || !FoundReceiver)
+      if (!foundSender || !foundReceiver)
         throw new HttpException('CARD NOT FOUND', HttpStatus.BAD_REQUEST);
 
       foundSender.current_balance -= amount;
-      FoundReceiver.current_balance += amount;
+      foundReceiver.current_balance += amount;
 
       await foundSender.save(transaction);
-      await FoundReceiver.save(transaction);
+      await foundReceiver.save(transaction);
 
       const transfer = new this.transferModel({
-        sender,
-        receiver,
+        senderId,
+        receiverId: foundReceiver._id,
         amount,
+        concept
       });
 
       const createdTransfer = await transfer.save(transaction);
@@ -58,10 +59,15 @@ export class TransferFundsProcess {
 
       return createdTransfer;
     } catch (error) {
+
       await session.abortTransaction();
+
       throw error;
+
     } finally {
+
       session.endSession();
+      
     }
   }
 }
