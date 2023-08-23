@@ -1,0 +1,46 @@
+{
+	"name": "banco-saint-patrick",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"prepare": "panda codegen",
+		"dev": "vite",
+		"build": "tsc && vite build",
+		"lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+		"preview": "vite preview",
+		"test": "vitest",
+		"lint:fix": "eslint --fix src/**/*.{js,jsx,ts,tsx,json}",
+		"format": "prettier --write ./**/*.{js,jsx,ts,tsx,css,md,json} --config ./.prettierrc"
+	},
+	"dependencies": {
+		"@tanstack/react-query": "4.33.0",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
+		"react-router-dom": "6.15.0",
+		"zod": "3.22.1",
+		"zustand": "4.4.1"
+	},
+	"devDependencies": {
+		"@pandacss/dev": "0.11.1",
+		"@testing-library/jest-dom": "6.0.1",
+		"@testing-library/react": "14.0.0",
+		"@testing-library/user-event": "14.4.3",
+		"@types/node": "20.5.0",
+		"@types/react": "^18.2.15",
+		"@types/react-dom": "^18.2.7",
+		"@typescript-eslint/eslint-plugin": "^6.0.0",
+		"@typescript-eslint/parser": "^6.0.0",
+		"@vitejs/plugin-react": "4.0.4",
+		"eslint": "^8.45.0",
+		"eslint-plugin-react-hooks": "^4.6.0",
+		"eslint-plugin-react-refresh": "^0.4.3",
+		"jsdom": "22.1.0",
+		"prettier": "3.0.2",
+		"prettier-eslint": "15.0.1",
+		"reactcci": "1.12.0",
+		"typescript": "^5.0.2",
+		"vite": "^4.4.5",
+		"vitest": "0.34.2"
+	}
+}
