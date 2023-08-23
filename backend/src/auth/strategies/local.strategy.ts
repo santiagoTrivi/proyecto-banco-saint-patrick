@@ -4,22 +4,21 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthService } from '../services/auth.service';
 import { LoginDto } from '../domain/dto/login-dto';
 
-
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy, 'local') {
   constructor(private authService: AuthService) {
     super({
-        usernameField: 'card_number',
-        passwordField: 'PIN'
-      });
+      usernameField: 'card_number',
+      passwordField: 'PIN',
+    });
   }
 
-  async validate(card_number: string, PIN: string){
-    const card = await this.authService.validateCard(card_number, PIN)
+  async validate(card_number: string, PIN: string) {
+    const card = await this.authService.validateCard(card_number, PIN);
     if (!card) {
       throw new UnauthorizedException();
     }
-    
+
     return card;
   }
 }

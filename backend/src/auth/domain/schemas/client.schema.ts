@@ -7,19 +7,17 @@ export type ClientDocument = Client & Document;
 
 @Schema()
 export class Client implements IClient {
-
   @Prop()
   firstName: string;
 
   @Prop()
   lastName: string;
 
-  @Prop({default: true})
+  @Prop({ default: true })
   isActive?: boolean;
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Card' }] })
   cards?: Card[];
-  
 }
 
 export const ClientSchema = SchemaFactory.createForClass(Client);

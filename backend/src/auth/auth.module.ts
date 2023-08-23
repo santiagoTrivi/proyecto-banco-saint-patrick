@@ -14,19 +14,17 @@ import { JwtStrategy } from './strategies/jwt.Strategy';
 import { GetCardInfo } from './useCase/getCardInfo';
 import { RefreshTokenStrategy } from './strategies/refresh.jwt.strategy';
 
-
-
 @Module({
   imports: [
     MongooseModule.forFeature([
-      {name: Client.name, schema: ClientSchema},
-      {name: Card.name, schema: CardSchema}
+      { name: Client.name, schema: ClientSchema },
+      { name: Card.name, schema: CardSchema },
     ]),
-    JWT_CONFIG()
+    JWT_CONFIG(),
   ],
   controllers: [AuthController],
   providers: [
-    ClientService, 
+    ClientService,
     CardService,
     AuthService,
     LocalStrategy,

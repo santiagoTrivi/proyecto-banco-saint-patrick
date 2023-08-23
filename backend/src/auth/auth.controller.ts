@@ -1,4 +1,11 @@
-import { Controller, Get, Post, Body, UseGuards, Request } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  UseGuards,
+  Request,
+} from '@nestjs/common';
 import { CardService } from './services/card.service';
 import { CreateClientDto } from './domain/dto/create-client.dto';
 import { ClientService } from './services/client.service';
@@ -10,7 +17,6 @@ import { LocalAuthGuard } from './guards/local.auth.guard';
 import { GetCardInfo } from './useCase/getCardInfo';
 import { RefreshJwtGuard } from './guards/refresh.jwt.guard';
 
-
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
@@ -18,10 +24,8 @@ export class AuthController {
     private readonly cardService: CardService,
     private readonly clientService: ClientService,
     private readonly authService: AuthService,
-    private readonly getCardInfo: GetCardInfo
-    ) {}
-  
-  
+    private readonly getCardInfo: GetCardInfo,
+  ) {}
 
   @ApiOperation({ description: 'Get all the clients' })
   @Get('client')
@@ -32,38 +36,32 @@ export class AuthController {
   @ApiOperation({ description: 'Get all the cards' })
   @Get('cards')
   findAllCardd() {
-    return this.cardService.findAll()
+    return this.cardService.findAll();
   }
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Request() req){ 
+  async login(@Request() req) {
     return await this.authService.login(req.card);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('card')
-  async getcard(@Request() req){
-
+  async getcard(@Request() req) {
     return await this.getCardInfo.run(req.user.uuid);
-    
   }
 
   @UseGuards(RefreshJwtGuard)
   @Post('refresh-tokens')
-  async refreshTokens(@Request() req){
-    const [id, refresh_token] = [ req.user.uuid, req.user.refreshToken]; 
-    
+  async refreshTokens(@Request() req) {
+    const [id, refresh_token] = [req.user.uuid, req.user.refreshToken];
+
     return await this.authService.refreshTokens(id, refresh_token);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('logout')
-  async logout(@Request() req){
-
+  async logout(@Request() req) {
     await this.authService.logout(req.user.uuid);
-
   }
 }
-
-
