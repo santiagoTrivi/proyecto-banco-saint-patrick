@@ -2,7 +2,7 @@ import { Body, Controller, Get, Post, UseGuards, Param, Query } from '@nestjs/co
 import { TransferService } from './infrastructure/service/transfer.service';
 import { TransferFundsProcess } from './useCase/transferFunds.process.useCase';
 import { CreateTransferDto, TransferObject } from './infrastructure/dto/create-transfer.dto';
-import { JwtAuthGuard } from 'src/auth/infrastructure/guards/jwt.guard';
+import { JwtAuthGuard } from '../auth/infrastructure/guards/jwt.guard';
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { HistoryTransferDto } from './infrastructure/dto/history-transfer.dto';
 
