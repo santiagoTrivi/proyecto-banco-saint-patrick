@@ -10,7 +10,6 @@ import {
 import { CardService } from './infrastructure/services/card.service';
 import { ClientService } from './infrastructure/services/client.service';
 import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/infrastructure/guards/jwt.guard';
 import { AuthService } from './infrastructure/services/auth.service';
 import { LocalAuthGuard } from './infrastructure/guards/local.auth.guard';
 import { GetCardInfo } from './useCase/getCardInfo';
@@ -18,6 +17,7 @@ import { RefreshJwtGuard } from './infrastructure/guards/refresh.jwt.guard';
 import { AuthenticationTokens, LoginDto } from './infrastructure/dto/login-dto';
 import { CreateCardDto } from './infrastructure/dto/create-card.dto';
 import { CreateClientDto } from './infrastructure/dto/create-client.dto';
+import { JwtAuthGuard } from './infrastructure/guards/jwt.guard';
 
 @ApiTags('auth')
 @Controller('auth')
