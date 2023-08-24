@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ITransfer } from '../../domain/interface/Itransfer';
-import { Card } from 'src/auth/infrastructure/schemas/card.schema';
+import { Card } from '../../../auth/infrastructure/schemas/card.schema';
 import mongoose, { Document, now } from 'mongoose';
 
 export type TransferDocument = Transfer & Document;
