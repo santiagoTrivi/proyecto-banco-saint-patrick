@@ -1,19 +1,17 @@
-import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
-import { CardService } from '../services/card.service';
-
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { CardService } from '../infrastructure/services/card.service';
 
 @Injectable()
 export class GetCardInfo {
-    constructor(private readonly cardService: CardService){}
+  constructor(private readonly cardService: CardService) {}
 
-    run = async(_id: string) => {
+  run = async (_id: string) => {
+    const card = await this.cardService.findOne({ _id });
 
-        const card = await this.cardService.findOne({_id});
+    if (!card) throw new HttpException('CARD_NOT_FOUND', HttpStatus.NOT_FOUND);
 
-        if(!card) throw new HttpException('CARD_NOT_FOUND', HttpStatus.NOT_FOUND);
+    const { PIN, ...result } = card;
 
-        const {PIN, ...result} = card;
-
-        return result;
-    }
+    return result;
+  };
 }

@@ -1,15 +1,23 @@
-import { Controller, Get, Post, Body, UseGuards, Request } from '@nestjs/common';
-import { CardService } from './services/card.service';
-import { CreateClientDto } from './domain/dto/create-client.dto';
-import { ClientService } from './services/client.service';
-import { CreateCardDto } from './domain/dto/create-card.dto';
-import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
-import { AuthService } from './services/auth.service';
-import { LocalAuthGuard } from './guards/local.auth.guard';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  UseGuards,
+  Request,
+  HttpCode,
+} from '@nestjs/common';
+import { CardService } from './infrastructure/services/card.service';
+import { ClientService } from './infrastructure/services/client.service';
+import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/infrastructure/guards/jwt.guard';
+import { AuthService } from './infrastructure/services/auth.service';
+import { LocalAuthGuard } from './infrastructure/guards/local.auth.guard';
 import { GetCardInfo } from './useCase/getCardInfo';
-import { RefreshJwtGuard } from './guards/refresh.jwt.guard';
-
+import { RefreshJwtGuard } from './infrastructure/guards/refresh.jwt.guard';
+import { AuthenticationTokens, LoginDto } from './infrastructure/dto/login-dto';
+import { CreateCardDto } from './infrastructure/dto/create-card.dto';
+import { CreateClientDto } from './infrastructure/dto/create-client.dto';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -18,52 +26,71 @@ export class AuthController {
     private readonly cardService: CardService,
     private readonly clientService: ClientService,
     private readonly authService: AuthService,
-    private readonly getCardInfo: GetCardInfo
-    ) {}
-  
-  
+    private readonly getCardInfo: GetCardInfo,
+  ) {}
 
-  @ApiOperation({ description: 'Get all the clients' })
+  @ApiOkResponse({type: CreateClientDto, isArray: true})
+  @ApiOperation({ 
+    summary: 'Get all clients',
+    description: 'Get all the clients registered in the chosen database' 
+  })
   @Get('client')
   findAll() {
     return this.clientService.findAll();
   }
 
-  @ApiOperation({ description: 'Get all the cards' })
+  @ApiOkResponse({type: CreateCardDto, isArray: true})
+  @ApiOperation({ 
+    summary: 'Get all the cards',
+    description: 'Get all the cards registered in the chosen database' })
   @Get('cards')
   findAllCardd() {
-    return this.cardService.findAll()
+    return this.cardService.findAll();
   }
 
+  @ApiOkResponse({type: AuthenticationTokens})
+  @ApiOperation({ 
+    summary: 'User login',
+    description: 'With this endpoint, the user can login providing their card number and its PIN, which is encrypted in the database' })
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Request() req){ 
+  @HttpCode(200)
+  @ApiBody({type: LoginDto})
+  async login(@Request() req) {
     return await this.authService.login(req.card);
   }
 
+  @ApiBearerAuth()
+  @ApiOkResponse({type: CreateCardDto})
+  @ApiOperation({ 
+    summary: 'Get full authenticated card info',
+    description: 'With this endpoint, the user coud retrive their card information once they login' })
   @UseGuards(JwtAuthGuard)
   @Get('card')
-  async getcard(@Request() req){
-
+  async getcard(@Request() req) {
     return await this.getCardInfo.run(req.user.uuid);
-    
   }
 
+  @ApiBearerAuth()
+  @ApiOkResponse({type: AuthenticationTokens})
+  @ApiOperation({ 
+    summary: 'Refresh access_token',
+    description: 'to obtain additional access tokens. This allows you to have short-lived access tokens without having to collect credentials every time one expires' })
   @UseGuards(RefreshJwtGuard)
   @Post('refresh-tokens')
-  async refreshTokens(@Request() req){
-    const [id, refresh_token] = [ req.user.uuid, req.user.refreshToken]; 
-    
+  async refreshTokens(@Request() req) {
+    const [id, refresh_token] = [req.user.uuid, req.user.refreshToken];
+
     return await this.authService.refreshTokens(id, refresh_token);
   }
 
+  @ApiBearerAuth()
+  @ApiOperation({ 
+    summary: 'Logout implementation',
+    description: 'log a user out of the session and invalite the refresh token' })
   @UseGuards(JwtAuthGuard)
-  @Get('logout')
-  async logout(@Request() req){
-
+  @Post('logout')
+  async logout(@Request() req) {
     await this.authService.logout(req.user.uuid);
-
   }
 }
-
-

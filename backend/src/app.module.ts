@@ -4,12 +4,16 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { DATABASE_CONFIG } from './config/database.cofig';
+import { TransferModule } from './transfer/transfer.module';
+
 
 @Module({
-  imports: [ 
+  imports: [
     DATABASE_CONFIG(),
     ConfigModule.forRoot({ isGlobal: true }),
-    AuthModule
+    AuthModule,
+    TransferModule,
+
   ],
   controllers: [AppController],
   providers: [AppService],
