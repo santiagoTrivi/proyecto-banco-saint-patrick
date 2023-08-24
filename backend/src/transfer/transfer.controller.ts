@@ -39,4 +39,8 @@ export class TransferController {
   async transferList( @Param('cardId') cardId: string, @Query() paginationDto) {
     return await this.transferService.getTransferHistory(cardId, paginationDto);
   }
+
+  async getAlltransfer(){
+    
+  }
 }
