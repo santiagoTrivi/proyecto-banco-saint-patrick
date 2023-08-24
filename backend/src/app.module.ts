@@ -6,12 +6,14 @@ import { ConfigModule } from '@nestjs/config';
 import { DATABASE_CONFIG } from './config/database.cofig';
 import { TransferModule } from './transfer/transfer.module';
 
+
 @Module({
   imports: [
     DATABASE_CONFIG(),
     ConfigModule.forRoot({ isGlobal: true }),
     AuthModule,
     TransferModule,
+
   ],
   controllers: [AppController],
   providers: [AppService],

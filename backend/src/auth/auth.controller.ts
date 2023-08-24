@@ -5,18 +5,19 @@ import {
   Body,
   UseGuards,
   Request,
+  HttpCode,
 } from '@nestjs/common';
-import { CardService } from './services/card.service';
-import { CreateClientDto } from './domain/dto/create-client.dto';
-import { ClientService } from './services/client.service';
-import { CreateCardDto } from './domain/dto/create-card.dto';
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
-import { AuthService } from './services/auth.service';
-import { LocalAuthGuard } from './guards/local.auth.guard';
+import { CardService } from './infrastructure/services/card.service';
+import { ClientService } from './infrastructure/services/client.service';
+import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/infrastructure/guards/jwt.guard';
+import { AuthService } from './infrastructure/services/auth.service';
+import { LocalAuthGuard } from './infrastructure/guards/local.auth.guard';
 import { GetCardInfo } from './useCase/getCardInfo';
-import { RefreshJwtGuard } from './guards/refresh.jwt.guard';
-import { LoginDto } from './domain/dto/login-dto';
+import { RefreshJwtGuard } from './infrastructure/guards/refresh.jwt.guard';
+import { AuthenticationTokens, LoginDto } from './infrastructure/dto/login-dto';
+import { CreateCardDto } from './infrastructure/dto/create-card.dto';
+import { CreateClientDto } from './infrastructure/dto/create-client.dto';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -28,6 +29,7 @@ export class AuthController {
     private readonly getCardInfo: GetCardInfo,
   ) {}
 
+  @ApiOkResponse({type: CreateClientDto, isArray: true})
   @ApiOperation({ 
     summary: 'Get all clients',
     description: 'Get all the clients registered in the chosen database' 
@@ -37,6 +39,7 @@ export class AuthController {
     return this.clientService.findAll();
   }
 
+  @ApiOkResponse({type: CreateCardDto, isArray: true})
   @ApiOperation({ 
     summary: 'Get all the cards',
     description: 'Get all the cards registered in the chosen database' })
@@ -45,17 +48,20 @@ export class AuthController {
     return this.cardService.findAll();
   }
 
+  @ApiOkResponse({type: AuthenticationTokens})
   @ApiOperation({ 
     summary: 'User login',
     description: 'With this endpoint, the user can login providing their card number and its PIN, which is encrypted in the database' })
   @UseGuards(LocalAuthGuard)
   @Post('login')
+  @HttpCode(200)
   @ApiBody({type: LoginDto})
   async login(@Request() req) {
     return await this.authService.login(req.card);
   }
 
   @ApiBearerAuth()
+  @ApiOkResponse({type: CreateCardDto})
   @ApiOperation({ 
     summary: 'Get full authenticated card info',
     description: 'With this endpoint, the user coud retrive their card information once they login' })
@@ -66,6 +72,7 @@ export class AuthController {
   }
 
   @ApiBearerAuth()
+  @ApiOkResponse({type: AuthenticationTokens})
   @ApiOperation({ 
     summary: 'Refresh access_token',
     description: 'to obtain additional access tokens. This allows you to have short-lived access tokens without having to collect credentials every time one expires' })

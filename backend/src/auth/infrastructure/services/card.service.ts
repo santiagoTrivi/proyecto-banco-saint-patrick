@@ -1,11 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { UpdateAuthDto } from '../domain/dto/update-auth.dto';
-import { CreateCardDto } from '../domain/dto/create-card.dto';
+import { UpdateAuthDto } from '../dto/update-auth.dto';
+import { CreateCardDto } from '../dto/create-card.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { hashSync, genSaltSync } from 'bcrypt';
-import { Card, CardDocument } from '../domain/schemas/card.schema';
-import { UpdateCardDto } from '../domain/dto/update-card.dto';
+import { Card, CardDocument } from '../schemas/card.schema';
+import { UpdateCardDto } from '../dto/update-card.dto';
 
 @Injectable()
 export class CardService {

@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CardService } from '../services/card.service';
+import { CardService } from '../infrastructure/services/card.service';
 
 @Injectable()
 export class GetCardInfo {

@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
 import { Client } from './client.schema';
-import { ICard } from '../interface/ICard';
+import { ICard } from '../../domain/interface/ICard';
 
 export type CardDocument = Card & Document;
 

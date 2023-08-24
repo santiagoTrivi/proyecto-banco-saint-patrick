@@ -1,8 +1,13 @@
 import { IsNotEmpty, Length, IsString } from 'class-validator';
-import { ICard } from '../interface/ICard';
+import { ICard } from '../../domain/interface/ICard';
 import { ApiProperty } from '@nestjs/swagger';
+import { CreateClientDto } from './create-client.dto';
+
 
 export class CreateCardDto implements ICard {
+
+  @ApiProperty()
+  _id?: string;
 
   @ApiProperty()
   @IsNotEmpty()
@@ -19,10 +24,17 @@ export class CreateCardDto implements ICard {
   @ApiProperty()
   @IsNotEmpty()
   current_balance: number;
+  
+  @ApiProperty()
+  isActive?: boolean;
 
   @ApiProperty()
   @IsNotEmpty()
-  client: any;
+  client: CreateClientDto;
 
   refreshToken?: string;
+
+  
 }
+
+

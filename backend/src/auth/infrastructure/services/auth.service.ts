@@ -8,7 +8,7 @@ import {
 import { compare, compareSync, hash } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { CardService } from './card.service';
-import { LoginDto } from '../domain/dto/login-dto';
+import { LoginDto } from '../dto/login-dto';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()

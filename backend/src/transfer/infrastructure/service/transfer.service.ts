@@ -1,16 +1,23 @@
 import { Injectable } from '@nestjs/common';
-import { ITransferRepository } from '../domain/interface/ItransferRepository';
-import { Transfer, TransferDocument } from '../domain/schemas/transfer.schema';
-import { CreateTransferDto } from '../domain/dto/create-transfer.dto';
+import { ITransferRepository } from '../../domain/interface/ItransferRepository';
+import { Transfer, TransferDocument } from '../schemas/transfer.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { PaginationService } from 'src/common/infrastructure/service/pagination-service.service';
+import { PaginationDto } from 'src/common/infrastructure/dto/Pagination.dto';
+
+
 
 @Injectable()
 export class TransferService implements ITransferRepository<Transfer> {
+  private paginationService: PaginationService<TransferDocument>
   constructor(
     @InjectModel(Transfer.name)
     private readonly transferModel: Model<TransferDocument>,
-  ) {}
+
+  ) {
+    this.paginationService = new PaginationService(this.transferModel)
+  }
 
   getTransfer(id: string): Promise<Transfer> {
     throw new Error('Method not implemented.');
@@ -29,7 +36,9 @@ export class TransferService implements ITransferRepository<Transfer> {
       return globalMovements
   }
   
-  getTransferHistory(card: string): Promise<Transfer>[] {
-    throw new Error('Method not implemented.');
+  async getTransferHistory(cardId: string, paginationDto: PaginationDto) {
+
+    return await this.paginationService.paginate({$or: [{ senderId: cardId }, { receiverId: cardId }]}, paginationDto);
+    
   }
 }

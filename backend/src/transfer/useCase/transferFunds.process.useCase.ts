@@ -1,10 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
-import { Card, CardDocument } from 'src/auth/domain/schemas/card.schema';
-import { Transfer, TransferDocument } from '../domain/schemas/transfer.schema';
-import { CreateTransferDto } from '../domain/dto/create-transfer.dto';
+import { Card, CardDocument } from 'src/auth/infrastructure/schemas/card.schema';
+import { Transfer, TransferDocument } from '../infrastructure/schemas/transfer.schema';
+import { CreateTransferDto } from '../infrastructure/dto/create-transfer.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { TransferService } from '../service/transfer.service';
+import { TransferService } from '../infrastructure/service/transfer.service';
 
 @Injectable()
 export class TransferFundsProcess {
