@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { Document, Model } from "mongoose";
-import { PaginationResult } from "src/common/domain/interface/IPaginationResult";
+import { PaginationResult } from "../../../common/domain/interface/IPaginationResult";
 import { PaginationDto } from "../dto/Pagination.dto";
 
 @Injectable()

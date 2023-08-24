@@ -1,5 +1,4 @@
 import { PaginationResult } from "src/common/domain/interface/IPaginationResult";
-import { ITransfer } from "../../domain/interface/Itransfer";
 import { ApiProperty } from "@nestjs/swagger";
 import { TransferObject } from "./create-transfer.dto";
 

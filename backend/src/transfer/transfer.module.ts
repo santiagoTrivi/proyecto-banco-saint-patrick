@@ -4,7 +4,7 @@ import { TransferService } from './infrastructure/service/transfer.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Transfer, TransferSchema } from './infrastructure/schemas/transfer.schema';
 import { TransferFundsProcess } from './useCase/transferFunds.process.useCase';
-import { Card, CardSchema } from 'src/auth/infrastructure/schemas/card.schema';
+import { Card, CardSchema } from '../auth/infrastructure/schemas/card.schema';
 
 
 @Module({
