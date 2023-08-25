@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { CORS } from './config/cors-constants';
+import { STATIC_SWAGGER_DOC } from './staticSwaggerDoc';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -16,9 +17,14 @@ async function bootstrap() {
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('doc', app, document);
+  SwaggerModule.setup('/swagger', app, document);
 
+  //CORS is the constant where cors configurations are stored
   app.enableCors(CORS)
-  await app.listen(3000);
+  
+  await app.listen(process.env.PORT || 3000);
+
+  STATIC_SWAGGER_DOC();
+
 }
 bootstrap();
