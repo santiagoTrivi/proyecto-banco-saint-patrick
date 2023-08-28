@@ -7,7 +7,6 @@ export type TransferDocument = Transfer & Document;
 
 @Schema({ timestamps: true })
 export class Transfer implements ITransfer {
-  
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Card', required: true })
   senderId: Card;
 
@@ -17,7 +16,7 @@ export class Transfer implements ITransfer {
   @Prop()
   amount: number;
 
-  @Prop({default: "USD"})
+  @Prop({ default: 'USD' })
   currency: string;
 
   @Prop()

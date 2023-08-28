@@ -14,7 +14,6 @@ import { JWT_CONFIG } from '../config/jwt.cofig';
 
 // JWT_CONFIG is the function to retrieve json web token configuration
 
-
 @Module({
   imports: [
     MongooseModule.forFeature([

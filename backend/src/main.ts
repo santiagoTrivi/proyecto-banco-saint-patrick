@@ -7,7 +7,6 @@ import { STATIC_SWAGGER_DOC } from './staticSwaggerDoc';
 import { SWAGGER_CONFIG } from './config/swagger.config';
 import * as morgan from 'morgan';
 
-
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
@@ -17,16 +16,15 @@ async function bootstrap() {
   SwaggerModule.setup('/swagger', app, document);
 
   //CORS is the constant where cors configurations are stored
-  app.enableCors(CORS)
+  app.enableCors(CORS);
 
   //morgan
-  if(process.env.NODE_ENV === 'development'){
-    app.use(morgan('dev'))
+  if (process.env.NODE_ENV === 'development') {
+    app.use(morgan('dev'));
   }
-  
+
   await app.listen(process.env.PORT || 3000);
 
   STATIC_SWAGGER_DOC();
-
 }
 bootstrap();

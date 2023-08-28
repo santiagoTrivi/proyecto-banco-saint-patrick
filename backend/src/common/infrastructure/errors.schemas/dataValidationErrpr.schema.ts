@@ -1,11 +1,10 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { BaseErrorSchema } from "./baseError.schemas";
+import { ApiProperty } from '@nestjs/swagger';
+import { BaseErrorSchema } from './baseError.schemas';
 
 export class DataValidationErrorResponseSchema extends BaseErrorSchema {
+  @ApiProperty({ isArray: true })
+  message: string;
 
-    @ApiProperty({isArray: true})
-    message: string;
-
-    @ApiProperty({required: false})
-    error?: string;
+  @ApiProperty({ required: false })
+  error?: string;
 }

@@ -1,7 +1,17 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Model } from 'mongoose';
-import { Card, CardDocument } from '../../auth/infrastructure/schemas/card.schema';
-import { Transfer, TransferDocument } from '../infrastructure/schemas/transfer.schema';
+import {
+  Card,
+  CardDocument,
+} from '../../auth/infrastructure/schemas/card.schema';
+import {
+  Transfer,
+  TransferDocument,
+} from '../infrastructure/schemas/transfer.schema';
 import { CreateTransferDto } from '../infrastructure/dto/create-transfer.dto';
 import { InjectModel } from '@nestjs/mongoose';
 
@@ -32,7 +42,7 @@ export class TransferFundsProcess {
       }
 
       const foundReceiver = await this.cardModel
-        .findOne({card_number: receiver})
+        .findOne({ card_number: receiver })
         .session(session)
         .exec();
 
@@ -49,7 +59,7 @@ export class TransferFundsProcess {
         senderId,
         receiverId: foundReceiver._id,
         amount,
-        concept
+        concept,
       });
 
       const createdTransfer = await transfer.save(transaction);
@@ -58,15 +68,11 @@ export class TransferFundsProcess {
 
       return createdTransfer;
     } catch (error) {
-
       await session.abortTransaction();
 
       throw error;
-
     } finally {
-
       session.endSession();
-      
     }
   }
 }

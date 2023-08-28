@@ -1,7 +1,4 @@
-import {
-  ForbiddenException,
-  Injectable,
-} from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { compare, compareSync, hash } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { CardService } from './card.service';
@@ -23,7 +20,7 @@ export class AuthService {
     const PIN_VALIDATION = compareSync(PIN, card.PIN);
 
     if (!PIN_VALIDATION) return null;
-    
+
     return card;
   }
 
