@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { Card, CardDocument } from '../../auth/infrastructure/schemas/card.schema';
 import { Transfer, TransferDocument } from '../infrastructure/schemas/transfer.schema';
@@ -28,7 +28,7 @@ export class TransferFundsProcess {
         .exec();
 
       if (foundSender.current_balance < amount) {
-        throw new HttpException('NOT ENOUGH FUNDS', HttpStatus.BAD_REQUEST);
+        throw new BadRequestException('NOT ENOUGH FUNDS');
       }
 
       const foundReceiver = await this.cardModel
@@ -37,7 +37,7 @@ export class TransferFundsProcess {
         .exec();
 
       if (!foundSender || !foundReceiver)
-        throw new HttpException('CARD NOT FOUND', HttpStatus.BAD_REQUEST);
+        throw new NotFoundException('CARD NOT FOUND');
 
       foundSender.current_balance -= amount;
       foundReceiver.current_balance += amount;

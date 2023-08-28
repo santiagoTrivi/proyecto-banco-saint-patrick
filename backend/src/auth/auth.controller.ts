@@ -2,14 +2,13 @@ import {
   Controller,
   Get,
   Post,
-  Body,
   UseGuards,
   Request,
   HttpCode,
 } from '@nestjs/common';
 import { CardService } from './infrastructure/services/card.service';
 import { ClientService } from './infrastructure/services/client.service';
-import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiForbiddenResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { AuthService } from './infrastructure/services/auth.service';
 import { LocalAuthGuard } from './infrastructure/guards/local.auth.guard';
 import { GetCardInfo } from './useCase/getCardInfo';
@@ -18,6 +17,7 @@ import { AuthenticationTokens, LoginDto } from './infrastructure/dto/login-dto';
 import { CreateCardDto } from './infrastructure/dto/create-card.dto';
 import { CreateClientDto } from './infrastructure/dto/create-client.dto';
 import { JwtAuthGuard } from './infrastructure/guards/jwt.guard';
+import { ForbiddenErrorResponseChema, InternalServerErrorSchema, NotFoundErrorResponseSchema, UnauthorizedResponseSchema } from 'src/common/infrastructure/errors.schemas';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -49,6 +49,8 @@ export class AuthController {
   }
 
   @ApiOkResponse({type: AuthenticationTokens})
+  @ApiUnauthorizedResponse({type: UnauthorizedResponseSchema})
+  @ApiInternalServerErrorResponse({type: InternalServerErrorSchema})
   @ApiOperation({ 
     summary: 'User login',
     description: 'With this endpoint, the user can login providing their card number and its PIN, which is encrypted in the database' })
@@ -62,6 +64,9 @@ export class AuthController {
 
   @ApiBearerAuth()
   @ApiOkResponse({type: CreateCardDto})
+  @ApiUnauthorizedResponse({type: UnauthorizedResponseSchema})
+  @ApiNotFoundResponse({type: NotFoundErrorResponseSchema})
+  @ApiInternalServerErrorResponse({type: InternalServerErrorSchema})
   @ApiOperation({ 
     summary: 'Get full authenticated card info',
     description: 'With this endpoint, the user coud retrive their card information once they login' })
@@ -73,6 +78,9 @@ export class AuthController {
 
   @ApiBearerAuth()
   @ApiOkResponse({type: AuthenticationTokens})
+  @ApiUnauthorizedResponse({type: UnauthorizedResponseSchema})
+  @ApiForbiddenResponse({type: ForbiddenErrorResponseChema})
+  @ApiInternalServerErrorResponse({type: InternalServerErrorSchema})
   @ApiOperation({ 
     summary: 'Refresh access_token',
     description: 'to obtain additional access tokens. This allows you to have short-lived access tokens without having to collect credentials every time one expires' })
@@ -85,6 +93,9 @@ export class AuthController {
   }
 
   @ApiBearerAuth()
+  @ApiCreatedResponse({description: 'logged out successfully'})
+  @ApiUnauthorizedResponse({type: UnauthorizedResponseSchema})
+  @ApiInternalServerErrorResponse({type: InternalServerErrorSchema})
   @ApiOperation({ 
     summary: 'Logout implementation',
     description: 'log a user out of the session and invalite the refresh token' })

@@ -1,26 +1,28 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { SwaggerModule } from '@nestjs/swagger';
 import { CORS } from './config/cors-constants';
 import { STATIC_SWAGGER_DOC } from './staticSwaggerDoc';
+import { SWAGGER_CONFIG } from './config/swagger.config';
+import * as morgan from 'morgan';
+
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
 
-  const config = new DocumentBuilder()
-    .setTitle('API Documentation for bank process')
-    .setDescription('The cats API description')
-    .setVersion('1.0')
-    .addTag('auth')
-    .addBearerAuth()
-    .build();
-  const document = SwaggerModule.createDocument(app, config);
+  //swagger documentation set by SWAGGER_CONFIG constant
+  const document = SwaggerModule.createDocument(app, SWAGGER_CONFIG);
   SwaggerModule.setup('/swagger', app, document);
 
   //CORS is the constant where cors configurations are stored
   app.enableCors(CORS)
+
+  //morgan
+  if(process.env.NODE_ENV === 'development'){
+    app.use(morgan('dev'))
+  }
   
   await app.listen(process.env.PORT || 3000);
 
