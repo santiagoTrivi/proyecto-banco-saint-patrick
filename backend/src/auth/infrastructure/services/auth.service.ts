@@ -1,9 +1,6 @@
 import {
   ForbiddenException,
-  HttpException,
-  HttpStatus,
   Injectable,
-  NotAcceptableException,
 } from '@nestjs/common';
 import { compare, compareSync, hash } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
@@ -21,16 +18,12 @@ export class AuthService {
   async validateCard(card_number: string, PIN: string): Promise<any> {
     const card = await this.cardService.findOne({ card_number });
 
-    if (!card) throw new HttpException('CARD_NOT_FOUND', HttpStatus.NOT_FOUND);
+    if (!card) return null;
 
     const PIN_VALIDATION = compareSync(PIN, card.PIN);
 
-    if (!PIN_VALIDATION)
-      throw new HttpException(
-        'CARD NUMBER AND PIN INCORRECT',
-        HttpStatus.UNAUTHORIZED,
-      );
-
+    if (!PIN_VALIDATION) return null;
+    
     return card;
   }
 

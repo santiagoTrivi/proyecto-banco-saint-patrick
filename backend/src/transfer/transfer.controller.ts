@@ -3,8 +3,9 @@ import { TransferService } from './infrastructure/service/transfer.service';
 import { TransferFundsProcess } from './useCase/transferFunds.process.useCase';
 import { CreateTransferDto, TransferObject } from './infrastructure/dto/create-transfer.dto';
 import { JwtAuthGuard } from '../auth/infrastructure/guards/jwt.guard';
-import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiBearerAuth, ApiInternalServerErrorResponse, ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { HistoryTransferDto } from './infrastructure/dto/history-transfer.dto';
+import { DataValidationErrorResponseSchema, InternalServerErrorSchema, UnauthorizedResponseSchema } from 'src/common/infrastructure/errors.schemas';
 
 @ApiTags('transfer')
 @Controller('transfer')
@@ -16,6 +17,9 @@ export class TransferController {
 
   @ApiBearerAuth()
   @ApiOkResponse({type: TransferObject})
+  @ApiUnauthorizedResponse({type: UnauthorizedResponseSchema})
+  @ApiBadRequestResponse({type: DataValidationErrorResponseSchema})
+  @ApiInternalServerErrorResponse({type: InternalServerErrorSchema})
   @ApiOperation({ 
     summary: 'Transfer money',
     description: 'this endpoint allows authenticated user to tranfer money to any card providing the receiver card number' })
@@ -27,6 +31,8 @@ export class TransferController {
 
   @ApiBearerAuth()
   @ApiOkResponse({type: HistoryTransferDto})
+  @ApiUnauthorizedResponse({type: UnauthorizedResponseSchema})
+  @ApiInternalServerErrorResponse({type: InternalServerErrorSchema})
   @Get(':cardId')
   @ApiOperation({
     summary: 'Get transfer history',
@@ -40,7 +46,5 @@ export class TransferController {
     return await this.transferService.getTransferHistory(cardId, paginationDto);
   }
 
-  async getAlltransfer(){
-    
-  }
+
 }
