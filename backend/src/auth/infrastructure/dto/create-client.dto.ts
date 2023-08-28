@@ -3,7 +3,6 @@ import { IClient } from '../../domain/interface/IClient';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateClientDto implements IClient {
-
   @ApiProperty()
   _id: string;
 
@@ -19,6 +18,4 @@ export class CreateClientDto implements IClient {
 
   @ApiProperty()
   isActive?: boolean;
-
-  
 }

@@ -1,6 +1,6 @@
-export interface ICreateTransferDTO{
-    senderId: string;
-    receiver: string;
-    amount: number;
-    concept: string;
+export interface ICreateTransferDTO {
+  senderId: string;
+  receiver: string;
+  amount: number;
+  concept: string;
 }

@@ -1,38 +1,34 @@
-import { Injectable } from "@nestjs/common";
-import { Document, Model } from "mongoose";
-import { PaginationResult } from "../../../common/domain/interface/IPaginationResult";
-import { PaginationDto } from "../dto/Pagination.dto";
+import { Injectable } from '@nestjs/common';
+import { Document, Model } from 'mongoose';
+import { PaginationResult } from '../../../common/domain/interface/IPaginationResult';
+import { PaginationDto } from '../dto/Pagination.dto';
 
 @Injectable()
-export class PaginationService<T extends Document>{
+export class PaginationService<T extends Document> {
+  constructor(private model: Model<T>) {}
 
-    constructor(private model: Model<T>){}
+  async paginate(query: any, paginationDto: PaginationDto) {
+    const page = paginationDto.page || 1;
+    const limit = paginationDto.limit || 10;
 
-    async paginate(query: any, paginationDto: PaginationDto){
+    const startIndex = (page - 1) * limit;
 
-        const page = paginationDto.page || 1;
-        const limit = paginationDto.limit || 10;
+    const data = await this.model
+      .find(query)
+      .skip(startIndex)
+      .limit(limit)
+      .exec();
 
-        const startIndex = (page - 1) * limit;
+    const totalItems = await this.model.countDocuments(query).exec();
+    const totalPages = Math.ceil(totalItems / limit);
 
-        const data = await this.model
-        .find(query)
-        .skip(startIndex)
-        .limit(limit).exec();
+    const paginationResult: PaginationResult<T> = {
+      data,
+      totalItems,
+      totalPages,
+      currentPage: page,
+    };
 
-
-        const totalItems = await this.model
-        .countDocuments(query).exec()
-        const totalPages = Math.ceil(totalItems / limit);
-        
-        const paginationResult: PaginationResult<T> = {
-            data,
-            totalItems,
-            totalPages,
-            currentPage: page
-        }
-
-        return paginationResult;
-
-    }
+    return paginationResult;
+  }
 }

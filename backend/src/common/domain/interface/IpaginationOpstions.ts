@@ -1,5 +1,4 @@
-export interface IPaginationOption{
-    page?: number;
-    limit?: number;
+export interface IPaginationOption {
+  page?: number;
+  limit?: number;
 }
-

@@ -1,7 +1,6 @@
-import { ApiProperty } from "@nestjs/swagger";
-
+import { ApiProperty } from '@nestjs/swagger';
 
 export abstract class BaseErrorSchema {
-    @ApiProperty()
-    statusCode: number
+  @ApiProperty()
+  statusCode: number;
 }

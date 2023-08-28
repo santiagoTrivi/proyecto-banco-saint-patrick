@@ -3,9 +3,7 @@ import { ICreateTransferDTO } from '../../domain/interface/ICreateTransferDTO';
 import { ApiProperty } from '@nestjs/swagger';
 import { ITransfer } from '../../domain/interface/Itransfer';
 
-
 export class CreateTransferDto implements ICreateTransferDTO {
-  
   @ApiProperty()
   @IsNotEmpty()
   senderId: string;
@@ -23,11 +21,9 @@ export class CreateTransferDto implements ICreateTransferDTO {
   @IsNotEmpty()
   @IsString()
   concept: string;
-
 }
 
-export class TransferObject implements ITransfer{
-
+export class TransferObject implements ITransfer {
   @ApiProperty()
   _id: string;
 
@@ -51,5 +47,4 @@ export class TransferObject implements ITransfer{
 
   @ApiProperty()
   updatedAt?: Date;
-  
 }

@@ -3,7 +3,6 @@ import { Ilogin } from '../../domain/interface/Ilogin';
 import { IsNotEmpty, IsString, Length } from 'class-validator';
 
 export class LoginDto implements Ilogin {
-
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
@@ -17,7 +16,7 @@ export class LoginDto implements Ilogin {
   PIN: string;
 }
 
-export class AuthenticationTokens{
+export class AuthenticationTokens {
   @ApiProperty()
   access_token: string;
   @ApiProperty()

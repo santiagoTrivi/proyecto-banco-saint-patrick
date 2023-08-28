@@ -8,7 +8,7 @@ export class GetCardInfo {
   run = async (_id: string) => {
     const card = await this.cardService.findOne({ _id });
 
-    if (!card) throw new NotFoundException('CARD_NOT_FOUND')
+    if (!card) throw new NotFoundException('CARD_NOT_FOUND');
 
     const { PIN, ...result } = card;
 

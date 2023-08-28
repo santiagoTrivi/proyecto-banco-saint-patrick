@@ -3,9 +3,7 @@ import { ICard } from '../../domain/interface/ICard';
 import { ApiProperty } from '@nestjs/swagger';
 import { CreateClientDto } from './create-client.dto';
 
-
 export class CreateCardDto implements ICard {
-
   @ApiProperty()
   _id?: string;
 
@@ -24,7 +22,7 @@ export class CreateCardDto implements ICard {
   @ApiProperty()
   @IsNotEmpty()
   current_balance: number;
-  
+
   @ApiProperty()
   isActive?: boolean;
 
@@ -33,8 +31,4 @@ export class CreateCardDto implements ICard {
   client: CreateClientDto;
 
   refreshToken?: string;
-
-  
 }
-
-
