@@ -1,7 +1,7 @@
 import { IsNotEmpty, Length, IsString } from 'class-validator';
 import { ICard } from '../../domain/interface/ICard';
 import { ApiProperty } from '@nestjs/swagger';
-import { CreateClientDto } from './create-client.dto';
+import { CreateClientDto } from '../../../client/infrastructure/Dto/create-client.dto';
 
 export class CreateCardDto implements ICard {
   @ApiProperty()

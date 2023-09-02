@@ -5,6 +5,7 @@ import { DATABASE_CONFIG } from './config/database.cofig';
 import { TransferModule } from './transfer/transfer.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { ClientModule } from './client/client.module';
 
 // DATABASE_CONFIG is the function to retrieve the database configuration, based on the NODE_env for production or development environment
 
@@ -18,6 +19,7 @@ import { join } from 'path';
     ConfigModule.forRoot({ isGlobal: true }),
     AuthModule,
     TransferModule,
+    ClientModule,
   ],
   controllers: [],
   providers: [],

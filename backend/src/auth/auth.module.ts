@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { CardService } from './infrastructure/services/card.service';
 import { AuthController } from './auth.controller';
-import { ClientService } from './infrastructure/services/client.service';
+import { ClientService } from '../client/infrastructure/services/client.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Client, ClientSchema } from './infrastructure/schemas/client.schema';
+import { Client, ClientSchema } from '../client/infrastructure/schemas/client.schema';
 import { Card, CardSchema } from './infrastructure/schemas/card.schema';
 import { LocalStrategy } from './infrastructure/strategies/local.strategy';
 import { AuthService } from './infrastructure/services/auth.service';

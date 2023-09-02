@@ -7,7 +7,7 @@ import {
   HttpCode,
 } from '@nestjs/common';
 import { CardService } from './infrastructure/services/card.service';
-import { ClientService } from './infrastructure/services/client.service';
+import { ClientService } from '../client/infrastructure/services/client.service';
 import {
   ApiBearerAuth,
   ApiBody,
@@ -26,7 +26,6 @@ import { GetCardInfo } from './useCase/getCardInfo';
 import { RefreshJwtGuard } from './infrastructure/guards/refresh.jwt.guard';
 import { AuthenticationTokens, LoginDto } from './infrastructure/dto/login-dto';
 import { CreateCardDto } from './infrastructure/dto/create-card.dto';
-import { CreateClientDto } from './infrastructure/dto/create-client.dto';
 import { JwtAuthGuard } from './infrastructure/guards/jwt.guard';
 import {
   ForbiddenErrorResponseChema,
@@ -44,16 +43,6 @@ export class AuthController {
     private readonly authService: AuthService,
     private readonly getCardInfo: GetCardInfo,
   ) {}
-
-  @ApiOkResponse({ type: CreateClientDto, isArray: true })
-  @ApiOperation({
-    summary: 'Get all clients',
-    description: 'Get all the clients registered in the chosen database',
-  })
-  @Get('client')
-  findAll() {
-    return this.clientService.findAll();
-  }
 
   @ApiOkResponse({ type: CreateCardDto, isArray: true })
   @ApiOperation({
