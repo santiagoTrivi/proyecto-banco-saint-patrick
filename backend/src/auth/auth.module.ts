@@ -11,6 +11,7 @@ import { JwtStrategy } from './infrastructure/strategies/jwt.Strategy';
 import { GetCardInfo } from './useCase/getCardInfo';
 import { RefreshTokenStrategy } from './infrastructure/strategies/refresh.jwt.strategy';
 import { JWT_CONFIG } from '../config/jwt.cofig';
+import { GetClientInfo } from './useCase/getClientInfo';
 
 // JWT_CONFIG is the function to retrieve json web token configuration
 
@@ -31,6 +32,7 @@ import { JWT_CONFIG } from '../config/jwt.cofig';
     JwtStrategy,
     RefreshTokenStrategy,
     GetCardInfo,
+    GetClientInfo,
   ],
 })
 export class AuthModule {}

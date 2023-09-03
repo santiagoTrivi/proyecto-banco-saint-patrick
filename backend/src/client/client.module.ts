@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { ClientController } from './client.controller';
 import { ClientService } from './infrastructure/services/client.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Client, ClientSchema } from './infrastructure/schemas/client.schema';
@@ -10,9 +9,8 @@ import { Client, ClientSchema } from './infrastructure/schemas/client.schema';
       {name:  Client.name, schema: ClientSchema}
     ])
   ],
-  controllers: [ClientController],
-  providers:[
-    ClientService
-  ]
+  controllers: [],
+  providers:[ClientService],
+  exports:[ClientService]
 })
 export class ClientModule {}

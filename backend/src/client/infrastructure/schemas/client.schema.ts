@@ -24,6 +24,9 @@ export class Client implements IClient {
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Card' }] })
   cards?: Card[];
+
+  @Prop()
+  refreshToken?: string;
 } 
 
 export const ClientSchema = SchemaFactory.createForClass(Client);

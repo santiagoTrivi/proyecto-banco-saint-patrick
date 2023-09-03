@@ -1,10 +1,8 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { IClient } from '../../domain/interface/IClient';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateClientDto implements IClient {
-  @ApiProperty()
-  _id: string;
 
   @ApiProperty()
   @IsString()
@@ -17,5 +15,16 @@ export class CreateClientDto implements IClient {
   lastName: string;
 
   @ApiProperty()
-  isActive?: boolean;
+  @IsString()
+  @IsNotEmpty()
+  username: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  password?: string;
+
+  @IsOptional()
+  cards?: string;
+
 }

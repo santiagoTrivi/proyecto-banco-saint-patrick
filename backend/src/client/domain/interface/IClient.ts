@@ -3,7 +3,8 @@ export interface IClient {
   firstName: string;
   lastName: string;
   username: string;
-  password: string;
+  password?: string;
   isActive?: boolean;
   cards?: any;
+  refreshToken?: string;
 }

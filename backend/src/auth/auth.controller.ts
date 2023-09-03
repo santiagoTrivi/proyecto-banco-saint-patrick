@@ -33,6 +33,8 @@ import {
   NotFoundErrorResponseSchema,
   UnauthorizedResponseSchema,
 } from '../common/infrastructure/errors.schemas';
+import { GetClientInfo } from './useCase/getClientInfo';
+
 
 @ApiTags('auth')
 @Controller('auth')
@@ -41,7 +43,7 @@ export class AuthController {
     private readonly cardService: CardService,
     private readonly clientService: ClientService,
     private readonly authService: AuthService,
-    private readonly getCardInfo: GetCardInfo,
+    private readonly getClientInfo: GetClientInfo,
   ) {}
 
   @ApiOkResponse({ type: CreateCardDto, isArray: true })
@@ -67,7 +69,7 @@ export class AuthController {
   @HttpCode(200)
   @ApiBody({ type: LoginDto })
   async login(@Request() req) {
-    return await this.authService.login(req.card);
+    return await this.authService.login(req.client);
   }
 
   @ApiBearerAuth()
@@ -81,9 +83,10 @@ export class AuthController {
       'With this endpoint, the user coud retrive their card information once they login',
   })
   @UseGuards(JwtAuthGuard)
-  @Get('card')
+  @Get('clientInfo')
   async getcard(@Request() req) {
-    return await this.getCardInfo.run(req.user.uuid);
+    return await this.getClientInfo.run(req.user.uuid);
+    
   }
 
   @ApiBearerAuth()
@@ -117,4 +120,5 @@ export class AuthController {
   async logout(@Request() req) {
     await this.authService.logout(req.user.uuid);
   }
+
 }

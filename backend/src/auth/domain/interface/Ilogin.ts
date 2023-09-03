@@ -1,4 +1,4 @@
 export interface Ilogin {
-  card_number: string;
-  PIN: string;
+  username: string;
+  password: string;
 }

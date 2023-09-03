@@ -30,7 +30,6 @@ export class CardService {
     card.card_number = createCardDto.card_number;
     card.PIN = hashSync(createCardDto.PIN, salt);
     card.current_balance = createCardDto.current_balance;
-    card.client = createCardDto.client;
 
     return await this.cardModel.create(card);
   }
@@ -38,15 +37,13 @@ export class CardService {
   async findAll() {
     return await this.cardModel
       .find()
-      .select({ __v: 0 })
-      .populate({ path: 'client', select: { __v: 0 } });
+      .select({ __v: 0 });
   }
 
   async findOne(query: any) {
     const card = await this.cardModel
       .findOne(query)
-      .select({ __v: 0 })
-      .populate({ path: 'client', select: { __v: 0 } });
+      .select({ __v: 0 });
 
     if (!card) return null;
 
