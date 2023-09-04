@@ -6,11 +6,15 @@ import { ITransfer } from '../../domain/interface/Itransfer';
 export class CreateTransferDto implements ICreateTransferDTO {
   @ApiProperty()
   @IsNotEmpty()
-  senderId: string;
+  clientId: string;
 
   @ApiProperty()
   @IsNotEmpty()
-  receiver: string;
+  sender_card: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  receiver_card: string;
 
   @ApiProperty()
   @IsNotEmpty()
@@ -21,11 +25,19 @@ export class CreateTransferDto implements ICreateTransferDTO {
   @IsNotEmpty()
   @IsString()
   concept: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  PIN: string;
 }
 
 export class TransferObject implements ITransfer {
   @ApiProperty()
   _id: string;
+
+  @ApiProperty()
+  clientId: string;
 
   @ApiProperty()
   senderId: string;

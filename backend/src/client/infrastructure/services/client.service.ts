@@ -13,12 +13,12 @@ export class ClientService {
   ) {}
 
   async create(createClientDto: CreateClientDto) {
-    const client = new this.clientModel(createClientDto)
-    return await client.save()
+    const client = new this.clientModel(createClientDto);
+    return await client.save();
   }
 
-  findOneByUsername(username: string){
-    return this.clientModel.findOne({username});
+  findOneByUsername(username: string) {
+    return this.clientModel.findOne({ username });
   }
 
   async findAll() {
@@ -27,17 +27,18 @@ export class ClientService {
     });
   }
 
-  async update(id: string, updateClientDto: UdpateClientDto){
-    const {cards} = updateClientDto
+  async update(id: string, updateClientDto: UdpateClientDto) {
+    const { cards } = updateClientDto;
     return await this.clientModel
-    .findByIdAndUpdate(id, updateClientDto, {new: true})
-    .exec();
+      .findByIdAndUpdate(id, updateClientDto, { new: true })
+      .exec();
   }
 
   async findOne(query: any) {
     const client = await this.clientModel
       .findOne(query)
-      .select({ __v: 0 });
+      .select({ __v: 0 })
+      .populate({ path: 'cards', select: { __v: 0 } });
 
     if (!client) return null;
 

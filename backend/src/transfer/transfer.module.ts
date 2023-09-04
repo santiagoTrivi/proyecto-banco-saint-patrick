@@ -6,8 +6,11 @@ import {
   Transfer,
   TransferSchema,
 } from './infrastructure/schemas/transfer.schema';
-import { TransferFundsProcess } from './useCase/transferFunds.process.useCase';
-import { Card, CardSchema } from '../auth/infrastructure/schemas/card.schema';
+import { Card, CardSchema } from '../card/infrastructure/schemas/card.schema';
+import { FundsHandler } from './useCase/fundsHandler';
+import { StartSession } from './useCase/startSession';
+import { TransferFundsProcessHandler } from './useCase/transferFundProcessHandler';
+import { TransferHandler } from './useCase/transferHandler';
 
 @Module({
   imports: [
@@ -17,6 +20,12 @@ import { Card, CardSchema } from '../auth/infrastructure/schemas/card.schema';
     ]),
   ],
   controllers: [TransferController],
-  providers: [TransferService, TransferFundsProcess],
+  providers: [
+    TransferService,
+    FundsHandler,
+    StartSession,
+    TransferHandler,
+    TransferFundsProcessHandler,
+  ],
 })
 export class TransferModule {}

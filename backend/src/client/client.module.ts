@@ -5,12 +5,10 @@ import { Client, ClientSchema } from './infrastructure/schemas/client.schema';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([
-      {name:  Client.name, schema: ClientSchema}
-    ])
+    MongooseModule.forFeature([{ name: Client.name, schema: ClientSchema }]),
   ],
   controllers: [],
-  providers:[ClientService],
-  exports:[ClientService]
+  providers: [ClientService],
+  exports: [ClientService],
 })
 export class ClientModule {}

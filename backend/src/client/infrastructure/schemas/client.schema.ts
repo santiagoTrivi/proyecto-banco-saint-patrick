@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
 import { IClient } from '../../domain/interface/IClient';
-import { Card } from '../../../auth/infrastructure/schemas/card.schema';
+import { Card } from '../../../card/infrastructure/schemas/card.schema';
 
 export type ClientDocument = Client & Document;
 
@@ -27,6 +27,6 @@ export class Client implements IClient {
 
   @Prop()
   refreshToken?: string;
-} 
+}
 
 export const ClientSchema = SchemaFactory.createForClass(Client);

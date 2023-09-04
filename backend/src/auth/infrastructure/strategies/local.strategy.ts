@@ -10,10 +10,9 @@ export class LocalStrategy extends PassportStrategy(Strategy, 'local') {
   }
 
   async validate(username: string, password: string) {
-
     const client = this.authService.validateClient(username, password);
-    
-    if(!client) throw new UnauthorizedException('WORNG USERNAME OR PASSWORD');
+
+    if (!client) throw new UnauthorizedException('WORNG USERNAME OR PASSWORD');
 
     return client;
 

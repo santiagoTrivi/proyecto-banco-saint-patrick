@@ -1,10 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreateCardDto } from '../dto/create-card.dto';
+import { CreateCardDto } from '../../../auth/infrastructure/dto/create-card.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { hashSync, genSaltSync } from 'bcrypt';
 import { Card, CardDocument } from '../schemas/card.schema';
-import { UpdateCardDto } from '../dto/update-card.dto';
+import { UpdateCardDto } from '../Dto/update-card.dto';
 
 @Injectable()
 export class CardService {
@@ -35,15 +35,11 @@ export class CardService {
   }
 
   async findAll() {
-    return await this.cardModel
-      .find()
-      .select({ __v: 0 });
+    return await this.cardModel.find().select({ __v: 0 });
   }
 
   async findOne(query: any) {
-    const card = await this.cardModel
-      .findOne(query)
-      .select({ __v: 0 });
+    const card = await this.cardModel.findOne(query).select({ __v: 0 });
 
     if (!card) return null;
 
