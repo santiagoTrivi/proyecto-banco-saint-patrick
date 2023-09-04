@@ -1,42 +1,49 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import { compare, compareSync, hash } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { CardService } from './card.service';
 import { ConfigService } from '@nestjs/config';
+import { ClientService } from '../../../client/infrastructure/services/client.service';
+import { DataCipher } from '../../../common/useCase/dataCipher';
 
 @Injectable()
 export class AuthService {
+  private dataCipher: DataCipher;
   constructor(
-    private readonly cardService: CardService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
-  ) {}
-
-  async validateCard(card_number: string, PIN: string): Promise<any> {
-    const card = await this.cardService.findOne({ card_number });
-
-    if (!card) return null;
-
-    const PIN_VALIDATION = compareSync(PIN, card.PIN);
-
-    if (!PIN_VALIDATION) return null;
-
-    return card;
+    private readonly clientService: ClientService,
+  ) {
+    this.dataCipher = new DataCipher();
   }
 
-  async login(card: any) {
-    const tokens = await this.getTokens(card._id, card.card_number);
+  async validateClient(username: string, password: string): Promise<any> {
+    const client = await this.clientService.findOne({ username });
 
-    await this.updateRefreshToken(card._id, tokens.refresh_token);
+    if (!client) return null;
+
+    const PASSWORD_VALIDATION = await this.dataCipher.compare(
+      password,
+      client.password,
+    );
+
+    if (!PASSWORD_VALIDATION) return null;
+
+    return client;
+  }
+
+  async login(client: any) {
+    const tokens = await this.getTokens(client._id, client.username);
+
+    await this.updateRefreshToken(client._id, tokens.refresh_token);
 
     return tokens;
   }
 
-  async getTokens(cardId: string, card_number: string) {
+  async getTokens(id: string, username: string) {
     const payload = {
-      uuid: cardId,
-      card_number,
+      uuid: id,
+      username,
     };
+
     const access_token = await this.jwtService.sign(payload);
 
     const refresh_token = await this.jwtService.sign(payload, {
@@ -51,34 +58,36 @@ export class AuthService {
   }
 
   async updateRefreshToken(id: string, refreshToken: string) {
-    const hashedRefresh = await hash(refreshToken, 10);
+    const hashedRefresh = await this.dataCipher.hash(refreshToken);
 
-    await this.cardService.update(id, {
+    await this.clientService.update(id, {
       refreshToken: hashedRefresh,
     });
   }
 
-  async refreshTokens(cardId: string, refreshToken: string) {
-    const card = await this.cardService.findOne({ _id: cardId });
+  async refreshTokens(clientId: string, refreshToken: string) {
+    const client = await this.clientService.findOne({ _id: clientId });
 
-    if (!card || !card.refreshToken)
+    if (!client || !client.refreshToken)
       throw new ForbiddenException('Access Denied');
 
-    const refreshTokenValidation = await compare(
+    const refreshTokenValidation = await this.dataCipher.compare(
       refreshToken,
-      card.refreshToken,
+      client.refreshToken,
     );
 
     if (!refreshTokenValidation) throw new ForbiddenException('Access Denied');
 
-    const tokens = await this.getTokens(card._id, card.card_number);
+    const { _id, username } = client;
 
-    await this.updateRefreshToken(card._id, tokens.refresh_token);
+    const tokens = await this.getTokens(_id, username);
+
+    await this.updateRefreshToken(_id, client.refreshToken);
 
     return tokens;
   }
 
-  async logout(cardId: string) {
-    await this.cardService.update(cardId, { refreshToken: null });
+  async logout(id: string) {
+    await this.clientService.update(id, { refreshToken: null });
   }
 }

@@ -8,7 +8,6 @@ import {
   Query,
 } from '@nestjs/common';
 import { TransferService } from './infrastructure/service/transfer.service';
-import { TransferFundsProcess } from './useCase/transferFunds.process.useCase';
 import {
   CreateTransferDto,
   TransferObject,
@@ -31,13 +30,14 @@ import {
   InternalServerErrorSchema,
   UnauthorizedResponseSchema,
 } from '../common/infrastructure/errors.schemas';
+import { TransferFundsProcessHandler } from './useCase/transferFundProcessHandler';
 
 @ApiTags('transfer')
 @Controller('transfer')
 export class TransferController {
   constructor(
     private readonly transferService: TransferService,
-    private readonly transferFundsProcess: TransferFundsProcess,
+    private readonly transferFundsprocessHandler: TransferFundsProcessHandler,
   ) {}
 
   @ApiBearerAuth()
@@ -53,7 +53,7 @@ export class TransferController {
   @UseGuards(JwtAuthGuard)
   @Post()
   async tranferFunds(@Body() createTransferDto: CreateTransferDto) {
-    return await this.transferFundsProcess.run(createTransferDto);
+    return await this.transferFundsprocessHandler.run(createTransferDto);
   }
 
   @ApiBearerAuth()

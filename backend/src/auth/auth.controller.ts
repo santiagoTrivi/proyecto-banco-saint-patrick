@@ -6,8 +6,6 @@ import {
   Request,
   HttpCode,
 } from '@nestjs/common';
-import { CardService } from './infrastructure/services/card.service';
-import { ClientService } from './infrastructure/services/client.service';
 import {
   ApiBearerAuth,
   ApiBody,
@@ -20,50 +18,29 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { AuthService } from './infrastructure/services/auth.service';
-import { LocalAuthGuard } from './infrastructure/guards/local.auth.guard';
-import { GetCardInfo } from './useCase/getCardInfo';
-import { RefreshJwtGuard } from './infrastructure/guards/refresh.jwt.guard';
-import { AuthenticationTokens, LoginDto } from './infrastructure/dto/login-dto';
-import { CreateCardDto } from './infrastructure/dto/create-card.dto';
-import { CreateClientDto } from './infrastructure/dto/create-client.dto';
-import { JwtAuthGuard } from './infrastructure/guards/jwt.guard';
 import {
   ForbiddenErrorResponseChema,
   InternalServerErrorSchema,
   NotFoundErrorResponseSchema,
   UnauthorizedResponseSchema,
 } from '../common/infrastructure/errors.schemas';
+import { AuthService } from './infrastructure/services/auth.service';
+import {
+  JwtAuthGuard,
+  LocalAuthGuard,
+  RefreshJwtGuard,
+} from './infrastructure/guards';
+import { AuthenticationTokens, LoginDto } from './infrastructure/dto/login-dto';
+import { GetClientInfo } from './useCase/getClientInfo';
+import { CreateClientDto } from '../client/infrastructure/Dto/create-client.dto';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(
-    private readonly cardService: CardService,
-    private readonly clientService: ClientService,
     private readonly authService: AuthService,
-    private readonly getCardInfo: GetCardInfo,
+    private readonly getClientInfo: GetClientInfo,
   ) {}
-
-  @ApiOkResponse({ type: CreateClientDto, isArray: true })
-  @ApiOperation({
-    summary: 'Get all clients',
-    description: 'Get all the clients registered in the chosen database',
-  })
-  @Get('client')
-  findAll() {
-    return this.clientService.findAll();
-  }
-
-  @ApiOkResponse({ type: CreateCardDto, isArray: true })
-  @ApiOperation({
-    summary: 'Get all the cards',
-    description: 'Get all the cards registered in the chosen database',
-  })
-  @Get('cards')
-  findAllCardd() {
-    return this.cardService.findAll();
-  }
 
   @ApiOkResponse({ type: AuthenticationTokens })
   @ApiUnauthorizedResponse({ type: UnauthorizedResponseSchema })
@@ -71,30 +48,30 @@ export class AuthController {
   @ApiOperation({
     summary: 'User login',
     description:
-      'With this endpoint, the user can login providing their card number and its PIN, which is encrypted in the database',
+      'With this endpoint, the user can login providing their username number and their password, which is encrypted in the database',
   })
   @UseGuards(LocalAuthGuard)
   @Post('login')
   @HttpCode(200)
   @ApiBody({ type: LoginDto })
   async login(@Request() req) {
-    return await this.authService.login(req.card);
+    return await this.authService.login(req.client);
   }
 
   @ApiBearerAuth()
-  @ApiOkResponse({ type: CreateCardDto })
+  @ApiOkResponse({ type: CreateClientDto })
   @ApiUnauthorizedResponse({ type: UnauthorizedResponseSchema })
   @ApiNotFoundResponse({ type: NotFoundErrorResponseSchema })
   @ApiInternalServerErrorResponse({ type: InternalServerErrorSchema })
   @ApiOperation({
-    summary: 'Get full authenticated card info',
+    summary: 'Get full authenticated client info',
     description:
-      'With this endpoint, the user coud retrive their card information once they login',
+      'With this endpoint, the user coud retrive their information once they login',
   })
   @UseGuards(JwtAuthGuard)
-  @Get('card')
+  @Get('clientInfo')
   async getcard(@Request() req) {
-    return await this.getCardInfo.run(req.user.uuid);
+    return await this.getClientInfo.run(req.user.uuid);
   }
 
   @ApiBearerAuth()

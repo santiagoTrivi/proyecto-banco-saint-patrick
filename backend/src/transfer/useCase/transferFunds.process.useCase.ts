@@ -3,18 +3,18 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { Model } from 'mongoose';
 import {
   Card,
   CardDocument,
-} from '../../auth/infrastructure/schemas/card.schema';
+} from '../../card/infrastructure/schemas/card.schema';
 import {
   Transfer,
   TransferDocument,
 } from '../infrastructure/schemas/transfer.schema';
+import { Model } from 'mongoose';
 import { CreateTransferDto } from '../infrastructure/dto/create-transfer.dto';
 import { InjectModel } from '@nestjs/mongoose';
-
+/*
 @Injectable()
 export class TransferFundsProcess {
   constructor(
@@ -67,12 +67,18 @@ export class TransferFundsProcess {
       await session.commitTransaction();
 
       return createdTransfer;
+      
     } catch (error) {
+      
       await session.abortTransaction();
 
       throw error;
+      
     } finally {
+      
       session.endSession();
+      
     }
   }
 }
+*/

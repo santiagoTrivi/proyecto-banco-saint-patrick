@@ -10,7 +10,10 @@ export function STATIC_SWAGGER_DOC() {
 
   const serverUrl = 'http://localhost:3000';
   // get the swagger json file (if app is running in development mode)
-  if (process.env.NODE_ENV === 'development') {
+  if (
+    process.env.NODE_ENV === 'development' ||
+    process.env.NODE_ENV === 'production'
+  ) {
     // write swagger ui files
     get(`${serverUrl}/swagger/swagger-ui-bundle.js`, function (response) {
       response.pipe(

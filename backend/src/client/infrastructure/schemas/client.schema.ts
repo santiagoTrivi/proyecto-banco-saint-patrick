@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
 import { IClient } from '../../domain/interface/IClient';
-import { Card } from './card.schema';
+import { Card } from '../../../card/infrastructure/schemas/card.schema';
 
 export type ClientDocument = Client & Document;
 
@@ -13,11 +13,20 @@ export class Client implements IClient {
   @Prop()
   lastName: string;
 
+  @Prop()
+  username: string;
+
+  @Prop()
+  password: string;
+
   @Prop({ default: true })
   isActive?: boolean;
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Card' }] })
   cards?: Card[];
+
+  @Prop()
+  refreshToken?: string;
 }
 
 export const ClientSchema = SchemaFactory.createForClass(Client);

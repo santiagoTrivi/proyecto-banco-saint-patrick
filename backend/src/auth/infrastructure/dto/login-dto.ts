@@ -7,13 +7,13 @@ export class LoginDto implements Ilogin {
   @IsNotEmpty()
   @IsString()
   @Length(16)
-  card_number: string;
+  username: string;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
   @Length(4, 4)
-  PIN: string;
+  password: string;
 }
 
 export class AuthenticationTokens {

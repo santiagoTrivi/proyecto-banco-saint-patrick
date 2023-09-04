@@ -1,12 +1,16 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ITransfer } from '../../domain/interface/Itransfer';
-import { Card } from '../../../auth/infrastructure/schemas/card.schema';
+import { Card } from '../../../card/infrastructure/schemas/card.schema';
+import { Client } from '../../../client/infrastructure/schemas/client.schema';
 import mongoose, { Document, now } from 'mongoose';
 
 export type TransferDocument = Transfer & Document;
 
 @Schema({ timestamps: true })
 export class Transfer implements ITransfer {
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Client', required: true })
+  clientId: Client;
+
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Card', required: true })
   senderId: Card;
 
@@ -30,10 +34,3 @@ export class Transfer implements ITransfer {
 }
 
 export const TransferSchema = SchemaFactory.createForClass(Transfer);
-
-function Field(
-  arg0: () => DateConstructor,
-  arg1: { description: string },
-): (target: Transfer, propertyKey: 'createdAt') => void {
-  throw new Error('Function not implemented.');
-}
