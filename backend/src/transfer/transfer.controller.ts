@@ -7,7 +7,6 @@ import {
   Param,
   Query,
 } from '@nestjs/common';
-import { TransferService } from './infrastructure/service/transfer.service';
 import {
   CreateTransferDto,
   TransferObject,
@@ -31,13 +30,14 @@ import {
   UnauthorizedResponseSchema,
 } from '../common/infrastructure/errors.schemas';
 import { TransferFundsProcessHandler } from './useCase/transferFundProcessHandler';
+import { GetTransferData } from './useCase/getTransferData';
 
 @ApiTags('transfer')
 @Controller('transfer')
 export class TransferController {
   constructor(
-    private readonly transferService: TransferService,
     private readonly transferFundsprocessHandler: TransferFundsProcessHandler,
+    private readonly getTrasnferData: GetTransferData
   ) {}
 
   @ApiBearerAuth()
@@ -80,6 +80,13 @@ export class TransferController {
   })
   @UseGuards(JwtAuthGuard)
   async transferList(@Param('cardId') cardId: string, @Query() paginationDto) {
-    return await this.transferService.getTransferHistory(cardId, paginationDto);
+    return this.getTrasnferData.transfersByCard(cardId, paginationDto)
   }
+
+  @Get(':transferId/details')
+  @UseGuards(JwtAuthGuard)
+  async showTransferDetails(@Param('transferId') transferId: string){
+    return this.getTrasnferData.transferDetails(transferId);
+  }
+
 }

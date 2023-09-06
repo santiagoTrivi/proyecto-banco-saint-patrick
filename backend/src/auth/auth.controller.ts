@@ -30,7 +30,7 @@ import {
   LocalAuthGuard,
   RefreshJwtGuard,
 } from './infrastructure/guards';
-import { AuthenticationTokens, LoginDto } from './infrastructure/dto/login-dto';
+import { AuthenticationTokens, LoginDto, RefreshToken } from './infrastructure/dto/login-dto';
 import { GetClientInfo } from './useCase/getClientInfo';
 import { CreateClientDto } from '../client/infrastructure/Dto/create-client.dto';
 
@@ -75,7 +75,7 @@ export class AuthController {
   }
 
   @ApiBearerAuth()
-  @ApiOkResponse({ type: AuthenticationTokens })
+  @ApiOkResponse({ type: RefreshToken })
   @ApiUnauthorizedResponse({ type: UnauthorizedResponseSchema })
   @ApiForbiddenResponse({ type: ForbiddenErrorResponseChema })
   @ApiInternalServerErrorResponse({ type: InternalServerErrorSchema })

@@ -3,6 +3,8 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { ClientService } from '../../../client/infrastructure/services/client.service';
 import { DataCipher } from '../../../common/useCase/dataCipher';
+import { CONFIG_JWT_TIMING } from '../../../config/jwt.cofig';
+import { IAuthentication } from '../../domain/interface/IAuthentication';
 
 @Injectable()
 export class AuthService {
@@ -48,13 +50,16 @@ export class AuthService {
 
     const refresh_token = await this.jwtService.sign(payload, {
       secret: this.configService.get<string>('REFRESH_KEY'),
-      expiresIn: '7d',
+      expiresIn: CONFIG_JWT_TIMING.refresh_token_expireIn,
     });
 
     return {
+      expireIn: CONFIG_JWT_TIMING.access_token_expireIn,
       access_token,
       refresh_token,
-    };
+      refreshExpireIn: CONFIG_JWT_TIMING.refresh_token_expireIn
+    } as IAuthentication
+
   }
 
   async updateRefreshToken(id: string, refreshToken: string) {
@@ -63,28 +68,29 @@ export class AuthService {
     await this.clientService.update(id, {
       refreshToken: hashedRefresh,
     });
+
+
   }
 
-  async refreshTokens(clientId: string, refreshToken: string) {
+  async refreshTokens(clientId: string, refreshTokenInput: string) {
     const client = await this.clientService.findOne({ _id: clientId });
 
     if (!client || !client.refreshToken)
       throw new ForbiddenException('Access Denied');
 
-    const refreshTokenValidation = await this.dataCipher.compare(
-      refreshToken,
-      client.refreshToken,
-    );
+    const { refreshToken } = client
+
+    const refreshTokenValidation = await this.dataCipher.compare( refreshTokenInput, refreshToken);
 
     if (!refreshTokenValidation) throw new ForbiddenException('Access Denied');
 
     const { _id, username } = client;
 
-    const tokens = await this.getTokens(_id, username);
+    const {refresh_token, refreshExpireIn, ...access_token} = await this.getTokens(_id, username);
 
-    await this.updateRefreshToken(_id, client.refreshToken);
+    //await this.updateRefreshToken(_id, client.refreshToken);
 
-    return tokens;
+    return access_token
   }
 
   async logout(id: string) {

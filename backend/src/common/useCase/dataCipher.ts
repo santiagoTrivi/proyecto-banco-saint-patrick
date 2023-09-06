@@ -11,6 +11,6 @@ export class DataCipher {
   }
 
   async compare(data: string, encrytedData: string): Promise<boolean> {
-    return compare(data, encrytedData);
+    return await compare(data, encrytedData);
   }
 }

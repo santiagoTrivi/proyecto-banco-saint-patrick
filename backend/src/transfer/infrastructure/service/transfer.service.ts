@@ -16,8 +16,19 @@ export class TransferService implements ITransferRepository<Transfer> {
     this.paginationService = new PaginationService(this.transferModel);
   }
 
-  getTransfer(id: string): Promise<Transfer> {
-    throw new Error('Method not implemented.');
+  async getTransfer(query: any): Promise<Transfer> {
+
+    const foundTranfer = await this.transferModel
+    .findOne(query)
+    .select({ __v: 0 })
+    .populate([
+      { path: 'senderId', select: { __v: 0, _id: 0, PIN: 0, current_balance: 0 } },
+      { path: 'receiverId', select: { __v: 0, _id: 0, PIN: 0, current_balance: 0 } },
+    ])
+    .exec();
+    return foundTranfer
+
+    
   }
 
   async getTansfers(): Promise<Transfer[]> {
@@ -25,14 +36,15 @@ export class TransferService implements ITransferRepository<Transfer> {
       .find()
       .select({ __v: 0 })
       .populate([
-        { path: 'senderId', select: { __v: 0 } },
-        { path: 'receiverId', select: { __v: 0 } },
+        { path: 'senderId', select: { __v: 0, _id: 0, PIN: 0, current_balance: 0 } },
+        { path: 'receiverId', select: { __v: 0, _id: 0, PIN: 0, current_balance: 0 } },
       ]);
 
     return globalMovements;
   }
 
   async getTransferHistory(cardId: string, paginationDto: PaginationDto) {
+
     return await this.paginationService.paginate(
       { $or: [{ senderId: cardId }, { receiverId: cardId }] },
       paginationDto,
