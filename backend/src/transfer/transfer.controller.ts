@@ -15,6 +15,7 @@ import { JwtAuthGuard } from '../auth/infrastructure/guards/jwt.guard';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
+  ApiCreatedResponse,
   ApiInternalServerErrorResponse,
   ApiOkResponse,
   ApiOperation,
@@ -41,7 +42,7 @@ export class TransferController {
   ) {}
 
   @ApiBearerAuth()
-  @ApiOkResponse({ type: TransferObject })
+  @ApiCreatedResponse({ type: TransferObject })
   @ApiUnauthorizedResponse({ type: UnauthorizedResponseSchema })
   @ApiBadRequestResponse({ type: DataValidationErrorResponseSchema })
   @ApiInternalServerErrorResponse({ type: InternalServerErrorSchema })
@@ -83,6 +84,11 @@ export class TransferController {
     return this.getTrasnferData.transfersByCard(cardId, paginationDto)
   }
 
+  @ApiBearerAuth()
+  @ApiOkResponse({ type: TransferObject })
+  @ApiUnauthorizedResponse({ type: UnauthorizedResponseSchema })
+  @ApiBadRequestResponse({ type: DataValidationErrorResponseSchema })
+  @ApiInternalServerErrorResponse({ type: InternalServerErrorSchema })
   @Get(':transferId/details')
   @UseGuards(JwtAuthGuard)
   async showTransferDetails(@Param('transferId') transferId: string){

@@ -11,3 +11,4 @@ export class InternalServerErrorSchema extends BaseErrorSchema {
   @ApiProperty({ required: false })
   error?: string;
 }
+
