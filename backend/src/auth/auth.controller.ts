@@ -30,7 +30,7 @@ import {
   LocalAuthGuard,
   RefreshJwtGuard,
 } from './infrastructure/guards';
-import { AuthenticationTokens, LoginDto } from './infrastructure/dto/login-dto';
+import { AuthenticationTokens, LoginDto, RefreshToken } from './infrastructure/dto/';
 import { GetClientInfo } from './useCase/getClientInfo';
 import { CreateClientDto } from '../client/infrastructure/Dto/create-client.dto';
 
@@ -75,7 +75,7 @@ export class AuthController {
   }
 
   @ApiBearerAuth()
-  @ApiOkResponse({ type: AuthenticationTokens })
+  @ApiCreatedResponse({ type: RefreshToken })
   @ApiUnauthorizedResponse({ type: UnauthorizedResponseSchema })
   @ApiForbiddenResponse({ type: ForbiddenErrorResponseChema })
   @ApiInternalServerErrorResponse({ type: InternalServerErrorSchema })
@@ -85,7 +85,7 @@ export class AuthController {
       'to obtain additional access tokens. This allows you to have short-lived access tokens without having to collect credentials every time one expires',
   })
   @UseGuards(RefreshJwtGuard)
-  @Post('refresh-tokens')
+  @Post('refresh-token')
   async refreshTokens(@Request() req) {
     const [id, refresh_token] = [req.user.uuid, req.user.refreshToken];
 
