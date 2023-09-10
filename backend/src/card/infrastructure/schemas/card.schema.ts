@@ -17,7 +17,6 @@ export class Card implements ICard {
 
   @Prop({ default: true })
   isActive?: boolean;
-
 }
 
 export const CardSchema = SchemaFactory.createForClass(Card);

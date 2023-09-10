@@ -19,12 +19,12 @@ describe('AuthService', () => {
       providers: [
         {
           provide: getModelToken(Client.name),
-          useValue: Model
+          useValue: Model,
         },
         AuthService,
         JwtService,
         ConfigService,
-        ClientService
+        ClientService,
       ],
     }).compile();
 
@@ -36,39 +36,32 @@ describe('AuthService', () => {
   });
 
   describe('login method', () => {
-
     let authentication: IAuthentication;
 
-    beforeEach( async () => {
+    beforeEach(async () => {
       const data = {
         _id: clientStub()._id,
         firstName: clientStub().firstName,
         lastName: clientStub().lastName,
         username: clientStub().username,
         password: clientStub().password,
-        isActive: clientStub().isActive
-      }
+        isActive: clientStub().isActive,
+      };
       authentication = await service.login(data);
-    })
+    });
 
     test('should have been called with AuthService.login', () => {
-      expect(service.login).toBeCalledWith(clientStub())
-    })
-  
+      expect(service.login).toBeCalledWith(clientStub());
+    });
 
     test('should login in successfuly', () => {
       expect(authentication).toEqual({
         expireIn: '60s',
         access_token: expect.any(String),
         refresh_token: expect.any(String),
-        refreshExpireIn: '7d'
-      })
-    })
-
-  })
-
-  describe('should', () => {
-
-  })
+        refreshExpireIn: '7d',
+      });
+    });
+  });
 
 });

@@ -9,7 +9,6 @@ import { Model } from 'mongoose';
 import { clientStub } from '../stub';
 import { IAuthentication } from '../../../src/auth/domain/interface/IAuthentication';
 
-
 jest.mock('../../../src/auth/infrastructure/services/auth.service');
 
 describe('AuthController', () => {
@@ -23,12 +22,12 @@ describe('AuthController', () => {
       providers: [
         {
           provide: getModelToken(Client.name),
-          useValue: Model
+          useValue: Model,
         },
-        AuthService, 
-        GetClientInfo, 
+        AuthService,
+        GetClientInfo,
         ClientService,
-      ]
+      ],
     }).compile();
 
     controller = module.get<AuthController>(AuthController);
@@ -38,8 +37,4 @@ describe('AuthController', () => {
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
-
-  
-  
-
 });

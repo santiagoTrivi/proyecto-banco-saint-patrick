@@ -18,7 +18,6 @@ export class LoginDto implements Ilogin {
 }
 
 export class AuthenticationTokens implements IAuthentication {
-
   @ApiProperty()
   expireIn: string;
 
@@ -33,12 +32,9 @@ export class AuthenticationTokens implements IAuthentication {
 }
 
 export class RefreshToken implements IAuthentication {
-
   @ApiProperty()
   expireIn: string;
 
   @ApiProperty()
   access_token: string;
-
 }
-

@@ -6,10 +6,10 @@ import { DataCipher } from '../../../common/useCase/dataCipher';
 import { CONFIG_JWT_TIMING } from '../../../config/jwt.cofig';
 import { IAuthentication } from '../../domain/interface/IAuthentication';
 import { ClientEntity } from '../../../../src/client/domain/client.entity';
-import { AuthRepository } from '../../../../src/auth/domain/interface/IAuthRepository';
+import { AuthRepository } from '../../domain/interface/IAuthRepository';
 
 @Injectable()
-export class AuthService implements AuthRepository{
+export class AuthService implements AuthRepository {
   private dataCipher: DataCipher;
   constructor(
     private readonly jwtService: JwtService,
@@ -19,7 +19,7 @@ export class AuthService implements AuthRepository{
     this.dataCipher = new DataCipher();
   }
 
-  async validateClient(username: string, password: string){
+  async validateClient(username: string, password: string) {
     const client = await this.clientService.findOne({ username });
 
     if (!client) return null;
@@ -35,8 +35,7 @@ export class AuthService implements AuthRepository{
   }
 
   async login(client: ClientEntity): Promise<IAuthentication> {
-
-    const {_id, username} = client;
+    const { _id, username } = client;
 
     const tokens = await this.getTokens(_id, username);
 
@@ -62,30 +61,36 @@ export class AuthService implements AuthRepository{
       expireIn: CONFIG_JWT_TIMING.access_token_expireIn,
       access_token,
       refresh_token,
-      refreshExpireIn: CONFIG_JWT_TIMING.refresh_token_expireIn
-    } as IAuthentication
-
+      refreshExpireIn: CONFIG_JWT_TIMING.refresh_token_expireIn,
+    } as IAuthentication;
   }
 
-  async updateRefreshToken(id: string, refreshTokenInput: string): Promise<void> {
+  async updateRefreshToken(
+    id: string,
+    refreshTokenInput: string,
+  ): Promise<void> {
     const hashedRefresh = await this.dataCipher.hash(refreshTokenInput);
 
     await this.clientService.update(id, {
       refreshToken: hashedRefresh,
     });
-
-
   }
 
-  async refreshTokens(clientId: string, refreshTokenInput: string):Promise<IAuthentication> {
+  async refreshTokens(
+    clientId: string,
+    refreshTokenInput: string,
+  ): Promise<IAuthentication> {
     const client = await this.clientService.findOne({ _id: clientId });
 
     if (!client || !client.refreshToken)
       throw new ForbiddenException('Access Denied');
 
-    const { refreshToken } = client
+    const { refreshToken } = client;
 
-    const refreshTokenValidation = await this.dataCipher.compare(refreshTokenInput, refreshToken);
+    const refreshTokenValidation = await this.dataCipher.compare(
+      refreshTokenInput,
+      refreshToken,
+    );
 
     if (!refreshTokenValidation) throw new ForbiddenException('Access Denied');
 

@@ -5,11 +5,11 @@ import { Model } from 'mongoose';
 import { hashSync, genSaltSync } from 'bcrypt';
 import { Card, CardDocument } from '../schemas/card.schema';
 import { UpdateCardDto } from '../Dto/update-card.dto';
-import { CardRepository } from '../../../../src/card/domain/interface/ICardRepository';
-import { CardEntity } from '../../../../src/card/domain/Card.entity';
+import { CardRepository } from '../../domain/interface/ICardRepository';
+import { CardEntity } from '../../domain/Card.entity';
 
 @Injectable()
-export class CardService implements CardRepository{
+export class CardService implements CardRepository {
   constructor(
     @InjectModel(Card.name)
     private readonly cardModel: Model<CardDocument>,

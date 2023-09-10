@@ -4,9 +4,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Client, ClientDocument } from '../schemas/client.schema';
 import { UdpateClientDto } from '../Dto/update-client.dto';
-import { ClientRepository } from '../../../../src/client/domain/interface/IClientRepository';
-import { ClientEntity } from 'src/client/domain/client.entity';
-
+import { ClientRepository } from '../../domain/interface/IClientRepository';
+import { ClientEntity } from '../../domain/client.entity';
 
 @Injectable()
 export class ClientService implements ClientRepository {
@@ -20,7 +19,7 @@ export class ClientService implements ClientRepository {
     return await client.save();
   }
 
-  findOneByUsername(username: string):Promise<ClientEntity> {
+  findOneByUsername(username: string): Promise<ClientEntity> {
     return this.clientModel.findOne({ username });
   }
 
@@ -48,4 +47,3 @@ export class ClientService implements ClientRepository {
     return client.toObject();
   }
 }
-

@@ -30,7 +30,11 @@ import {
   LocalAuthGuard,
   RefreshJwtGuard,
 } from './infrastructure/guards';
-import { AuthenticationTokens, LoginDto, RefreshToken } from './infrastructure/dto/';
+import {
+  AuthenticationTokens,
+  LoginDto,
+  RefreshToken,
+} from './infrastructure/dto/';
 import { GetClientInfo } from './useCase/getClientInfo';
 import { CreateClientDto } from '../client/infrastructure/Dto/create-client.dto';
 
