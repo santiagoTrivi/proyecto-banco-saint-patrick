@@ -85,7 +85,7 @@ export class AuthController {
       'to obtain additional access tokens. This allows you to have short-lived access tokens without having to collect credentials every time one expires',
   })
   @UseGuards(RefreshJwtGuard)
-  @Post('refresh-token')
+  @Post('refresh-tokens')
   async refreshTokens(@Request() req) {
     const [id, refresh_token] = [req.user.uuid, req.user.refreshToken];
 

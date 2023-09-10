@@ -18,8 +18,6 @@ export class Card implements ICard {
   @Prop({ default: true })
   isActive?: boolean;
 
-  @Prop()
-  refreshToken?: string;
 }
 
 export const CardSchema = SchemaFactory.createForClass(Card);

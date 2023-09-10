@@ -5,9 +5,11 @@ import { ClientService } from '../../../client/infrastructure/services/client.se
 import { DataCipher } from '../../../common/useCase/dataCipher';
 import { CONFIG_JWT_TIMING } from '../../../config/jwt.cofig';
 import { IAuthentication } from '../../domain/interface/IAuthentication';
+import { ClientEntity } from '../../../../src/client/domain/client.entity';
+import { AuthRepository } from '../../../../src/auth/domain/interface/IAuthRepository';
 
 @Injectable()
-export class AuthService {
+export class AuthService implements AuthRepository{
   private dataCipher: DataCipher;
   constructor(
     private readonly jwtService: JwtService,
@@ -17,7 +19,7 @@ export class AuthService {
     this.dataCipher = new DataCipher();
   }
 
-  async validateClient(username: string, password: string): Promise<any> {
+  async validateClient(username: string, password: string){
     const client = await this.clientService.findOne({ username });
 
     if (!client) return null;
@@ -32,15 +34,18 @@ export class AuthService {
     return client;
   }
 
-  async login(client: any) {
-    const tokens = await this.getTokens(client._id, client.username);
+  async login(client: ClientEntity): Promise<IAuthentication> {
 
-    await this.updateRefreshToken(client._id, tokens.refresh_token);
+    const {_id, username} = client;
+
+    const tokens = await this.getTokens(_id, username);
+
+    await this.updateRefreshToken(_id, tokens.refresh_token);
 
     return tokens;
   }
 
-  async getTokens(id: string, username: string) {
+  async getTokens(id: string, username: string): Promise<IAuthentication> {
     const payload = {
       uuid: id,
       username,
@@ -62,8 +67,8 @@ export class AuthService {
 
   }
 
-  async updateRefreshToken(id: string, refreshToken: string) {
-    const hashedRefresh = await this.dataCipher.hash(refreshToken);
+  async updateRefreshToken(id: string, refreshTokenInput: string): Promise<void> {
+    const hashedRefresh = await this.dataCipher.hash(refreshTokenInput);
 
     await this.clientService.update(id, {
       refreshToken: hashedRefresh,
@@ -72,7 +77,7 @@ export class AuthService {
 
   }
 
-  async refreshTokens(clientId: string, refreshTokenInput: string) {
+  async refreshTokens(clientId: string, refreshTokenInput: string):Promise<IAuthentication> {
     const client = await this.clientService.findOne({ _id: clientId });
 
     if (!client || !client.refreshToken)
@@ -80,20 +85,20 @@ export class AuthService {
 
     const { refreshToken } = client
 
-    const refreshTokenValidation = await this.dataCipher.compare( refreshTokenInput, refreshToken);
+    const refreshTokenValidation = await this.dataCipher.compare(refreshTokenInput, refreshToken);
 
     if (!refreshTokenValidation) throw new ForbiddenException('Access Denied');
 
     const { _id, username } = client;
 
-    const {refresh_token, refreshExpireIn, ...access_token} = await this.getTokens(_id, username);
+    const tokens = await this.getTokens(_id, username);
 
-    //await this.updateRefreshToken(_id, client.refreshToken);
+    await this.updateRefreshToken(_id, tokens.refresh_token);
 
-    return access_token
+    return tokens;
   }
 
-  async logout(id: string) {
+  async logout(id: string): Promise<void> {
     await this.clientService.update(id, { refreshToken: null });
   }
 }

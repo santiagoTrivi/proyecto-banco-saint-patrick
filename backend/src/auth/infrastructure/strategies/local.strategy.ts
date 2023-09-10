@@ -16,13 +16,5 @@ export class LocalStrategy extends PassportStrategy(Strategy, 'local') {
 
     return client;
 
-    /*
-    const card = await this.authService.validateCard(card_number, PIN);
-    if (!card) {
-      throw new UnauthorizedException('WORNG CARD_NUMBER OR PIN');
-    }
-
-    return card;
-    */
   }
 }

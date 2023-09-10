@@ -1,0 +1,7 @@
+import { CardEntity } from "../Card.entity";
+
+export interface CardRepository {
+    findAll(): Promise<CardEntity[]>;
+    findOne(query: any): Promise<CardEntity>;
+    findById(id: string): Promise<CardEntity>;
+}
