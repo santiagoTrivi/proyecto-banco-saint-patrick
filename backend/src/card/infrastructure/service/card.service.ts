@@ -5,9 +5,11 @@ import { Model } from 'mongoose';
 import { hashSync, genSaltSync } from 'bcrypt';
 import { Card, CardDocument } from '../schemas/card.schema';
 import { UpdateCardDto } from '../Dto/update-card.dto';
+import { CardRepository } from '../../domain/interface/ICardRepository';
+import { CardEntity } from '../../domain/Card.entity';
 
 @Injectable()
-export class CardService {
+export class CardService implements CardRepository {
   constructor(
     @InjectModel(Card.name)
     private readonly cardModel: Model<CardDocument>,
@@ -34,11 +36,11 @@ export class CardService {
     return await this.cardModel.create(card);
   }
 
-  async findAll() {
+  async findAll(): Promise<CardEntity[]> {
     return await this.cardModel.find().select({ __v: 0 });
   }
 
-  async findOne(query: any) {
+  async findOne(query: any): Promise<CardEntity> {
     const card = await this.cardModel.findOne(query).select({ __v: 0 });
 
     if (!card) return null;
@@ -52,7 +54,7 @@ export class CardService {
       .exec();
   }
 
-  async findById(id: string): Promise<Card> {
+  async findById(id: string): Promise<CardEntity> {
     const card = await this.findById(id);
 
     if (!card) return null;

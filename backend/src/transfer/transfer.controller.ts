@@ -7,10 +7,6 @@ import {
   Param,
   Query,
 } from '@nestjs/common';
-import {
-  CreateTransferDto,
-  TransferObject,
-} from './infrastructure/dto/create-transfer.dto';
 import { JwtAuthGuard } from '../auth/infrastructure/guards/jwt.guard';
 import {
   ApiBadRequestResponse,
@@ -24,6 +20,11 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import {
+  CreateTransferDto,
+  TransferDetails,
+  TransferObject,
+} from './infrastructure/dto';
 import { HistoryTransferDto } from './infrastructure/dto/history-transfer.dto';
 import {
   DataValidationErrorResponseSchema,
@@ -38,7 +39,7 @@ import { GetTransferData } from './useCase/getTransferData';
 export class TransferController {
   constructor(
     private readonly transferFundsprocessHandler: TransferFundsProcessHandler,
-    private readonly getTrasnferData: GetTransferData
+    private readonly getTrasnferData: GetTransferData,
   ) {}
 
   @ApiBearerAuth()
@@ -81,18 +82,17 @@ export class TransferController {
   })
   @UseGuards(JwtAuthGuard)
   async transferList(@Param('cardId') cardId: string, @Query() paginationDto) {
-    return this.getTrasnferData.transfersByCard(cardId, paginationDto)
+    return this.getTrasnferData.transfersByCard(cardId, paginationDto);
   }
 
   @ApiBearerAuth()
-  @ApiOkResponse({ type: TransferObject })
+  @ApiOkResponse({ type: TransferDetails })
   @ApiUnauthorizedResponse({ type: UnauthorizedResponseSchema })
   @ApiBadRequestResponse({ type: DataValidationErrorResponseSchema })
   @ApiInternalServerErrorResponse({ type: InternalServerErrorSchema })
   @Get(':transferId/details')
   @UseGuards(JwtAuthGuard)
-  async showTransferDetails(@Param('transferId') transferId: string){
+  async showTransferDetails(@Param('transferId') transferId: string) {
     return this.getTrasnferData.transferDetails(transferId);
   }
-
 }

@@ -30,7 +30,11 @@ import {
   LocalAuthGuard,
   RefreshJwtGuard,
 } from './infrastructure/guards';
-import { AuthenticationTokens, LoginDto, RefreshToken } from './infrastructure/dto/';
+import {
+  AuthenticationTokens,
+  LoginDto,
+  RefreshToken,
+} from './infrastructure/dto/';
 import { GetClientInfo } from './useCase/getClientInfo';
 import { CreateClientDto } from '../client/infrastructure/Dto/create-client.dto';
 
@@ -70,7 +74,7 @@ export class AuthController {
   })
   @UseGuards(JwtAuthGuard)
   @Get('clientInfo')
-  async getcard(@Request() req) {
+  async getclient(@Request() req) {
     return await this.getClientInfo.run(req.user.uuid);
   }
 
@@ -85,7 +89,7 @@ export class AuthController {
       'to obtain additional access tokens. This allows you to have short-lived access tokens without having to collect credentials every time one expires',
   })
   @UseGuards(RefreshJwtGuard)
-  @Post('refresh-token')
+  @Post('refresh-tokens')
   async refreshTokens(@Request() req) {
     const [id, refresh_token] = [req.user.uuid, req.user.refreshToken];
 

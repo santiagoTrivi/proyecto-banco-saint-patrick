@@ -7,8 +7,13 @@ import {
   TransferSchema,
 } from './infrastructure/schemas/transfer.schema';
 import { Card, CardSchema } from '../card/infrastructure/schemas/card.schema';
-import { FundsHandler, GetTransferData, StartSession, TransferFundsProcessHandler, TransferHandler } from './useCase';
-
+import {
+  FundsHandler,
+  GetTransferData,
+  StartSession,
+  TransferFundsProcessHandler,
+  TransferHandler,
+} from './useCase';
 
 @Module({
   imports: [
