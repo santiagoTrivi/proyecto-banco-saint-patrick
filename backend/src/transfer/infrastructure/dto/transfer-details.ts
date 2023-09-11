@@ -1,6 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { ITransfer } from '../../domain/interface/Itransfer';
 
+class CardDetail {
+
+  @ApiProperty()
+  card_number: string;
+  
+  @ApiProperty()
+  isActive: boolean;
+}
+
 export class TransferDetails implements ITransfer {
   @ApiProperty()
   _id: string;
@@ -9,16 +18,10 @@ export class TransferDetails implements ITransfer {
   clientId: string;
 
   @ApiProperty()
-  senderId: {
-    card_number: string;
-    isActive: boolean;
-  };
+  senderId: CardDetail
 
   @ApiProperty()
-  receiverId: {
-    card_number: string;
-    isActive: boolean;
-  };
+  receiverId: CardDetail
 
   @ApiProperty()
   amount: number;

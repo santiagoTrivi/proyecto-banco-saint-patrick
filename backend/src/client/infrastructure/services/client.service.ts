@@ -16,7 +16,8 @@ export class ClientService implements ClientRepository {
 
   async create(createClientDto: CreateClientDto) {
     const client = new this.clientModel(createClientDto);
-    return await client.save();
+    const savedClient = await client.save();
+    return ClientEntity.getClientEntity(savedClient);
   }
 
   findOneByUsername(username: string): Promise<ClientEntity> {
@@ -40,10 +41,12 @@ export class ClientService implements ClientRepository {
     const client = await this.clientModel
       .findOne(query)
       .select({ __v: 0 })
-      .populate({ path: 'cards', select: { __v: 0 } });
+      .populate({ path: 'cards', select: { __v: 0 } })
+      .lean()
+      .exec();
 
     if (!client) return null;
 
-    return client.toObject();
+    return ClientEntity.getClientEntity(client);
   }
 }

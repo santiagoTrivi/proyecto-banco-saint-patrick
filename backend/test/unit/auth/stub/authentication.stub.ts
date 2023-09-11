@@ -1,5 +1,5 @@
-import { CONFIG_JWT_TIMING } from '../../../src/config/jwt.cofig';
-import { IAuthentication } from '../../../src/auth/domain/interface/IAuthentication';
+import { CONFIG_JWT_TIMING } from '../../../../src/config/jwt.cofig';
+import { IAuthentication } from '../../../../src/auth/domain/interface/IAuthentication';
 
 export const AuthenticationStub = (): IAuthentication => {
   return {
@@ -11,3 +11,18 @@ export const AuthenticationStub = (): IAuthentication => {
     refreshExpireIn: CONFIG_JWT_TIMING.refresh_token_expireIn,
   };
 };
+
+export const TokensStub = (): IAuthentication => {
+  return {
+    expireIn: CONFIG_JWT_TIMING.access_token_expireIn,
+    access_token: expect.any(String),
+    refresh_token: expect.any(String),
+    refreshExpireIn: CONFIG_JWT_TIMING.refresh_token_expireIn,
+  };
+};
+
+export const userStub = () => {
+  return {
+    uuid: '123'
+  }
+}

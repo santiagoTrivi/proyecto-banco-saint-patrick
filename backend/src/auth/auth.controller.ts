@@ -74,7 +74,7 @@ export class AuthController {
   })
   @UseGuards(JwtAuthGuard)
   @Get('clientInfo')
-  async getcard(@Request() req) {
+  async getclient(@Request() req) {
     return await this.getClientInfo.run(req.user.uuid);
   }
 

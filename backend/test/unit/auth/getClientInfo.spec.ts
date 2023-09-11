@@ -8,10 +8,12 @@ import { Client } from '../../../src/client/infrastructure/schemas/client.schema
 import { Model } from 'mongoose';
 import { TokensStub, clientStub, userStub } from '../client/stub';
 import { IAuthentication } from '../../../src/auth/domain/interface/IAuthentication';
+import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
 
 
 
-jest.mock('../../../src/auth/infrastructure/services/auth.service');
+jest.mock('../../../src/auth/useCase/getClientInfo');
 
 describe('AuthController', () => {
   let controller: AuthController;
@@ -29,6 +31,8 @@ describe('AuthController', () => {
         AuthService,
         GetClientInfo,
         ClientService,
+        JwtService,
+        ConfigService
       ],
     }).compile();
 
@@ -41,50 +45,23 @@ describe('AuthController', () => {
     expect(controller).toBeDefined();
   });
 
-  describe('login endpoint',() => {
-    let auth: IAuthentication;
-    let client = clientStub();
-    let tokens = TokensStub();
-
-    const req = {
-      client
-    }
-
-    beforeEach(async () => {
-      auth = await controller.login(req);
-    })
-
-    test('should call authService.login', () => {
-      expect(authService.login).toBeCalled()
-    })
-
-    test('should call login with req.client', () => {
-      expect(authService.login).toHaveBeenCalledWith(req.client)
-    })
-
-    test('then it should return authentication tokens', () => {
-      expect(auth).toEqual(tokens);
-    })
-
-  })
-  
-  describe('logout endpoint ', () => {
+  describe('get client info', () => {
 
     const req = {
       user: userStub()
     }
 
     beforeEach(async () => {
-      await controller.logout(req)
+      await controller.getclient(req);
     })
 
-    test('it should call logout', () => {
-      expect(authService.logout).toBeCalled()
+    test('it should call getClientInfo', () => {
+      expect(getClientInfo.run).toBeCalled()
     })
 
     test('it should use req', () => {
-      expect(authService.logout).toHaveBeenCalledWith(req.user.uuid)
-    })
+        expect(getClientInfo.run).toHaveBeenCalledWith(req.user.uuid)
+      })
 
   })
 

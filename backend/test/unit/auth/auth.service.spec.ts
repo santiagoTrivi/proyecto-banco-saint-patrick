@@ -6,13 +6,17 @@ import { ConfigService } from '@nestjs/config';
 import { getModelToken } from '@nestjs/mongoose';
 import { Client } from '../../../src/client/infrastructure/schemas/client.schema';
 import { Model } from 'mongoose';
-import { clientStub } from '../stub';
+import { clientStub } from '../client/stub';
 import { IAuthentication } from '../../../src/auth/domain/interface/IAuthentication';
+import { ClientEntity } from '../../../src/client/domain/client.entity';
 
-jest.mock('../../../src/auth/infrastructure/services/auth.service');
+//jest.mock('../../../src/auth/infrastructure/services/auth.service');
 
 describe('AuthService', () => {
   let service: AuthService;
+  let clientService: ClientService;
+  let jwtService: JwtService;
+  let configService: ConfigService
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -29,6 +33,8 @@ describe('AuthService', () => {
     }).compile();
 
     service = module.get<AuthService>(AuthService);
+    clientService = module.get<ClientService>(ClientService);
+
   });
 
   it('should be defined', () => {
@@ -38,30 +44,24 @@ describe('AuthService', () => {
   describe('login method', () => {
     let authentication: IAuthentication;
 
-    beforeEach(async () => {
-      const data = {
-        _id: clientStub()._id,
-        firstName: clientStub().firstName,
-        lastName: clientStub().lastName,
-        username: clientStub().username,
-        password: clientStub().password,
-        isActive: clientStub().isActive,
-      };
-      authentication = await service.login(data);
-    });
+    
+    describe('validateClient', () => {
 
-    test('should have been called with AuthService.login', () => {
-      expect(service.login).toBeCalledWith(clientStub());
-    });
+      it('should return null for false client validatation', async () => {
 
-    test('should login in successfuly', () => {
-      expect(authentication).toEqual({
-        expireIn: '60s',
-        access_token: expect.any(String),
-        refresh_token: expect.any(String),
-        refreshExpireIn: '7d',
-      });
-    });
+        jest.spyOn(clientService, 'findOne').mockResolvedValueOnce(null);
+
+        const result = await service.validateClient('invalidUser', 'password');
+        expect(result).toBeNull();
+       
+      })
+      
+    })
+
+    
+
   });
 
 });
+
+

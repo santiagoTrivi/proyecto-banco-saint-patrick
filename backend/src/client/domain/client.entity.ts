@@ -12,4 +12,10 @@ export class ClientEntity implements IClient {
     public cards?: CardEntity[],
     public refreshToken?: string,
   ) {}
+
+  static getClientEntity(result: any): ClientEntity {
+    const { _id, firstName, lastName, username, password, isActive, cards, refreshToken } = result;
+
+    return new ClientEntity(_id, firstName, lastName, username, password, isActive, cards, refreshToken);
+  }
 }
