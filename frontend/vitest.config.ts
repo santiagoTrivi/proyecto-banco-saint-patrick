@@ -15,8 +15,24 @@ export default mergeConfig(viteConfig, {
 		exclude: [...configDefaults.exclude],
 		alias: [
 			{
+				find: '@/cards',
+				replacement: path.resolve(__dirname, 'src/cards')
+			},
+			{
+				find: '@/users',
+				replacement: path.resolve(__dirname, 'src/users')
+			},
+			{
 				find: '@/auth',
 				replacement: path.resolve(__dirname, 'src/auth')
+			},
+			{
+				find: '@/shared',
+				replacement: path.resolve(__dirname, 'src/shared')
+			},
+			{
+				find: '@/ui',
+				replacement: path.resolve(__dirname, 'src/ui')
 			},
 			{
 				find: '@/tests',

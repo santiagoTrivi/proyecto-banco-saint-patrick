@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 
-import Test from '@/auth/components/Test';
-import { webRoutes } from '@/src/utils';
+import { webRoutes } from '@/src/shared/utils';
 
 export function RegisterPage() {
 	return (
@@ -10,8 +9,6 @@ export function RegisterPage() {
 			<Link to={webRoutes.auth.login.absolute}> Login </Link>
 
 			<h1>Register Page</h1>
-
-			<Test />
 		</div>
 	);
 }
