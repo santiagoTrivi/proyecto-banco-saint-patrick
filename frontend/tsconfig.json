@@ -21,7 +21,11 @@
 		"noFallthroughCasesInSwitch": true,
 		"baseUrl": ".",
 		"paths": {
+			"@/cards/*": ["src/cards/*"],
+			"@/users/*": ["src/users/*"],
+			"@/shared/*": ["src/shared/*"],
 			"@/auth/*": ["src/auth/*"],
+			"@/ui/*": ["src/ui/*"],
 			"@/tests/*": ["__TESTS__/*"],
 			"@/*": ["*"]
 		},
