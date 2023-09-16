@@ -13,13 +13,18 @@ export class ClientService implements ClientRepository {
     @InjectModel(Client.name)
     private readonly clientModel: Model<ClientDocument>,
   ) {}
-
+  async create(createClient: ClientEntity): Promise<ClientEntity> {
+    const client = new this.clientModel(createClient);
+    const savedClient = await client.save();
+    return ClientEntity.getClientEntity(savedClient);
+  }
+/*
   async create(createClientDto: CreateClientDto) {
     const client = new this.clientModel(createClientDto);
     const savedClient = await client.save();
     return ClientEntity.getClientEntity(savedClient);
   }
-
+*/
   findOneByUsername(username: string): Promise<ClientEntity> {
     return this.clientModel.findOne({ username });
   }
@@ -32,6 +37,9 @@ export class ClientService implements ClientRepository {
 
   async update(id: string, updateClientDto: UdpateClientDto) {
     const { cards } = updateClientDto;
+    if(cards){
+      return this.addCard(id, cards);
+    }
     return await this.clientModel
       .findByIdAndUpdate(id, updateClientDto, { new: true })
       .exec();
@@ -49,4 +57,9 @@ export class ClientService implements ClientRepository {
 
     return ClientEntity.getClientEntity(client);
   }
+
+  private async addCard(id: string, card){
+    return await this.clientModel.findByIdAndUpdate(id, {$push: {cards: card}}, {new: true})
+  }
+  
 }

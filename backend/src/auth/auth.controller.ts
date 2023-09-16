@@ -5,6 +5,7 @@ import {
   UseGuards,
   Request,
   HttpCode,
+  Body,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -37,6 +38,8 @@ import {
 } from './infrastructure/dto/';
 import { GetClientInfo } from './useCase/getClientInfo';
 import { CreateClientDto } from '../client/infrastructure/Dto/create-client.dto';
+import { RegisterClient } from './useCase/registerClient';
+import { ClientEntity } from '../../src/client/domain/client.entity';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -44,6 +47,7 @@ export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly getClientInfo: GetClientInfo,
+    private readonly registerClient: RegisterClient,
   ) {}
 
   @ApiOkResponse({ type: AuthenticationTokens })
@@ -60,6 +64,14 @@ export class AuthController {
   @ApiBody({ type: LoginDto })
   async login(@Request() req) {
     return await this.authService.login(req.client);
+  }
+
+  @Post('client')
+  async register(@Body() createClientDto: CreateClientDto){
+    const {firstName, lastName, username, password} = createClientDto
+    const client = new ClientEntity(undefined, firstName, lastName, username, password)
+  
+    return await this.registerClient.run(client);
   }
 
   @ApiBearerAuth()

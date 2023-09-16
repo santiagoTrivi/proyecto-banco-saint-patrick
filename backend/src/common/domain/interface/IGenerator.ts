@@ -1,0 +1,4 @@
+
+export interface Generator {
+    run()
+}
