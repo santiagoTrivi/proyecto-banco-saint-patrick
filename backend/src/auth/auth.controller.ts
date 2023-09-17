@@ -39,7 +39,7 @@ import {
 import { GetClientInfo } from './useCase/getClientInfo';
 import { CreateClientDto } from '../client/infrastructure/Dto/create-client.dto';
 import { RegisterClient } from './useCase/registerClient';
-import { ClientEntity } from '../../src/client/domain/client.entity';
+import { ClientEntity } from '../client/domain/client.entity';
 
 @ApiTags('auth')
 @Controller('auth')

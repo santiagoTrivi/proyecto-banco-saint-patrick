@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { CreateClientDto } from '../Dto/create-client.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Client, ClientDocument } from '../schemas/client.schema';
@@ -18,13 +17,11 @@ export class ClientService implements ClientRepository {
     const savedClient = await client.save();
     return ClientEntity.getClientEntity(savedClient);
   }
-/*
-  async create(createClientDto: CreateClientDto) {
-    const client = new this.clientModel(createClientDto);
-    const savedClient = await client.save();
-    return ClientEntity.getClientEntity(savedClient);
+
+  async findById(clientId: string): Promise<ClientEntity> {
+    return await this.clientModel.findById(clientId);
   }
-*/
+
   findOneByUsername(username: string): Promise<ClientEntity> {
     return this.clientModel.findOne({ username });
   }
@@ -35,13 +32,9 @@ export class ClientService implements ClientRepository {
     });
   }
 
-  async update(id: string, updateClientDto: UdpateClientDto) {
-    const { cards } = updateClientDto;
-    if(cards){
-      return this.addCard(id, cards);
-    }
+  async update(id: string, updateData: Partial<ClientEntity>) {
     return await this.clientModel
-      .findByIdAndUpdate(id, updateClientDto, { new: true })
+      .findByIdAndUpdate(id, updateData, { new: true })
       .exec();
   }
 
@@ -58,7 +51,7 @@ export class ClientService implements ClientRepository {
     return ClientEntity.getClientEntity(client);
   }
 
-  private async addCard(id: string, card){
+  async addCard(id: string, card: string){
     return await this.clientModel.findByIdAndUpdate(id, {$push: {cards: card}}, {new: true})
   }
   

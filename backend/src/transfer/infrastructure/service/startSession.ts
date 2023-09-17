@@ -1,10 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { IStartSession } from '../domain/interface/IStartSession';
+import { IStartSession } from '../../../common/domain/interface/IStartSession';
 import { InjectModel } from '@nestjs/mongoose';
 import {
   Card,
   CardDocument,
-} from '../../card/infrastructure/schemas/card.schema';
+} from '../../../card/infrastructure/schemas/card.schema';
 import { ClientSession, Model } from 'mongoose';
 
 @Injectable()

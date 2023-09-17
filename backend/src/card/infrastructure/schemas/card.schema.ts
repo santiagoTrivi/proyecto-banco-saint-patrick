@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { Document } from 'mongoose';
+import mongoose, { Document, now } from 'mongoose';
 import { ICard } from '../../domain/interface/ICard';
 
 export type CardDocument = Card & Document;
@@ -17,6 +17,12 @@ export class Card implements ICard {
 
   @Prop({ default: true })
   isActive?: boolean;
+
+  @Prop({ default: now() })
+  createdAt: Date;
+
+  @Prop({ default: now() })
+  updatedAt: Date;
 }
 
 export const CardSchema = SchemaFactory.createForClass(Card);

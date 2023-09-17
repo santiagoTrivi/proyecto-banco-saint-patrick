@@ -3,7 +3,7 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { StartSession } from './startSession';
+import { StartSession } from '../infrastructure/service/startSession';
 import { FundsHandler } from './fundsHandler';
 import { TransferHandler } from './transferHandler';
 import { CreateTransferDto } from '../infrastructure/dto/create-transfer.dto';

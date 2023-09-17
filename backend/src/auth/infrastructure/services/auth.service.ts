@@ -5,7 +5,7 @@ import { ClientService } from '../../../client/infrastructure/services/client.se
 import { DataCipher } from '../../../common/useCase/dataCipher';
 import { CONFIG_JWT_TIMING } from '../../../config/jwt.cofig';
 import { IAuthentication } from '../../domain/interface/IAuthentication';
-import { ClientEntity } from '../../../../src/client/domain/client.entity';
+import { ClientEntity } from '../../../client/domain/client.entity';
 import { AuthRepository } from '../../domain/interface/IAuthRepository';
 
 @Injectable()

@@ -1,8 +1,6 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreateCardDto } from '../../../auth/infrastructure/dto/create-card.dto';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { hashSync, genSaltSync } from 'bcrypt';
 import { Card, CardDocument } from '../schemas/card.schema';
 import { UpdateCardDto } from '../Dto/update-card.dto';
 import { CardRepository } from '../../domain/interface/ICardRepository';
@@ -15,6 +13,12 @@ export class CardService implements CardRepository {
     private readonly cardModel: Model<CardDocument>,
   ) {}
 
+  async create(createCard: CardEntity): Promise<CardEntity> {
+    const card = new this.cardModel(createCard);
+    const savedCard = await card.save();
+    return CardEntity.getcardEntity(savedCard);
+  }
+/*
   async create(createCardDto: CreateCardDto) {
     const checkCard = await this.cardModel.findOne({
       card_number: createCardDto.card_number,
@@ -35,7 +39,7 @@ export class CardService implements CardRepository {
 
     return await this.cardModel.create(card);
   }
-
+*/
   async findAll(): Promise<CardEntity[]> {
     return await this.cardModel.find().select({ __v: 0 });
   }
