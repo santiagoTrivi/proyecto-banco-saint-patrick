@@ -34,7 +34,7 @@ export class AddCardProcess {
     await this.validMongoObjectId.validate(clientId);
 
     const client = await this.clientService.findById(clientId);
-  
+
     const { cards } = client;
 
     if (cards.length === 3) {

@@ -3,14 +3,12 @@ import { ICard } from '../../domain/interface/ICard';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CardDto implements ICard {
-
-  
   @ApiProperty()
   _id?: string;
-  
+
   @ApiProperty()
   clientId: string;
-  
+
   @ApiProperty()
   @IsNotEmpty()
   @IsString()

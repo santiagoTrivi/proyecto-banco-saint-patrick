@@ -23,7 +23,13 @@ export class RegisterCard {
 
     if (foundCard) throw new BadRequestException('SOMETHIG_WENT_WRONG');
 
-    const newCard = new CardEntity(undefined, clinetId, card_number, hashedPin, 0);
+    const newCard = new CardEntity(
+      undefined,
+      clinetId,
+      card_number,
+      hashedPin,
+      0,
+    );
 
     const createdCard = await this.cardService.create(newCard);
 

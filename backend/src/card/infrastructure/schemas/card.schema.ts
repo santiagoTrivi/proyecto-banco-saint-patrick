@@ -7,7 +7,6 @@ export type CardDocument = Card & Document;
 
 @Schema()
 export class Card implements ICard {
-
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Client', required: true })
   clientId: Client;
 

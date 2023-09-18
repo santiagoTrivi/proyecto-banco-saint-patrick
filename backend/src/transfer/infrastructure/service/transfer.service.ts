@@ -19,15 +19,15 @@ export class TransferService implements ITransferRepository<TransferEntity> {
 
   async getTransfer(query: any): Promise<TransferEntity> {
     const ExceptionData = {
-      __v: 0, 
-      _id: 0, 
-      PIN: 0, 
-      current_balance: 0, 
-      clientId: 0, 
-      currency: 0, 
+      __v: 0,
+      _id: 0,
+      PIN: 0,
+      current_balance: 0,
+      clientId: 0,
+      currency: 0,
       createdAt: 0,
-      updatedAt: 0 
-    }
+      updatedAt: 0,
+    };
     const foundTranfer: TransferEntity = await this.transferModel
       .findOne(query)
       .select({ __v: 0 })

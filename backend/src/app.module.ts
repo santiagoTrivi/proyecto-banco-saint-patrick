@@ -7,6 +7,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { ClientModule } from './client/client.module';
 import { CardModule } from './card/card.module';
+import { CurrencyModule } from './currency/currency.module';
 
 // DATABASE_CONFIG is the function to retrieve the database configuration, based on the NODE_env for production or development environment
 
@@ -22,6 +23,7 @@ import { CardModule } from './card/card.module';
     TransferModule,
     ClientModule,
     CardModule,
+    CurrencyModule,
   ],
   controllers: [],
   providers: [],
