@@ -1,17 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ClientService } from '../../../src/client/infrastructure/services/client.service';
-import { Client, ClientDocument } from '../../../src/client/infrastructure/schemas/client.schema';
+import {
+  Client,
+  ClientDocument,
+} from '../../../src/client/infrastructure/schemas/client.schema';
 import { getModelToken } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ClientEntity } from '../../../src/client/domain/client.entity';
 import { clientStub } from './stub';
 
-
-
-
 describe('clientService', () => {
   let clientService: ClientService;
-  let clientModel: Model<ClientDocument>
+  let clientModel: Model<ClientDocument>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -26,7 +26,6 @@ describe('clientService', () => {
 
     clientService = module.get<ClientService>(ClientService);
     clientModel = module.get<Model<ClientDocument>>(getModelToken(Client.name));
-
   });
 
   it('should be defined', () => {
@@ -34,22 +33,18 @@ describe('clientService', () => {
   });
 
   describe('ClientService finding client methods', () => {
-    
     let client: ClientEntity;
     let findOneSpy: any;
-    
-    const username = clientStub().username
+
+    const username = clientStub().username;
 
     beforeEach(async () => {
       findOneSpy = jest.spyOn(clientModel, 'findOne').mockResolvedValueOnce({});
       client = await clientService.findOneByUsername(username);
-    })
-    
+    });
+
     test('should  call findOne with the provided username', async () => {
       expect(findOneSpy).toHaveBeenCalledWith({ username });
-    })
-    
-  })
-
-  
+    });
+  });
 });

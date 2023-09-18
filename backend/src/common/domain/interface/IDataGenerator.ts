@@ -1,4 +1,3 @@
-
 export interface DataGenerator {
-    run()
+  run();
 }

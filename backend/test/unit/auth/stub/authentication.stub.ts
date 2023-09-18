@@ -23,6 +23,6 @@ export const TokensStub = (): IAuthentication => {
 
 export const userStub = () => {
   return {
-    uuid: '123'
-  }
-}
+    uuid: '123',
+  };
+};

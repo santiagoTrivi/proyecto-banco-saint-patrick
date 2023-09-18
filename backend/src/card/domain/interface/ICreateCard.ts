@@ -1,4 +1,3 @@
-
 export interface CreateCard {
-    PIN: string
+  PIN: string;
 }

@@ -6,6 +6,6 @@ export interface ITransfer {
   amount: number;
   currency?: string;
   concept: string;
-  createdAt?: any;
-  updatedAt?: any;
+  createdAt?: Date;
+  updatedAt?: Date;
 }

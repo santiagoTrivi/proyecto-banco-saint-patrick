@@ -8,6 +8,7 @@ import { FundsHandler } from './fundsHandler';
 import { TransferHandler } from './transferHandler';
 import { CreateTransferDto } from '../infrastructure/dto/create-transfer.dto';
 import { DataCipher } from '../../common/useCase/dataCipher';
+import { TransferEntity } from '../domain/transfer.entity';
 
 @Injectable()
 export class TransferFundsProcessHandler {
@@ -21,7 +22,7 @@ export class TransferFundsProcessHandler {
     this.dataCipher = new DataCipher();
   }
 
-  async run(createTransferDto: CreateTransferDto) {
+  async run(createTransferDto: CreateTransferDto): Promise<TransferEntity> {
     const { clientId, sender_card, receiver_card, amount, concept, PIN } =
       createTransferDto;
     const session = await this.startSession.startSession();
@@ -66,7 +67,7 @@ export class TransferFundsProcessHandler {
 
       await session.commitTransaction();
 
-      return createdTransfer;
+      return TransferEntity.getTransferEntity(createdTransfer);
     } catch (error) {
       await session.abortTransaction();
 

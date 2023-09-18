@@ -9,8 +9,6 @@ import { Model } from 'mongoose';
 import { TokensStub, clientStub, userStub } from '../client/stub';
 import { IAuthentication } from '../../../src/auth/domain/interface/IAuthentication';
 
-
-
 jest.mock('../../../src/auth/infrastructure/services/auth.service');
 
 describe('AuthController', () => {
@@ -41,51 +39,47 @@ describe('AuthController', () => {
     expect(controller).toBeDefined();
   });
 
-  describe('login endpoint',() => {
+  describe('login endpoint', () => {
     let auth: IAuthentication;
-    let client = clientStub();
-    let tokens = TokensStub();
+    const client = clientStub();
+    const tokens = TokensStub();
 
     const req = {
-      client
-    }
+      client,
+    };
 
     beforeEach(async () => {
       auth = await controller.login(req);
-    })
+    });
 
     test('should call authService.login', () => {
-      expect(authService.login).toBeCalled()
-    })
+      expect(authService.login).toBeCalled();
+    });
 
     test('should call login with req.client', () => {
-      expect(authService.login).toHaveBeenCalledWith(req.client)
-    })
+      expect(authService.login).toHaveBeenCalledWith(req.client);
+    });
 
     test('then it should return authentication tokens', () => {
       expect(auth).toEqual(tokens);
-    })
+    });
+  });
 
-  })
-  
   describe('logout endpoint ', () => {
-
     const req = {
-      user: userStub()
-    }
+      user: userStub(),
+    };
 
     beforeEach(async () => {
-      await controller.logout(req)
-    })
+      await controller.logout(req);
+    });
 
     test('it should call logout', () => {
-      expect(authService.logout).toBeCalled()
-    })
+      expect(authService.logout).toBeCalled();
+    });
 
     test('it should use req', () => {
-      expect(authService.logout).toHaveBeenCalledWith(req.user.uuid)
-    })
-
-  })
-
+      expect(authService.logout).toHaveBeenCalledWith(req.user.uuid);
+    });
+  });
 });

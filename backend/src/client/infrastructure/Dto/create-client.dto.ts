@@ -39,4 +39,34 @@ export class CreateClientDto implements IClient {
   @ApiProperty()
   @IsOptional()
   refreshToken?: string;
+
+  @ApiProperty()
+  @IsOptional()
+  createdAt?: Date;
+
+  @ApiProperty()
+  @IsOptional()
+  updatedAt?: Date;
+}
+
+export class RegisterClientDto implements IClient {
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  firstName: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  lastName: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  username: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  password?: string;
 }

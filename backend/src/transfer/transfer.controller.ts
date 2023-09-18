@@ -11,6 +11,7 @@ import { JwtAuthGuard } from '../auth/infrastructure/guards/jwt.guard';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
+  ApiBody,
   ApiCreatedResponse,
   ApiInternalServerErrorResponse,
   ApiOkResponse,
@@ -53,6 +54,7 @@ export class TransferController {
       'this endpoint allows authenticated user to tranfer money to any card providing the receiver card number',
   })
   @UseGuards(JwtAuthGuard)
+  @ApiBody({ type: CreateTransferDto })
   @Post()
   async tranferFunds(@Body() createTransferDto: CreateTransferDto) {
     return await this.transferFundsprocessHandler.run(createTransferDto);
@@ -65,7 +67,7 @@ export class TransferController {
   @Get(':cardId')
   @ApiOperation({
     summary: 'Get transfer history',
-    description: 'Get all the transfers made by a specific user',
+    description: 'Get all the transfers made by a specific client',
   })
   @ApiParam({ name: 'cardId', type: String, description: 'ID of the card' })
   @ApiQuery({
@@ -90,7 +92,17 @@ export class TransferController {
   @ApiUnauthorizedResponse({ type: UnauthorizedResponseSchema })
   @ApiBadRequestResponse({ type: DataValidationErrorResponseSchema })
   @ApiInternalServerErrorResponse({ type: InternalServerErrorSchema })
+  @ApiParam({
+    name: 'transferId',
+    type: String,
+    description: 'ID of a expecific tranfer',
+  })
   @Get(':transferId/details')
+  @ApiOperation({
+    summary: 'Transfer details',
+    description:
+      'Endpoint to get more information about a specific transfer made, such as sender ans receiver card info',
+  })
   @UseGuards(JwtAuthGuard)
   async showTransferDetails(@Param('transferId') transferId: string) {
     return this.getTrasnferData.transferDetails(transferId);

@@ -11,7 +11,7 @@ import { Card, CardSchema } from '../card/infrastructure/schemas/card.schema';
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Client.name, schema: ClientSchema }]),
-    MongooseModule.forFeature([{name: Card.name, schema: CardSchema}]),
+    MongooseModule.forFeature([{ name: Card.name, schema: CardSchema }]),
   ],
   controllers: [ClientController],
   providers: [ClientService, RegisterCard, AddCardProcess, CardService],

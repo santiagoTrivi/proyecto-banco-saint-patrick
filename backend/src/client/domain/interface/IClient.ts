@@ -7,4 +7,6 @@ export interface IClient {
   isActive?: boolean;
   cards?: any;
   refreshToken?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }

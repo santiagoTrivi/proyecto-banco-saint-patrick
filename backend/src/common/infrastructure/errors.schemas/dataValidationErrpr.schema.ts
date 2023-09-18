@@ -8,3 +8,11 @@ export class DataValidationErrorResponseSchema extends BaseErrorSchema {
   @ApiProperty({ required: false })
   error?: string;
 }
+
+export class BadRequestErrorResponseSchema extends BaseErrorSchema {
+  @ApiProperty()
+  message: string;
+
+  @ApiProperty({ required: false })
+  error?: string;
+}

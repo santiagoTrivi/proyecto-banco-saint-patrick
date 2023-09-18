@@ -51,8 +51,11 @@ export class ClientService implements ClientRepository {
     return ClientEntity.getClientEntity(client);
   }
 
-  async addCard(id: string, card: string){
-    return await this.clientModel.findByIdAndUpdate(id, {$push: {cards: card}}, {new: true})
+  async addCard(id: string, card: string) {
+    return await this.clientModel.findByIdAndUpdate(
+      id,
+      { $push: { cards: card } },
+      { new: true },
+    );
   }
-  
 }
