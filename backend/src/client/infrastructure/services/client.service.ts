@@ -6,6 +6,10 @@ import { UdpateClientDto } from '../Dto/update-client.dto';
 import { ClientRepository } from '../../domain/interface/IClientRepository';
 import { ClientEntity } from '../../domain/client.entity';
 
+const exceptionData = {
+  __v: 0,
+};
+
 @Injectable()
 export class ClientService implements ClientRepository {
   constructor(
@@ -42,7 +46,14 @@ export class ClientService implements ClientRepository {
     const client = await this.clientModel
       .findOne(query)
       .select({ __v: 0 })
-      .populate({ path: 'cards', select: { __v: 0 } })
+      .populate({
+        path: 'cards',
+        populate: {
+          path: 'currency',
+          select: { createdAt: 0, updatedAt: 0, __v: 0 },
+        },
+        select: exceptionData,
+      })
       .lean()
       .exec();
 

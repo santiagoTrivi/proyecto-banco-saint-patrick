@@ -4,7 +4,7 @@ export interface ICard {
   card_number: string;
   PIN: string;
   current_balance: number;
-  currency?: string;
+  currency?: any;
   isActive?: boolean;
   createdAt?: Date;
   updatedAt?: Date;

@@ -7,4 +7,8 @@ export class CreateCardDto implements CreateCard {
   @IsNotEmpty()
   @Length(4, 4)
   PIN: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  currencyId: string;
 }

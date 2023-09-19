@@ -1,5 +1,5 @@
-import { IDataCipher } from "./IDataCipher";
+import { IDataCipher } from './IDataCipher';
 
-export interface UpdateEntityData<T>{
-    update(clientId: string, dataToUpdata: T)
+export interface UpdateEntityData<T> {
+  update(clientId: string, dataToUpdata: T);
 }

@@ -3,12 +3,21 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Card, CardSchema } from './infrastructure/schemas/card.schema';
 import { CardService } from './infrastructure/service/card.service';
 import { RegisterCard } from './usecase/registerCard';
+import { CardController } from './card.controller';
+import { AddCardProcess } from './usecase/addCardProcess';
+import {
+  Client,
+  ClientSchema,
+} from '../client/infrastructure/schemas/client.schema';
+import { ClientService } from '../client/infrastructure/services/client.service';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Card.name, schema: CardSchema }]),
+    MongooseModule.forFeature([{ name: Client.name, schema: ClientSchema }]),
   ],
-  providers: [CardService, RegisterCard],
+  controllers: [CardController],
+  providers: [CardService, RegisterCard, AddCardProcess, ClientService],
   exports: [CardService, RegisterCard],
 })
 export class CardModule {}

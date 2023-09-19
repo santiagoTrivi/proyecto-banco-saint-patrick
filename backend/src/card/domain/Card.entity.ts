@@ -1,3 +1,4 @@
+import { CurrencyEntity } from '../../currency/domain/currencyEntity';
 import { ICard } from './interface/ICard';
 
 export class CardEntity implements ICard {
@@ -7,7 +8,7 @@ export class CardEntity implements ICard {
     public card_number: string,
     public PIN: string,
     public current_balance: number,
-    public currency?: string,
+    public currency?: any,
     public isActive?: boolean,
     public createdAt?: Date,
     public updatedAt?: Date,

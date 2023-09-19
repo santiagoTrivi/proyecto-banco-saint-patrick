@@ -15,7 +15,11 @@ export class RegisterCard {
     this.cardNumberGenerator = new CardNumberGenerator();
   }
 
-  run = async (clinetId: string, PIN: string): Promise<CardEntity> => {
+  run = async (
+    clinetId: string,
+    createCard: CreateCard,
+  ): Promise<CardEntity> => {
+    const { PIN, currencyId } = createCard;
     const hashedPin = await this.dataCipher.hash(PIN);
     const card_number = await this.cardNumberGenerator.run();
 
@@ -29,6 +33,7 @@ export class RegisterCard {
       card_number,
       hashedPin,
       0,
+      currencyId,
     );
 
     const createdCard = await this.cardService.create(newCard);

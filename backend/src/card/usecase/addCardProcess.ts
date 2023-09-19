@@ -1,11 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CardEntity } from '../../card/domain/Card.entity';
+import { CardEntity } from '../domain/Card.entity';
 import { CreateEntity } from '../../common/domain/interface/ICreateEntity';
-import { CreateCard } from '../../card/domain/interface/ICreateCard';
-import { RegisterCard } from '../../card/usecase/registerCard';
-import { ClientService } from '../infrastructure/services/client.service';
+import { CreateCard } from '../domain/interface/ICreateCard';
+import { RegisterCard } from './registerCard';
+import { ClientService } from '../../client/infrastructure/services/client.service';
 import { ValidateObjectIdService } from '../../common/infrastructure/service/validMongoObjectId';
-import { ClientEntity } from '../domain/client.entity';
+import { ClientEntity } from '../../client/domain/client.entity';
 
 @Injectable()
 export class AddCardProcess {
@@ -17,15 +17,20 @@ export class AddCardProcess {
     this.validMongoObjectId = new ValidateObjectIdService();
   }
 
-  run = async (_clientId: string, PIN: string): Promise<void> => {
+  run = async (
+    _clientId: string,
+    createCard: CreateCard,
+  ): Promise<CardEntity> => {
     const client = await this.validateAmountCard(_clientId);
 
-    const newCard = await this.registerCard.run(_clientId, PIN);
+    const newCard = await this.registerCard.run(_clientId, createCard);
 
     const cardId = newCard._id;
     const clientId = client._id;
 
     await this.clientService.addCard(clientId, cardId);
+
+    return newCard;
   };
 
   private validateAmountCard = async (
