@@ -1,6 +1,6 @@
 import { VariantProps, tv } from 'tailwind-variants';
 
-export const InputStyles = tv({
+export const SelectStyles = tv({
 	base: 'font-nunito px-2 py-1 font-medium text-md outline-none transition-all duration-150',
 
 	variants: {
@@ -58,4 +58,4 @@ export const InputStyles = tv({
 	}
 });
 
-export type InputVariants = VariantProps<typeof InputStyles>;
+export type SelectVariants = VariantProps<typeof SelectStyles>;

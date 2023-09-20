@@ -35,9 +35,7 @@ describe('Home', () => {
 				username: '123',
 				id: '123',
 				isActive: true
-			},
-			isAuthenticated: true,
-			isLogged: true
+			}
 		});
 	});
 

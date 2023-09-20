@@ -9,6 +9,10 @@ export default defineConfig({
 	resolve: {
 		alias: [
 			{
+				find: '@/transactions',
+				replacement: path.resolve(__dirname, 'src/transactions')
+			},
+			{
 				find: '@/cards',
 				replacement: path.resolve(__dirname, 'src/cards')
 			},

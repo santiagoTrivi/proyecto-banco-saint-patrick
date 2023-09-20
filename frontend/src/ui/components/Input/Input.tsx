@@ -1,10 +1,11 @@
 import React from 'react';
-import { InputStyles } from './Input.styles';
 
-type Props = React.ComponentPropsWithRef<'input'>;
+import { InputStyles, InputVariants } from './Input.styles';
+
+type Props = InputVariants & React.ComponentPropsWithRef<'input'>;
 
 export const Input = React.forwardRef(function Input(
-	props: Props,
+	{ variant, colorSheme, ...props }: Props,
 	ref: Props['ref']
 ) {
 	return (
@@ -12,7 +13,9 @@ export const Input = React.forwardRef(function Input(
 			{...props}
 			ref={ref}
 			className={InputStyles({
-				class: props.className
+				class: props.className,
+				variant,
+				colorSheme
 			})}
 		/>
 	);

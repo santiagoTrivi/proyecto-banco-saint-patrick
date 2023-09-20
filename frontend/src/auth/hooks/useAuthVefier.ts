@@ -1,86 +1,52 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
+import React from 'react';
 
 import { AuthNestRepository } from '@/auth/services';
-import { useAuthStore } from '@/auth/state';
-import { authQueryKeys } from '@/auth/utils';
-import { localKeys, localStorageRepository } from '@/shared/services';
-import React, { useState } from 'react';
-
-export enum VerifyStatus {
-	IDLE = 'idle',
-	LOADING = 'loading',
-	SUCCESS = 'success',
-	ERROR = 'error'
-}
+import { AuthStatus, useAuthStore } from '@/auth/state';
+import { sessionKeys, sessionStorageRepository } from '@/shared/services';
 
 export function useAuthVerifier(authRepository = AuthNestRepository()) {
-	const [verifyState, setVerifyState] = useState(VerifyStatus.IDLE);
-	const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-	const accessToken = useAuthStore((state) => state.accessToken);
+	const authStatus = useAuthStore((state) => state.authStatus);
+	const clear = useAuthStore((state) => state.clearStore);
 	const setAccessToken = useAuthStore((state) => state.setAccessToken);
-	const logout = useAuthStore((state) => state.logout);
-	const setCard = useAuthStore((state) => state.setCard);
-
-	const refreshToken = localStorageRepository.getItem(localKeys.REFRESH_TOKEN);
-
-	const {
-		data: tokens,
-		isSuccess: isSuccessRefreshToken,
-		isError: isErrorRefreshToken
-	} = useQuery(
-		authQueryKeys.refreshToken(),
-		() => {
-			setVerifyState(VerifyStatus.LOADING);
-			return authRepository.refreshSession();
-		},
-		{ enabled: !!refreshToken && !isAuthenticated, retry: false }
+	const setUser = useAuthStore((state) => state.setUser);
+	const changeStatus = useAuthStore((state) => state.changeStatus);
+	const refreshToken = sessionStorageRepository.getItem(
+		sessionKeys.REFRESH_TOKEN
 	);
 
-	const {
-		data: userInfo,
-		isSuccess: isSuccessCardInfo,
-		isError: isErrorCardInfo
-	} = useQuery(
-		authQueryKeys.cardInfo(),
-		() => {
-			return AuthNestRepository().clientInfo();
-		},
-		{ enabled: !!accessToken, retry: false }
-	);
+	const { mutate: refreshSessionMut } = useMutation(async () => {
+		const { accessToken } = await authRepository.refreshSession();
+		setAccessToken(accessToken);
+	});
 
 	React.useEffect(() => {
-		if (!refreshToken || isErrorRefreshToken || isErrorCardInfo) {
-			setVerifyState(VerifyStatus.ERROR);
-			logout();
-			localStorageRepository.removeItem(localKeys.REFRESH_TOKEN);
+		if (authStatus === AuthStatus.INIT && refreshToken) {
+			refreshSessionMut();
+		} else if (authStatus === AuthStatus.INIT) {
+			changeStatus(AuthStatus.IDLE);
 		}
+	}, [authStatus, changeStatus, refreshSessionMut, refreshToken]);
 
-		if (isSuccessRefreshToken) {
-			setAccessToken(tokens?.accessToken);
-		}
+	React.useEffect(() => {
+		const unsubscribe = useAuthStore.subscribe(async (state) => {
+			if (state.accessToken && state.authStatus === AuthStatus.LOADING) {
+				const u = await AuthNestRepository().clientInfo();
+				setUser(u);
+			}
 
-		if (isSuccessCardInfo) {
-			setVerifyState(VerifyStatus.SUCCESS);
-			setCard(userInfo);
-		}
-		return () => {};
-	}, [
-		userInfo,
-		isErrorCardInfo,
-		isErrorRefreshToken,
-		isSuccessCardInfo,
-		isSuccessRefreshToken,
-		refreshToken,
-		setAccessToken,
-		setCard,
-		tokens?.accessToken,
-		logout
-	]);
+			if (state.authStatus === AuthStatus.LOGGING_OUT) {
+				await AuthNestRepository().logout(state.accessToken as string);
+				clear();
+			}
+		});
+
+		return () => {
+			unsubscribe();
+		};
+	}, [clear, setUser]);
 
 	return {
-		isAuthenticated: VerifyStatus.SUCCESS === verifyState,
-		isIdle: VerifyStatus.IDLE === verifyState,
-		isLoading: VerifyStatus.LOADING === verifyState,
-		isError: VerifyStatus.ERROR === verifyState
+		isAuthenticated: authStatus === AuthStatus.SUCCESS
 	};
 }

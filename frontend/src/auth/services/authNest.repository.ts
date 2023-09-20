@@ -2,7 +2,7 @@ import { UserEndpointToModel } from '@/auth/adapters';
 import { AuthRepository } from '@/auth/domain';
 import { tokenEndpoint, userEndpoint } from '@/auth/schemas';
 import { useAuthStore } from '@/auth/state';
-import { localKeys, localStorageRepository } from '@/shared/services';
+import { sessionKeys, sessionStorageRepository } from '@/shared/services';
 import { envVariables, httpReq } from '@/shared/utils';
 
 export function AuthNestRepository(): AuthRepository {
@@ -22,17 +22,12 @@ export function AuthNestRepository(): AuthRepository {
 			const result = await response.json();
 			const resultValidated = tokenEndpoint.parse(result);
 
-			localStorageRepository.setItem(
-				localKeys.REFRESH_TOKEN,
-				resultValidated.refreshToken
-			);
-
 			return resultValidated;
 		},
 
 		refreshSession: async () => {
-			const refreshToken = localStorageRepository.getItem(
-				localKeys.REFRESH_TOKEN
+			const refreshToken = sessionStorageRepository.getItem(
+				sessionKeys.REFRESH_TOKEN
 			);
 
 			const response = await fetch(baseUrl + '/refresh-tokens', {
@@ -48,8 +43,8 @@ export function AuthNestRepository(): AuthRepository {
 
 			const resultValidated = tokenEndpoint.parse(result);
 
-			localStorageRepository.setItem(
-				localKeys.REFRESH_TOKEN,
+			sessionStorageRepository.setItem(
+				sessionKeys.REFRESH_TOKEN,
 				resultValidated.refreshToken
 			);
 
@@ -61,10 +56,13 @@ export function AuthNestRepository(): AuthRepository {
 				method: httpReq.post,
 				headers: {
 					'Content-Type': 'application/json',
-					accept: 'application/json'
+					accept: 'application/json',
+					Authorization: `Bearer ${accessToken}`
 				},
 				body: JSON.stringify({ access_token: accessToken })
 			});
+
+			sessionStorageRepository.removeItem(sessionKeys.REFRESH_TOKEN);
 		},
 
 		clientInfo: async () => {

@@ -9,6 +9,7 @@ import * as AuthSchemas from '@/auth/schemas';
 import { AuthNestRepository } from '@/auth/services';
 import { useAuthStore } from '@/auth/state';
 import { authTestId } from '@/auth/utils';
+import { sessionKeys, sessionStorageRepository } from '@/shared/services';
 import { Button, ErrorMessagge, FormControl, Input } from '@/ui/components';
 
 type Props = {
@@ -24,8 +25,8 @@ export const LoginForm = ({ authRepository = AuthNestRepository() }: Props) => {
 		formState: { errors, isValid }
 	} = useForm<AuthSchemas.Credentials>({
 		defaultValues: {
-			username: 'tommaxwell',
-			password: 'tommaxwell'
+			username: 'erickperez',
+			password: 'erickperez'
 		},
 		mode: 'onBlur',
 		progressive: true,
@@ -46,13 +47,25 @@ export const LoginForm = ({ authRepository = AuthNestRepository() }: Props) => {
 	React.useEffect(() => {
 		if (isSuccess) {
 			setAccessToken(data?.accessToken);
+
+			sessionStorageRepository.setItem(
+				sessionKeys.REFRESH_TOKEN,
+				data?.refreshToken
+			);
+
 			toast.success('Login successful');
 		}
 
 		if (isError) {
 			toast.error('Something went wrong, please try again later');
 		}
-	}, [data?.accessToken, isError, isSuccess, setAccessToken]);
+	}, [
+		data?.accessToken,
+		data?.refreshToken,
+		isError,
+		isSuccess,
+		setAccessToken
+	]);
 
 	return (
 		<form
