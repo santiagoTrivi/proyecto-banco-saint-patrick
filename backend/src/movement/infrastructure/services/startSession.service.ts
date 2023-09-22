@@ -11,10 +11,9 @@ import { ClientSession, Connection, Model } from 'mongoose';
 export class StartSession implements IStartSession {
   constructor(
     @InjectModel(Card.name) private readonly cardModel: Model<CardDocument>,
-    @InjectConnection() private readonly connection: Connection,
   ) {}
   async startSession(): Promise<ClientSession> {
-    return await this.connection.startSession();
+    return await this.cardModel.startSession();
   }
   async findOne(query: any, session: ClientSession): Promise<CardDocument> {
     const found = await this.cardModel
