@@ -20,7 +20,7 @@ export class PaginationService<T extends Document> {
     const data = await this.model
       .find(query)
       .populate(populateOption)
-      .select({__v: 0})
+      .select({ __v: 0 })
       .skip(startIndex)
       .limit(limit)
       .exec();

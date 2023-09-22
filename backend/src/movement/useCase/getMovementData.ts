@@ -11,7 +11,10 @@ export class GetMovementData {
     this.validateObjectIdService = new ValidateObjectIdService();
   }
 
-  async PoaginationMovementByCard(cardId: string, paginationDto: IPaginationOption) {
+  async PoaginationMovementByCard(
+    cardId: string,
+    paginationDto: IPaginationOption,
+  ) {
     await this.validateObjectIdService.validate(cardId);
 
     return await this.movementService.getMovementHistory(cardId, paginationDto);
@@ -19,7 +22,7 @@ export class GetMovementData {
 
   async MovementDetails(transferId: string) {
     await this.validateObjectIdService.validate(transferId);
-/*
+    /*
     const foundMovement = await this.movementService.geMovement({
       _id: transferId,
     });

@@ -10,16 +10,11 @@ import { ICreateMovementDto } from '../../../movement/domain/interface/ICreateMo
 import { MovementType } from '../../../movement/domain/movementType';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateMovementDto implements ICreateMovementDto {
+export class CreateMovementDepositDto implements ICreateMovementDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
   cardId: string;
-
-  @ApiProperty({ required: false })
-  @IsOptional()
-  @IsString()
-  toCard?: string;
 
   @ApiProperty()
   @IsNotEmpty()
@@ -31,7 +26,7 @@ export class CreateMovementDto implements ICreateMovementDto {
   @IsString()
   concept: string;
 
-  @ApiProperty({ default: MovementType.TRANSFERENCE })
+  @ApiProperty({ default: MovementType.DEPOSIT })
   @IsNotEmpty()
   @IsEnum(MovementType)
   type: MovementType;
@@ -43,7 +38,7 @@ export class CreateMovementDto implements ICreateMovementDto {
   PIN: string;
 }
 
-export class createdMovementTransferenceDto extends CreateMovementDto {
+export class createdMovementDepositDto extends CreateMovementDepositDto {
   @ApiProperty()
   currencyId: string;
 

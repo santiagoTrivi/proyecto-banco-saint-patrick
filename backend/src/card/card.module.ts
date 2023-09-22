@@ -10,6 +10,7 @@ import {
   ClientSchema,
 } from '../client/infrastructure/schemas/client.schema';
 import { ClientService } from '../client/infrastructure/services/client.service';
+import { UpdateCardtInfo } from './usecase/updateCardInfo';
 
 @Module({
   imports: [
@@ -17,7 +18,13 @@ import { ClientService } from '../client/infrastructure/services/client.service'
     MongooseModule.forFeature([{ name: Client.name, schema: ClientSchema }]),
   ],
   controllers: [CardController],
-  providers: [CardService, RegisterCard, AddCardProcess, ClientService],
+  providers: [
+    CardService,
+    RegisterCard,
+    AddCardProcess,
+    ClientService,
+    UpdateCardtInfo,
+  ],
   exports: [CardService, RegisterCard],
 })
 export class CardModule {}

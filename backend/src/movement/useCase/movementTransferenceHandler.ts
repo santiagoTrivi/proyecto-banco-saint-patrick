@@ -28,10 +28,9 @@ export class MovementTransferenceHandler {
     const { cardId, toCard, PIN, amount, concept } = createMovementDto;
 
     const session = await this.startSession.startSession();
-    
+
     try {
       await session.startTransaction();
-    
 
       const foundCard = await this.startSession.findOne(
         { _id: cardId },
@@ -54,7 +53,9 @@ export class MovementTransferenceHandler {
         throw new BadRequestException('NOT_ENOUGH_FUNDS');
       }
 
-      if (foundCard.currency._id.toString() !== _tocard.currency._id.toString()) {
+      if (
+        foundCard.currency._id.toString() !== _tocard.currency._id.toString()
+      ) {
         throw new BadRequestException('CURRENCY_DOES_NOT_MATCH');
       }
 
@@ -78,13 +79,10 @@ export class MovementTransferenceHandler {
         type: 'TRANSFERENCE',
       });
 
-      const createdDeposit = await this.movementService.create(
-        transference
-      );
+      const createdDeposit = await this.movementService.create(transference);
       await session.commitTransaction();
 
       return createdDeposit;
-      
     } catch (error) {
       await session.abortTransaction();
 

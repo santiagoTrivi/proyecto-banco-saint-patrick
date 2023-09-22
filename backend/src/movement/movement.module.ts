@@ -31,7 +31,7 @@ import { GetMovementData } from './useCase/getMovementData';
     MovementDepositHandler,
     MovementTransferenceHandler,
     MainMovementHandler,
-    GetMovementData
+    GetMovementData,
   ],
 })
 export class MovementModule {}

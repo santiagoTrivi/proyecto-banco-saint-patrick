@@ -1,5 +1,4 @@
-import { ApiProperty, PartialType } from '@nestjs/swagger';
-import { CreateClientDto } from './create-client.dto';
+import { ApiProperty } from '@nestjs/swagger';
 import { IUpdateClient } from '../../domain/interface/IUpdateClient';
 import { IsOptional } from 'class-validator';
 

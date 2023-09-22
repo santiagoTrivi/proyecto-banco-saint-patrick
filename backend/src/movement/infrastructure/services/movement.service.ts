@@ -17,22 +17,23 @@ export class MovementService implements IMovementRepository {
     this.paginationService = new PaginationService(this.movementModel);
   }
 
-  async create(
-    createmovement: IMovement
-  ) {
+  async create(createmovement: IMovement) {
     const movement = new this.movementModel(createmovement);
     return await movement.save();
   }
 
   async geMovement(query: any) {
-    return
+    return;
   }
   getMovements() {
     throw new Error('Method not implemented.');
   }
   async getMovementHistory(cardId: string, opction: IPaginationOption) {
     const query = { $or: [{ cardId }, { toCardId: cardId }] };
-    const populate = { path: 'currencyId', select: { __v: 0, createdAt: 0, updatedAt: 0 } };
+    const populate = {
+      path: 'currencyId',
+      select: { __v: 0, createdAt: 0, updatedAt: 0 },
+    };
     return await this.paginationService.paginate(query, opction, populate);
   }
 }

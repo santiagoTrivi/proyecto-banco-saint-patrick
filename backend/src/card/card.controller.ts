@@ -6,6 +6,7 @@ import {
   Post,
   UseGuards,
   Request,
+  Patch,
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
@@ -13,6 +14,8 @@ import {
   ApiBody,
   ApiCreatedResponse,
   ApiInternalServerErrorResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
   ApiOperation,
   ApiParam,
   ApiTags,
@@ -22,16 +25,21 @@ import { CreateCardDto } from './infrastructure/Dto/create-card.dto';
 import {
   DataValidationErrorResponseSchema,
   InternalServerErrorSchema,
+  NotFoundErrorResponseSchema,
   UnauthorizedResponseSchema,
 } from '../common/infrastructure/errors.schemas';
 import { JwtAuthGuard } from '../auth/infrastructure/guards';
 import { AddCardProcess } from './usecase/addCardProcess';
 import { CardDto } from './infrastructure/Dto/card.dto';
+import { UdpateCardDto } from './infrastructure/Dto/update-card.dto';
+import { UpdateCardtInfo } from './usecase/updateCardInfo';
 
 @ApiTags('card')
 @Controller('card')
 export class CardController {
-  constructor(private readonly addCardProcess: AddCardProcess) {}
+  constructor(
+    private readonly addCardProcess: AddCardProcess,
+    private readonly updateCardInfo: UpdateCardtInfo) {}
 
   @ApiBearerAuth()
   @ApiCreatedResponse({ type: CardDto })
@@ -49,5 +57,23 @@ export class CardController {
   @Post()
   async addCard(@Request() req, @Body() createCardDto: CreateCardDto) {
     return await this.addCardProcess.run(req.user.uuid, createCardDto);
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @ApiOkResponse()
+  @ApiUnauthorizedResponse({ type: UnauthorizedResponseSchema })
+  @ApiNotFoundResponse({ type: NotFoundErrorResponseSchema })
+  @ApiInternalServerErrorResponse({ type: InternalServerErrorSchema })
+  @ApiOperation({
+    summary: 'Update Card data',
+    description: 'For any card data. PIN updata allowed for now',
+  })
+  @Patch(':id')
+  async update(
+    @Param('id') id: string,
+    @Body() updateCardDto: UdpateCardDto,
+  ) {
+    return await this.updateCardInfo.update(id, updateCardDto);
   }
 }

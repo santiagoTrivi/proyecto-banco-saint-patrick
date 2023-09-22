@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Card, CardDocument } from '../schemas/card.schema';
-import { UpdateCardDto } from '../Dto/update-card.dto';
 import { CardRepository } from '../../domain/interface/ICardRepository';
 import { CardEntity } from '../../domain/Card.entity';
 
@@ -31,15 +30,16 @@ export class CardService implements CardRepository {
     return card.toObject();
   }
   async update(id: string, updateData: Partial<CardEntity>) {
-    return await this.cardModel.findByIdAndUpdate(id, updateData, {new: true})
-    .exec();
+    return await this.cardModel
+      .findByIdAndUpdate(id, updateData, { new: true })
+      .exec();
   }
 
   async findById(id: string): Promise<CardEntity> {
-    const card = await this.findById(id);
+    const card = await this.cardModel.findById(id)
 
     if (!card) return null;
 
-    return card;
+    return CardEntity.getcardEntity(card);
   }
 }

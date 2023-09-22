@@ -45,7 +45,7 @@ export class ClientController {
   @ApiInternalServerErrorResponse({ type: InternalServerErrorSchema })
   @ApiOperation({
     summary: 'Update Client data',
-    description: 'to any client data. password updata allowed for now',
+    description: 'For any client data. password updata allowed for now',
   })
   @Patch(':id')
   async update(

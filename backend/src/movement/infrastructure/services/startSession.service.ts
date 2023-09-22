@@ -11,18 +11,15 @@ import { ClientSession, Connection, Model } from 'mongoose';
 export class StartSession implements IStartSession {
   constructor(
     @InjectModel(Card.name) private readonly cardModel: Model<CardDocument>,
-    @InjectConnection() private readonly connection: Connection
+    @InjectConnection() private readonly connection: Connection,
   ) {}
   async startSession(): Promise<ClientSession> {
     return await this.connection.startSession();
   }
-  async findOne(
-    query: any,
-    session: ClientSession,
-  ): Promise<CardDocument> {
+  async findOne(query: any, session: ClientSession): Promise<CardDocument> {
     const found = await this.cardModel
       .findOne(query)
-      .populate({path: 'currency'})
+      .populate({ path: 'currency' })
       .session(session)
       .exec();
 

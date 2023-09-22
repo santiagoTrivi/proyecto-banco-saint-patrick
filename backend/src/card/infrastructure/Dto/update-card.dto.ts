@@ -1,4 +1,21 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CardDto } from './card.dto';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsOptional, Length } from 'class-validator';
+import { IUpdateCard } from 'src/card/domain/interface/IUpdateCard';
 
-export class UpdateCardDto extends PartialType(CardDto) {}
+export class UdpateCardDto implements IUpdateCard {
+
+  @ApiProperty()
+  @IsOptional()
+  @Length(4, 4)
+  currentPIN?: string;
+
+  @ApiProperty()
+  @IsOptional()
+  @Length(4, 4)
+  newPIN?: string;
+
+  @ApiProperty()
+  @IsOptional()
+  @Length(4, 4)
+  confirmPIN?: string;
+}
