@@ -1,20 +1,20 @@
-import { LocalStorageRepository } from '@/shared/domain';
+import { StorageRepository } from '@/shared/domain';
 
-export const localKeys = {
+export const sessionKeys = {
 	REFRESH_TOKEN: 'REFRESH_TOKEN'
 } as const;
 
-export type Keys = typeof localKeys;
+export type Keys = typeof sessionKeys;
 
-export const localStorageRepository: LocalStorageRepository<Keys> = {
+export const sessionStorageRepository: StorageRepository<Keys> = {
 	getItem: (key) => {
-		return localStorage.getItem(localKeys[key]);
+		return sessionStorage.getItem(sessionKeys[key]);
 	},
 
 	setItem: (key, value) => {
-		return localStorage.setItem(localKeys[key], value);
+		return sessionStorage.setItem(sessionKeys[key], value);
 	},
 	removeItem: (key) => {
-		return localStorage.removeItem(localKeys[key]);
+		return sessionStorage.removeItem(sessionKeys[key]);
 	}
 };

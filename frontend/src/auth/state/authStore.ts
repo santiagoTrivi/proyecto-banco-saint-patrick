@@ -5,30 +5,59 @@ import { Token } from '@/auth/domain';
 import { Card } from '@/cards/domain';
 import { User } from '@/users/domain';
 
-interface AuthStore {
-	user?: User;
-	card?: Card;
-	accessToken?: string;
-	isAuthenticated: boolean;
-	isLogged: boolean;
-	setAccessToken: (accessToken: Token['accessToken']) => void;
-	setCard: (card: User) => void;
-	logout: () => void;
+export enum AuthStatus {
+	INIT = 'init',
+	IDLE = 'idle',
+	LOADING = 'loading',
+	SUCCESS = 'success',
+	LOGGING_OUT = 'logging_out',
+	ERROR = 'error'
 }
+
+interface AuthStore {
+	user: User | null;
+	card: Card | null;
+	accessToken?: string;
+	authStatus: AuthStatus;
+	setAccessToken: (accessToken: Token['accessToken']) => void;
+	setUser: (user: User) => void;
+	changeCard: (cardId: Card['id']) => void;
+	logout: () => void;
+	clearStore: () => void;
+	changeStatus: (status: AuthStatus) => void;
+}
+
+const initialState = {
+	card: null,
+	user: null,
+	accessToken: undefined,
+	authStatus: AuthStatus.INIT
+} as const;
 
 export const useAuthStore = create(
 	devtools<AuthStore>(
-		(set) => ({
-			card: undefined,
-			user: undefined,
-			accessToken: undefined,
-			isAuthenticated: false,
-			isLogged: false,
+		(set, get) => ({
+			// PROPERTY
+			...initialState,
+			// METHOD
 			setAccessToken: (accessToken: string) =>
-				set({ accessToken, isAuthenticated: true }),
-			setCard: (user: User) => set({ user: user, card: user.cardList[0] }),
-			logout: () =>
-				set({ accessToken: undefined, isAuthenticated: false, isLogged: false })
+				set({ accessToken, authStatus: AuthStatus.LOADING }),
+			setUser: (user: User) =>
+				set({
+					user: user,
+					card: user?.cardList?.[0],
+					authStatus: AuthStatus.SUCCESS
+				}),
+			changeCard: (cardId: Card['id']) => {
+				const card = get().user?.cardList.find((card) => card.id === cardId);
+
+				if (card) {
+					set({ card });
+				}
+			},
+			logout: () => set({ authStatus: AuthStatus.LOGGING_OUT }),
+			clearStore: () => set({ ...initialState, authStatus: AuthStatus.IDLE }),
+			changeStatus: (authStatus: AuthStatus) => set({ authStatus })
 		}),
 		{ name: '[AUTH_STORE]' }
 	)
@@ -36,9 +65,9 @@ export const useAuthStore = create(
 
 export function useAuthenticatedStore() {
 	const state = useAuthStore((state) => ({
-		card: state.card as Card,
-		user: state.user as User,
-		accessToken: state.accessToken
+		card: state?.card as Card,
+		user: state?.user as User,
+		accessToken: state?.accessToken as string
 	}));
 
 	if (!state.accessToken || !state.card || !state.user) {

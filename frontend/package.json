@@ -1,27 +1,16 @@
 {
-	"name": "banco-saint-patrick",
-	"private": true,
-	"version": "0.0.0",
-	"type": "module",
-	"scripts": {		
-		"dev": "vite",
-		"build": "tsc && vite build",
-		"lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-		"preview": "vite preview",
-		"test": "vitest",
-		"lint:fix": "eslint --fix src/**/*.{js,jsx,ts,tsx,json}",
-		"format": "prettier --write ./**/*.{js,jsx,ts,tsx,css,md,json} --config ./.prettierrc"
-	},
 	"dependencies": {
 		"@hookform/resolvers": "3.3.0",
 		"@tanstack/react-query": "4.33.0",
 		"clsx": "2.0.0",
+		"dayjs": "^1.11.9",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"react-hook-form": "7.45.4",
 		"react-icons": "4.11.0",
 		"react-router-dom": "6.15.0",
 		"react-toastify": "9.1.3",
+		"swiper": "^10.2.0",
 		"tailwind-variants": "0.1.13",
 		"zod": "3.22.1",
 		"zustand": "4.4.1"
@@ -49,5 +38,18 @@
 		"typescript": "^5.0.2",
 		"vite": "^4.4.5",
 		"vitest": "0.34.2"
-	}
+	},
+	"name": "banco-saint-patrick",
+	"private": true,
+	"scripts": {
+		"build": "tsc && vite build",
+		"dev": "vite --host --port 5173",
+		"format": "prettier --write ./**/*.{js,jsx,ts,tsx,css,md,json} --config ./.prettierrc",
+		"lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+		"lint:fix": "eslint --fix src/**/*.{js,jsx,ts,tsx,json}",
+		"preview": "vite preview",
+		"test": "vitest"
+	},
+	"type": "module",
+	"version": "0.0.0"
 }

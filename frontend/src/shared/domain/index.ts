@@ -1,1 +1,2 @@
-export * from './localStorage.repository';
+export * from './pagination.model';
+export * from './storage.repository';

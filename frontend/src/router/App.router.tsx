@@ -1,24 +1,18 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { useAuthVerifier } from '@/auth/hooks';
+import { AuthStatus, useAuthStore } from '@/auth/state';
 import { webRoutes } from '@/src/shared/utils';
 import { AuthRouter } from './Auth.router';
 import { PrivateRouter } from './Private.router';
 
 export const AppRouter = () => {
-	const { isIdle, isLoading, isAuthenticated } = useAuthVerifier();
+	const authStatus = useAuthStore((s) => s.authStatus);
+	const { isAuthenticated } = useAuthVerifier();
 
-	if (isIdle) {
+	if (authStatus === AuthStatus.INIT || authStatus === AuthStatus.LOADING) {
 		return (
-			<div className="fixed flex flex-col min-h-screen min-w-full items-center justify-center bg-bg1">
-				<div>🔃</div>
-			</div>
-		);
-	}
-
-	if (isLoading) {
-		return (
-			<div className="fixed flex flex-col min-h-screen min-w-full items-center justify-center bg-bg1">
+			<div className="fixed flex flex-col min-h-screen min-w-full items-center justify-center bg-bg1 text-primary">
 				<div>🔃 Loading...</div>
 			</div>
 		);
