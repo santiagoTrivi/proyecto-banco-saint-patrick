@@ -12,7 +12,7 @@ import { Card, CardSchema } from '../card/infrastructure/schemas/card.schema';
 import { MovementDepositHandler } from './useCase/movementDepositHandler';
 import { MovementTransferenceHandler } from './useCase/movementTransferenceHandler';
 import { MainMovementHandler } from './useCase/mainMovementHandler';
-import { CardService } from 'src/card/infrastructure/service/card.service';
+import { CardService } from '../card/infrastructure/service/card.service';
 import { GetMovementData } from './useCase/getMovementData';
 
 @Module({
