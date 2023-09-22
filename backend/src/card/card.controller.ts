@@ -7,6 +7,7 @@ import {
   UseGuards,
   Request,
   Patch,
+  Get,
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
@@ -33,13 +34,16 @@ import { AddCardProcess } from './usecase/addCardProcess';
 import { CardDto } from './infrastructure/Dto/card.dto';
 import { UdpateCardDto } from './infrastructure/Dto/update-card.dto';
 import { UpdateCardtInfo } from './usecase/updateCardInfo';
+import { GetCardInfo } from './usecase/getCardInfo';
+import { CardDetail } from './infrastructure/Dto/cardDetail';
 
 @ApiTags('card')
 @Controller('card')
 export class CardController {
   constructor(
     private readonly addCardProcess: AddCardProcess,
-    private readonly updateCardInfo: UpdateCardtInfo) {}
+    private readonly updateCardInfo: UpdateCardtInfo,
+    private readonly getCardInfo: GetCardInfo) {}
 
   @ApiBearerAuth()
   @ApiCreatedResponse({ type: CardDto })
@@ -57,6 +61,21 @@ export class CardController {
   @Post()
   async addCard(@Request() req, @Body() createCardDto: CreateCardDto) {
     return await this.addCardProcess.run(req.user.uuid, createCardDto);
+  }
+  
+  @ApiBearerAuth()
+  @ApiOkResponse({type: CardDetail})
+  @ApiUnauthorizedResponse({ type: UnauthorizedResponseSchema })
+  @ApiNotFoundResponse({ type: NotFoundErrorResponseSchema })
+  @ApiInternalServerErrorResponse({ type: InternalServerErrorSchema })
+  @ApiOperation({
+    summary: 'Find card by id',
+    description: 'find the full card data ',
+  })
+  @UseGuards(JwtAuthGuard)
+  @Get(':id')
+  async getCard(@Param('id') id: string,){
+    return await this.getCardInfo.run(id);
   }
 
   @ApiBearerAuth()
@@ -76,4 +95,5 @@ export class CardController {
   ) {
     return await this.updateCardInfo.update(id, updateCardDto);
   }
+
 }

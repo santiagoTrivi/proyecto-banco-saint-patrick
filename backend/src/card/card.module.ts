@@ -11,6 +11,7 @@ import {
 } from '../client/infrastructure/schemas/client.schema';
 import { ClientService } from '../client/infrastructure/services/client.service';
 import { UpdateCardtInfo } from './usecase/updateCardInfo';
+import { GetCardInfo } from './usecase/getCardInfo';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { UpdateCardtInfo } from './usecase/updateCardInfo';
     AddCardProcess,
     ClientService,
     UpdateCardtInfo,
+    GetCardInfo 
   ],
   exports: [CardService, RegisterCard],
 })

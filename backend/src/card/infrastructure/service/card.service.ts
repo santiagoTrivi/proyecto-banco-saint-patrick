@@ -23,7 +23,9 @@ export class CardService implements CardRepository {
   }
 
   async findOne(query: any): Promise<CardEntity> {
-    const card = await this.cardModel.findOne(query).select({ __v: 0 });
+    const card = await this.cardModel.findOne(query)
+    .populate({path: 'currency', select: {__v: 0, createdAt: 0, updatedAt: 0}})
+    .select({ __v: 0 });
 
     if (!card) return null;
 
