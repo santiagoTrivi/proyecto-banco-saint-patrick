@@ -1,13 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { Document, Model } from 'mongoose';
 import { PaginationResult } from '../../../common/domain/interface/IPaginationResult';
-import { PaginationDto } from '../dto/Pagination.dto';
+import { IPaginationOption } from '../../../common/domain/interface/IpaginationOpstions';
 
 @Injectable()
 export class PaginationService<T extends Document> {
   constructor(private model: Model<T>) {}
 
-  async paginate(query: any, paginationDto: PaginationDto) {
+  async paginate(
+    query: any,
+    paginationDto: IPaginationOption,
+    populateOption: any,
+  ) {
     const page = paginationDto.page || 1;
     const limit = paginationDto.limit || 10;
 
@@ -15,6 +19,8 @@ export class PaginationService<T extends Document> {
 
     const data = await this.model
       .find(query)
+      .populate(populateOption)
+      .select({__v: 0})
       .skip(startIndex)
       .limit(limit)
       .exec();

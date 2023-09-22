@@ -18,28 +18,7 @@ export class CardService implements CardRepository {
     const savedCard = await card.save();
     return CardEntity.getcardEntity(savedCard);
   }
-  /*
-  async create(createCardDto: CreateCardDto) {
-    const checkCard = await this.cardModel.findOne({
-      card_number: createCardDto.card_number,
-    });
 
-    if (checkCard)
-      throw new HttpException(
-        'CARD_NUMBER ALREADY EXISTS',
-        HttpStatus.UNAUTHORIZED,
-      );
-
-    const card = new Card();
-    const salt = genSaltSync();
-
-    card.card_number = createCardDto.card_number;
-    card.PIN = hashSync(createCardDto.PIN, salt);
-    card.current_balance = createCardDto.current_balance;
-
-    return await this.cardModel.create(card);
-  }
-*/
   async findAll(): Promise<CardEntity[]> {
     return await this.cardModel.find().select({ __v: 0 });
   }
@@ -51,11 +30,9 @@ export class CardService implements CardRepository {
 
     return card.toObject();
   }
-
-  async update(id: string, updateCardDto: UpdateCardDto) {
-    return await this.cardModel
-      .findByIdAndUpdate(id, updateCardDto, { new: true })
-      .exec();
+  async update(id: string, updateData: Partial<CardEntity>) {
+    return await this.cardModel.findByIdAndUpdate(id, updateData, {new: true})
+    .exec();
   }
 
   async findById(id: string): Promise<CardEntity> {

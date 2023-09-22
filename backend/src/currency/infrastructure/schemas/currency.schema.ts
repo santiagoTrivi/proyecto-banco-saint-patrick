@@ -1,4 +1,4 @@
-import { Document, now } from 'mongoose';
+import mongoose, { Document, now } from 'mongoose';
 import { ICurrency } from '../../../currency/domain/interface/ICurrency';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
@@ -6,6 +6,9 @@ export type CurrencyDocument = Currency & Document;
 
 @Schema()
 export class Currency implements ICurrency {
+  @Prop({ default: new mongoose.Types.ObjectId() })
+  _id: mongoose.Types.ObjectId;
+
   @Prop()
   name: string;
 

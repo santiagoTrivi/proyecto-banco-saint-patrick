@@ -5,4 +5,5 @@ export interface CardRepository {
   findAll(): Promise<CardEntity[]>;
   findOne(query: any): Promise<CardEntity>;
   findById(id: string): Promise<CardEntity>;
+  update(id:string, updateData: Partial<CardEntity>);
 }

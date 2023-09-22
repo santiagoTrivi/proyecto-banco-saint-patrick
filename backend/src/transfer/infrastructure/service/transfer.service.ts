@@ -64,9 +64,7 @@ export class TransferService implements ITransferRepository<TransferEntity> {
   }
 
   async getTransferHistory(cardId: string, paginationDto: PaginationDto) {
-    return await this.paginationService.paginate(
-      { $or: [{ senderId: cardId }, { receiverId: cardId }] },
-      paginationDto,
-    );
+    return;
+    //this.paginationService.paginate({ $or: [{ senderId: cardId }, { receiverId: cardId }] },paginationDto);
   }
 }
