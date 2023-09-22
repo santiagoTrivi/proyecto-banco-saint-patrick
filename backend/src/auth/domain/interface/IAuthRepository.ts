@@ -1,4 +1,4 @@
-import { ClientEntity } from '../../../../src/client/domain/client.entity';
+import { ClientEntity } from '../../../client/domain/client.entity';
 import { IAuthentication } from './IAuthentication';
 
 export interface AuthRepository {
