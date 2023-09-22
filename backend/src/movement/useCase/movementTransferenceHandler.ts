@@ -5,7 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { DataCipher } from '../../common/useCase/dataCipher';
-import { StartSession } from '../infrastructure/services/StartSession.service';
+import { StartSession } from '../infrastructure/services/startSession.service';
 import { MovementService } from '../infrastructure/services/movement.service';
 import { ICreateMovementDto } from '../domain/interface/ICreateMovementDto';
 import { MovementDeposit } from '../domain/MovementDeposit.Entity';

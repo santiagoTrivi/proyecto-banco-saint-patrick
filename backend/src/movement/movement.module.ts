@@ -5,7 +5,7 @@ import {
   MovementSchema,
 } from './infrastructure/schema/movement.schema';
 import { MovementController } from './movement.controller';
-import { StartSession } from './infrastructure/services/StartSession.service';
+import { StartSession } from './infrastructure/services/startSession.service';
 import { MovementService } from './infrastructure/services/movement.service';
 import { FundsHandlerService } from './infrastructure/services/fundsHandler.service';
 import { Card, CardSchema } from '../card/infrastructure/schemas/card.schema';
@@ -24,9 +24,9 @@ import { GetMovementData } from './useCase/getMovementData';
   ],
   controllers: [MovementController],
   providers: [
-    MovementService,
-    StartSession,
     CardService,
+    StartSession,
+    MovementService,
     FundsHandlerService,
     MovementDepositHandler,
     MovementTransferenceHandler,

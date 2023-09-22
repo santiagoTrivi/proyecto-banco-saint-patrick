@@ -4,12 +4,12 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { DataCipher } from '../../common/useCase/dataCipher';
-import { StartSession } from '../infrastructure/services/StartSession.service';
+import { StartSession } from '../infrastructure/services/startSession.service';
 import { MovementService } from '../infrastructure/services/movement.service';
 import { ICreateMovementDto } from '../domain/interface/ICreateMovementDto';
 import { MovementDeposit } from '../domain/MovementDeposit.Entity';
 import { FundsHandlerService } from '../infrastructure/services/fundsHandler.service';
-import { CardService } from 'src/card/infrastructure/service/card.service';
+import { CardService } from '../../card/infrastructure/service/card.service';
 import { InjectConnection } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
 
