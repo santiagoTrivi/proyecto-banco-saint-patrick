@@ -5,8 +5,10 @@ import {
   UseGuards,
   Request,
   HttpCode,
+  Body,
 } from '@nestjs/common';
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiBody,
   ApiCreatedResponse,
@@ -19,6 +21,8 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import {
+  BadRequestErrorResponseSchema,
+  DataValidationErrorResponseSchema,
   ForbiddenErrorResponseChema,
   InternalServerErrorSchema,
   NotFoundErrorResponseSchema,
@@ -36,7 +40,12 @@ import {
   RefreshToken,
 } from './infrastructure/dto/';
 import { GetClientInfo } from './useCase/getClientInfo';
-import { CreateClientDto } from '../client/infrastructure/Dto/create-client.dto';
+import {
+  CreateClientDto,
+  RegisterClientDto,
+} from '../client/infrastructure/Dto/create-client.dto';
+import { RegisterClient } from './useCase/registerClient';
+import { ClientEntity } from '../client/domain/client.entity';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -44,6 +53,7 @@ export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly getClientInfo: GetClientInfo,
+    private readonly registerClient: RegisterClient,
   ) {}
 
   @ApiOkResponse({ type: AuthenticationTokens })
@@ -60,6 +70,29 @@ export class AuthController {
   @ApiBody({ type: LoginDto })
   async login(@Request() req) {
     return await this.authService.login(req.client);
+  }
+
+  @ApiOkResponse({ type: AuthenticationTokens })
+  @ApiBadRequestResponse({ type: DataValidationErrorResponseSchema })
+  @ApiInternalServerErrorResponse({ type: InternalServerErrorSchema })
+  @ApiOperation({
+    summary: 'Register client',
+    description: 'Endpoint to create a client with an unique username',
+  })
+  @ApiBody({ type: RegisterClientDto })
+  @HttpCode(201)
+  @Post('client')
+  async register(@Body() createClientDto: CreateClientDto) {
+    const { firstName, lastName, username, password } = createClientDto;
+    const client = new ClientEntity(
+      undefined,
+      firstName,
+      lastName,
+      username,
+      password,
+    );
+
+    return await this.registerClient.run(client);
   }
 
   @ApiBearerAuth()

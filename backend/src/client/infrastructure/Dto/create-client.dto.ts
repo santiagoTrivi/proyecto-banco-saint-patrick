@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { IClient } from '../../domain/interface/IClient';
 import { ApiProperty } from '@nestjs/swagger';
-import { CreateCardDto } from '../../../auth/infrastructure/dto/create-card.dto';
+import { CardDetail } from '../../../card/infrastructure/Dto/cardDetail';
 
 export class CreateClientDto implements IClient {
   @ApiProperty()
@@ -34,9 +34,39 @@ export class CreateClientDto implements IClient {
 
   @ApiProperty({ isArray: true })
   @IsOptional()
-  cards?: CreateCardDto;
+  cards?: CardDetail;
 
   @ApiProperty()
   @IsOptional()
   refreshToken?: string;
+
+  @ApiProperty()
+  @IsOptional()
+  createdAt?: Date;
+
+  @ApiProperty()
+  @IsOptional()
+  updatedAt?: Date;
+}
+
+export class RegisterClientDto implements IClient {
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  firstName: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  lastName: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  username: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  password?: string;
 }

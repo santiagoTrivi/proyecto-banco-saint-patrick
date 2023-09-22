@@ -16,7 +16,7 @@ describe('AuthService', () => {
   let service: AuthService;
   let clientService: ClientService;
   let jwtService: JwtService;
-  let configService: ConfigService
+  let configService: ConfigService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -34,7 +34,6 @@ describe('AuthService', () => {
 
     service = module.get<AuthService>(AuthService);
     clientService = module.get<ClientService>(ClientService);
-
   });
 
   it('should be defined', () => {
@@ -44,24 +43,13 @@ describe('AuthService', () => {
   describe('login method', () => {
     let authentication: IAuthentication;
 
-    
     describe('validateClient', () => {
-
       it('should return null for false client validatation', async () => {
-
         jest.spyOn(clientService, 'findOne').mockResolvedValueOnce(null);
 
         const result = await service.validateClient('invalidUser', 'password');
         expect(result).toBeNull();
-       
-      })
-      
-    })
-
-    
-
+      });
+    });
   });
-
 });
-
-

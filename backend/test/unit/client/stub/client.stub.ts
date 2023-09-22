@@ -14,6 +14,6 @@ export const clientStub = (): ClientEntity => {
     password: '$2b$10$cEWfvps9A2ottJ1Sd2HUPOeTd1H02rSFTMtPeYMEKfjvT/35wtoim',
     cards: [],
     isActive: true,
-    refreshToken: null
+    refreshToken: null,
   };
 };

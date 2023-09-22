@@ -1,6 +1,7 @@
 import { compare, compareSync, genSalt, hash } from 'bcrypt';
+import { IDataCipher } from '../domain/interface/IDataCipher';
 
-export class DataCipher {
+export class DataCipher implements IDataCipher {
   private readonly saltNumber: number = 10;
 
   async hash(data: string): Promise<string> {

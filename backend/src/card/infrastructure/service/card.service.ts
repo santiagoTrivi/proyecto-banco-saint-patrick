@@ -1,10 +1,7 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreateCardDto } from '../../../auth/infrastructure/dto/create-card.dto';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { hashSync, genSaltSync } from 'bcrypt';
 import { Card, CardDocument } from '../schemas/card.schema';
-import { UpdateCardDto } from '../Dto/update-card.dto';
 import { CardRepository } from '../../domain/interface/ICardRepository';
 import { CardEntity } from '../../domain/Card.entity';
 
@@ -15,25 +12,10 @@ export class CardService implements CardRepository {
     private readonly cardModel: Model<CardDocument>,
   ) {}
 
-  async create(createCardDto: CreateCardDto) {
-    const checkCard = await this.cardModel.findOne({
-      card_number: createCardDto.card_number,
-    });
-
-    if (checkCard)
-      throw new HttpException(
-        'CARD_NUMBER ALREADY EXISTS',
-        HttpStatus.UNAUTHORIZED,
-      );
-
-    const card = new Card();
-    const salt = genSaltSync();
-
-    card.card_number = createCardDto.card_number;
-    card.PIN = hashSync(createCardDto.PIN, salt);
-    card.current_balance = createCardDto.current_balance;
-
-    return await this.cardModel.create(card);
+  async create(createCard: CardEntity): Promise<CardEntity> {
+    const card = new this.cardModel(createCard);
+    const savedCard = await card.save();
+    return CardEntity.getcardEntity(savedCard);
   }
 
   async findAll(): Promise<CardEntity[]> {
@@ -41,24 +23,25 @@ export class CardService implements CardRepository {
   }
 
   async findOne(query: any): Promise<CardEntity> {
-    const card = await this.cardModel.findOne(query).select({ __v: 0 });
+    const card = await this.cardModel.findOne(query)
+    .populate({path: 'currency', select: {__v: 0, createdAt: 0, updatedAt: 0}})
+    .select({ __v: 0 });
 
     if (!card) return null;
 
     return card.toObject();
   }
-
-  async update(id: string, updateCardDto: UpdateCardDto) {
+  async update(id: string, updateData: Partial<CardEntity>) {
     return await this.cardModel
-      .findByIdAndUpdate(id, updateCardDto, { new: true })
+      .findByIdAndUpdate(id, updateData, { new: true })
       .exec();
   }
 
   async findById(id: string): Promise<CardEntity> {
-    const card = await this.findById(id);
+    const card = await this.cardModel.findById(id)
 
     if (!card) return null;
 
-    return card;
+    return CardEntity.getcardEntity(card);
   }
 }

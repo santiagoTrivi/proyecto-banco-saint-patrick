@@ -11,8 +11,6 @@ import { IAuthentication } from '../../../src/auth/domain/interface/IAuthenticat
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 
-
-
 jest.mock('../../../src/auth/useCase/getClientInfo');
 
 describe('AuthController', () => {
@@ -32,7 +30,7 @@ describe('AuthController', () => {
         GetClientInfo,
         ClientService,
         JwtService,
-        ConfigService
+        ConfigService,
       ],
     }).compile();
 
@@ -46,23 +44,20 @@ describe('AuthController', () => {
   });
 
   describe('get client info', () => {
-
     const req = {
-      user: userStub()
-    }
+      user: userStub(),
+    };
 
     beforeEach(async () => {
       await controller.getclient(req);
-    })
+    });
 
     test('it should call getClientInfo', () => {
-      expect(getClientInfo.run).toBeCalled()
-    })
+      expect(getClientInfo.run).toBeCalled();
+    });
 
     test('it should use req', () => {
-        expect(getClientInfo.run).toHaveBeenCalledWith(req.user.uuid)
-      })
-
-  })
-
+      expect(getClientInfo.run).toHaveBeenCalledWith(req.user.uuid);
+    });
+  });
 });
