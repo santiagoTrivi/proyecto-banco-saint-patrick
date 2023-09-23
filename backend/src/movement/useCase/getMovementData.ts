@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { ValidateObjectIdService } from '../../common/infrastructure/service/validMongoObjectId';
+import { ValidateObjectIdService } from '@common/infrastructure/service/validMongoObjectId';
 import { MovementService } from '../infrastructure/services/movement.service';
-import { IPaginationOption } from '../../common/domain/interface/IpaginationOpstions';
+import { IPaginationOption } from '@common/domain/interface/IpaginationOpstions';
 
 @Injectable()
 export class GetMovementData {

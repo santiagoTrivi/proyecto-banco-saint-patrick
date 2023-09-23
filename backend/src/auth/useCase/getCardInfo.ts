@@ -1,5 +1,5 @@
+import { CardService } from '@card/infrastructure/service/card.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CardService } from '../../card/infrastructure/service/card.service';
 
 @Injectable()
 export class GetCardInfo {

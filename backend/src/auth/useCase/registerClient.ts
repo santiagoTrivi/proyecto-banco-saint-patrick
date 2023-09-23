@@ -1,10 +1,11 @@
-import { DataCipher } from '../../common/useCase/dataCipher';
-import { ClientService } from '../../client/infrastructure/services/client.service';
 import { AuthService } from '../infrastructure/services/auth.service';
-import { ClientEntity } from '../../client/domain/client.entity';
 import { IAuthentication } from '../domain/interface/IAuthentication';
 import { Injectable, BadRequestException } from '@nestjs/common';
-import { CreateEntity } from '../../common/domain/interface/ICreateEntity';
+import { CreateEntity } from '@common/domain/interface/ICreateEntity';
+import { ClientEntity } from '@client/domain/client.entity';
+import { DataCipher } from '@common/useCase/dataCipher';
+import { ClientService } from '@client/infrastructure/services/client.service';
+
 
 @Injectable()
 export class RegisterClient implements CreateEntity<ClientEntity> {

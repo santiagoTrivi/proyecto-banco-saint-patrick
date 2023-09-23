@@ -1,5 +1,5 @@
+import { ClientService } from '@client/infrastructure/services/client.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { ClientService } from '../../client/infrastructure/services/client.service';
 
 @Injectable()
 export class GetClientInfo {

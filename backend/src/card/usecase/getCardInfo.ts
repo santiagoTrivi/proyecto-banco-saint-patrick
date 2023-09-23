@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CardService } from '../infrastructure/service/card.service';
-import { ValidateObjectIdService } from '../../common/infrastructure/service/validMongoObjectId';
+import { ValidateObjectIdService } from '@common/infrastructure/service/validMongoObjectId';
+
 
 @Injectable()
 export class GetCardInfo {

@@ -1,11 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { CardEntity } from '../domain/Card.entity';
-import { CreateEntity } from '../../common/domain/interface/ICreateEntity';
 import { CreateCard } from '../domain/interface/ICreateCard';
 import { RegisterCard } from './registerCard';
-import { ClientService } from '../../client/infrastructure/services/client.service';
-import { ValidateObjectIdService } from '../../common/infrastructure/service/validMongoObjectId';
-import { ClientEntity } from '../../client/domain/client.entity';
+import { ValidateObjectIdService } from '@common/infrastructure/service/validMongoObjectId';
+import { ClientService } from '@client/infrastructure/services/client.service';
+import { ClientEntity } from '@client/domain/client.entity';
+
 
 @Injectable()
 export class AddCardProcess {
