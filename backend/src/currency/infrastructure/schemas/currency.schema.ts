@@ -1,5 +1,5 @@
 import mongoose, { Document, now } from 'mongoose';
-import { ICurrency } from '../../domain/interface/ICurrency';
+import { ICurrency } from '../../../currency/domain/interface/ICurrency';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 export type CurrencyDocument = Currency & Document;

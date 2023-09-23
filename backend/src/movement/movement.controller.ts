@@ -23,13 +23,13 @@ import {
 import { CreateMovementDto } from './infrastructure/Dto/create-movement.dto';
 import { MainMovementHandler } from './useCase/mainMovementHandler';
 import { GetMovementData } from './useCase/getMovementData';
-import { IPaginationOption } from '@common/domain/interface/IpaginationOpstions';
+import { IPaginationOption } from '../common/domain/interface/IpaginationOpstions';
 import {
   DataValidationErrorResponseSchema,
   InternalServerErrorSchema,
   UnauthorizedResponseSchema,
-} from '@common/infrastructure/errors.schemas';
-import { JwtAuthGuard } from '@auth/infrastructure/guards';
+} from '../common/infrastructure/errors.schemas';
+import { JwtAuthGuard } from '../auth/infrastructure/guards';
 import MovementDto from './infrastructure/Dto/movement.dto';
 import CreatedMovementResponseDto from './infrastructure/Dto/created-movement-response.dto';
 import { HistoryMovementDto } from './infrastructure/Dto/pagination-movement-response.dto';

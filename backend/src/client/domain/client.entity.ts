@@ -1,4 +1,4 @@
-import { CardEntity } from '@card/domain/Card.entity';
+import { CardEntity } from '../../card/domain/Card.entity';
 import { IClient } from './interface/IClient';
 
 export class ClientEntity implements IClient {

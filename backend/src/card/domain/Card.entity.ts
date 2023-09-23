@@ -1,3 +1,4 @@
+import { CurrencyEntity } from '../../currency/domain/currencyEntity';
 import { ICard } from './interface/ICard';
 
 export class CardEntity implements ICard {

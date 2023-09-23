@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { CreateMovementDto } from './create-movement.dto';
-import { CurrencyObjectData } from '@currency/infrastructure/Dto/create-currency.dto';
+import { CurrencyObjectData } from '../../../currency/infrastructure/Dto/create-currency.dto';
 
 export class DetailedMovement extends CreateMovementDto {
   @ApiProperty()

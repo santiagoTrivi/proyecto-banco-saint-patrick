@@ -8,8 +8,8 @@ import { AddCardProcess } from './usecase/addCardProcess';
 import {
   Client,
   ClientSchema,
-} from '@client/infrastructure/schemas/client.schema';
-import { ClientService } from '@client/infrastructure/services/client.service';
+} from '../client/infrastructure/schemas/client.schema';
+import { ClientService } from '../client/infrastructure/services/client.service';
 import { UpdateCardtInfo } from './usecase/updateCardInfo';
 import { GetCardInfo } from './usecase/getCardInfo';
 

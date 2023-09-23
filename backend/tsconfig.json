@@ -16,16 +16,6 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false,
-    "paths": {
-      "@client/*": ["src/client/*"],
-      "@card/*": ["src/card/*"],
-      "@common/*": ["src/common/*"],
-      "@auth/*": ["src/auth/*"],
-      "@config/*": ["src/config/*"],
-      "@currency/*": ["src/currency/*"],
-      "@movement/*": ["src/movement/*"],
-
-    }
+    "noFallthroughCasesInSwitch": false
   }
 }

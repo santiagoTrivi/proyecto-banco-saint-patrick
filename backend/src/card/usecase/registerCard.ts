@@ -1,9 +1,10 @@
+import { CreateEntity } from '../../common/domain/interface/ICreateEntity';
 import { CardEntity } from '../domain/Card.entity';
+import { DataCipher } from '../../common/useCase/dataCipher';
 import { CardService } from '../infrastructure/service/card.service';
 import { CreateCard } from '../domain/interface/ICreateCard';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { DataCipher } from '@common/useCase/dataCipher';
-import { CardNumberGenerator } from '@common/useCase/cardNumberGenerator';
+import { CardNumberGenerator } from '../../common/useCase/cardNumberGenerator';
 
 @Injectable()
 export class RegisterCard {
