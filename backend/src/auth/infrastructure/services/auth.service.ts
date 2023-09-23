@@ -1,12 +1,12 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { ClientService } from '../../../client/infrastructure/services/client.service';
-import { DataCipher } from '../../../common/useCase/dataCipher';
-import { CONFIG_JWT_TIMING } from '../../../config/jwt.cofig';
 import { IAuthentication } from '../../domain/interface/IAuthentication';
-import { ClientEntity } from '../../../client/domain/client.entity';
 import { AuthRepository } from '../../domain/interface/IAuthRepository';
+import { DataCipher } from '@common/useCase/dataCipher';
+import { ClientService } from '@client/infrastructure/services/client.service';
+import { CONFIG_JWT_TIMING } from '@config/jwt.cofig';
+import { ClientEntity } from '@client/domain/client.entity';
 
 @Injectable()
 export class AuthService implements AuthRepository {

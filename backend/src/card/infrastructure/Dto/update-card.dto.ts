@@ -1,6 +1,6 @@
+import { IUpdateCard } from '@card/domain/interface/IUpdateCard';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, Length } from 'class-validator';
-import { IUpdateCard } from '../../domain/interface/IUpdateCard';
 
 export class UdpateCardDto implements IUpdateCard {
 

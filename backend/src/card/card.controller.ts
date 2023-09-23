@@ -28,8 +28,8 @@ import {
   InternalServerErrorSchema,
   NotFoundErrorResponseSchema,
   UnauthorizedResponseSchema,
-} from '../common/infrastructure/errors.schemas';
-import { JwtAuthGuard } from '../auth/infrastructure/guards';
+} from '@common/infrastructure/errors.schemas';
+import { JwtAuthGuard } from '@auth/infrastructure/guards';
 import { AddCardProcess } from './usecase/addCardProcess';
 import { CardDto } from './infrastructure/Dto/card.dto';
 import { UdpateCardDto } from './infrastructure/Dto/update-card.dto';

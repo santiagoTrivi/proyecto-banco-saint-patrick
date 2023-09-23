@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CurrencyEntity } from '../../../currency/domain/currencyEntity';
-import { CurrencyReposipty } from '../../../currency/domain/interface/ICurrencyRepository';
+import { CurrencyEntity } from '../../domain/currencyEntity';
+import { CurrencyReposipty } from '../../domain/interface/ICurrencyRepository';
 import { InjectModel } from '@nestjs/mongoose';
 import { Currency, CurrencyDocument } from '../schemas/currency.schema';
 import { Model } from 'mongoose';
