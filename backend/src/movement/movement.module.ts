@@ -8,11 +8,11 @@ import { MovementController } from './movement.controller';
 import { StartSession } from './infrastructure/services/startSession.service';
 import { MovementService } from './infrastructure/services/movement.service';
 import { FundsHandlerService } from './infrastructure/services/fundsHandler.service';
-import { Card, CardSchema } from '@card/infrastructure/schemas/card.schema';
+import { Card, CardSchema } from '../card/infrastructure/schemas/card.schema';
 import { MovementDepositHandler } from './useCase/movementDepositHandler';
 import { MovementTransferenceHandler } from './useCase/movementTransferenceHandler';
 import { MainMovementHandler } from './useCase/mainMovementHandler';
-import { CardService } from '@card/infrastructure/service/card.service';
+import { CardService } from '../card/infrastructure/service/card.service';
 import { GetMovementData } from './useCase/getMovementData';
 
 @Module({

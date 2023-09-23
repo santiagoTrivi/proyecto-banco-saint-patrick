@@ -4,10 +4,11 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { DataCipher } from '@common/useCase/dataCipher';
+import { DataCipher } from '../../common/useCase/dataCipher';
 import { StartSession } from '../infrastructure/services/startSession.service';
 import { MovementService } from '../infrastructure/services/movement.service';
 import { ICreateMovementDto } from '../domain/interface/ICreateMovementDto';
+import { MovementDeposit } from '../domain/MovementDeposit.Entity';
 import { FundsHandlerService } from '../infrastructure/services/fundsHandler.service';
 import { MovementTransference } from '../domain/MovementTransference.Entity';
 

@@ -1,11 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Card } from '@card/infrastructure/schemas/card.schema';
+import { Card } from '../../../card/infrastructure/schemas/card.schema';
 import mongoose, { Document, now } from 'mongoose';
-import { Currency } from '@currency/infrastructure/schemas/currency.schema';
+import { Currency } from '../../../currency/infrastructure/schemas/currency.schema';
 import {
   MovemenTypeValue,
   MovementType,
-} from '@movement/domain/movementType';
+} from '../../../movement/domain/movementType';
 
 export type MovementDocument = Movement & Document;
 

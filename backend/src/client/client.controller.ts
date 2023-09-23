@@ -1,12 +1,16 @@
 import {
   Body,
   Controller,
+  Post,
+  Put,
   UseGuards,
+  Request,
   Param,
   HttpCode,
   Patch,
 } from '@nestjs/common';
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiBody,
   ApiCreatedResponse,
@@ -14,16 +18,18 @@ import {
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
+  ApiParam,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { UdpateClientDto } from './infrastructure/Dto/update-client.dto';
 import { JwtAuthGuard } from '../auth/infrastructure/guards';
 import {
+  DataValidationErrorResponseSchema,
   InternalServerErrorSchema,
   NotFoundErrorResponseSchema,
   UnauthorizedResponseSchema,
-} from '@common/infrastructure/errors.schemas';
+} from '../common/infrastructure/errors.schemas';
 import { UpdateClientInfo } from './useCase/updateClientInfo';
 
 @ApiTags('client')
@@ -41,7 +47,6 @@ export class ClientController {
     summary: 'Update Client data',
     description: 'For any client data. password updata allowed for now',
   })
-  @HttpCode(200)
   @Patch(':id')
   async update(
     @Param('id') id: string,

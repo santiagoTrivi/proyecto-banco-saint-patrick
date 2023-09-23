@@ -1,7 +1,7 @@
 import { IsNotEmpty, Length, IsString, IsOptional } from 'class-validator';
 import { ICard } from '../../domain/interface/ICard';
 import { ApiProperty } from '@nestjs/swagger';
-import { CurrencyObjectData } from '@currency/infrastructure/Dto/create-currency.dto';
+import { CurrencyObjectData } from '../../../currency/infrastructure/Dto/create-currency.dto';
 
 export class CardDetail implements ICard {
   @ApiProperty()

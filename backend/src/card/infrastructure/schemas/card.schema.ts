@@ -1,8 +1,8 @@
-import { ICard } from '@card/domain/interface/ICard';
-import { Client } from '@client/infrastructure/schemas/client.schema';
-import { Currency } from '@currency/infrastructure/schemas/currency.schema';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document, now } from 'mongoose';
+import { ICard } from '../../domain/interface/ICard';
+import { Client } from '../../../client/infrastructure/schemas/client.schema';
+import { Currency } from '../../../currency/infrastructure/schemas/currency.schema';
 
 export type CardDocument = Card & Document;
 

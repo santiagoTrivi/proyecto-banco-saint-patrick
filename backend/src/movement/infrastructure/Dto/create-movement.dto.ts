@@ -6,8 +6,8 @@ import {
   IsString,
   Length,
 } from 'class-validator';
-import { ICreateMovementDto } from '../../domain/interface/ICreateMovementDto';
-import { MovementType } from '../../domain/movementType';
+import { ICreateMovementDto } from '../../../movement/domain/interface/ICreateMovementDto';
+import { MovementType } from '../../../movement/domain/movementType';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateMovementDto implements ICreateMovementDto {

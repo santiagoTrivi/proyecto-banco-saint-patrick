@@ -27,7 +27,7 @@ import {
   InternalServerErrorSchema,
   NotFoundErrorResponseSchema,
   UnauthorizedResponseSchema,
-} from '@common/infrastructure/errors.schemas';
+} from '../common/infrastructure/errors.schemas';
 import { AuthService } from './infrastructure/services/auth.service';
 import {
   JwtAuthGuard,
@@ -43,9 +43,9 @@ import { GetClientInfo } from './useCase/getClientInfo';
 import {
   CreateClientDto,
   RegisterClientDto,
-} from '@client/infrastructure/Dto/create-client.dto';
+} from '../client/infrastructure/Dto/create-client.dto';
 import { RegisterClient } from './useCase/registerClient';
-import { ClientEntity } from '@client/domain/client.entity';
+import { ClientEntity } from '../client/domain/client.entity';
 
 @ApiTags('auth')
 @Controller('auth')

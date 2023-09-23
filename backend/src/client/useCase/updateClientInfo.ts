@@ -1,10 +1,10 @@
-import { DataCipher } from '@common/useCase/dataCipher';
-import { IDataCipher } from '@common/domain/interface/IDataCipher';
+import { DataCipher } from '../../common/useCase/dataCipher';
+import { IDataCipher } from '../../common/domain/interface/IDataCipher';
 import { ClientEntity } from '../domain/client.entity';
 import { IUpdateClient } from '../domain/interface/IUpdateClient';
 import { ClientService } from '../infrastructure/services/client.service';
-import { UpdateEntityData } from '@common/domain/interface/IupdateEntityData';
-import { ValidateObjectIdService } from '@common/infrastructure/service/validMongoObjectId';
+import { UpdateEntityData } from '../../common/domain/interface/IupdateEntityData';
+import { ValidateObjectIdService } from '../../common/infrastructure/service/validMongoObjectId';
 import {
   Injectable,
   NotFoundException,
