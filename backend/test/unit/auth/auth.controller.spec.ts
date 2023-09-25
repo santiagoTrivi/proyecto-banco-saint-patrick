@@ -8,6 +8,11 @@ import { Client } from '../../../src/client/infrastructure/schemas/client.schema
 import { Model } from 'mongoose';
 import { TokensStub, clientStub, userStub } from '../client/stub';
 import { IAuthentication } from '../../../src/auth/domain/interface/IAuthentication';
+import { JwtStrategy, LocalStrategy, RefreshTokenStrategy } from '../../../src/auth/infrastructure/strategies';
+import { RegisterClient } from '../../../src/auth/useCase/registerClient';
+import { ConfigService } from '@nestjs/config';
+import { MockJwtStrategy } from './infrastructure/strategies/mockJwtStrategy'
+import { JwtModule, JwtService } from '@nestjs/jwt';
 
 jest.mock('../../../src/auth/infrastructure/services/auth.service');
 
@@ -19,14 +24,32 @@ describe('AuthController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [AuthController],
+      imports: [JwtModule],
       providers: [
         {
           provide: getModelToken(Client.name),
           useValue: Model,
         },
-        AuthService,
-        GetClientInfo,
+        {
+          provide: ConfigService,
+          useValue: {
+            get: jest.fn()
+          }
+        },
+        {
+          provide: JwtStrategy,
+          useClass: MockJwtStrategy
+        },
+        {
+          provide: RefreshTokenStrategy,
+          useClass: MockJwtStrategy
+        },
         ClientService,
+        AuthService,
+        LocalStrategy,
+        GetClientInfo,
+        RegisterClient,
+        JwtService
       ],
     }).compile();
 
@@ -34,12 +57,21 @@ describe('AuthController', () => {
     authService = module.get<AuthService>(AuthService);
     getClientInfo = module.get<GetClientInfo>(GetClientInfo);
   });
+  
+  describe('AuthController and AuthService', () => {
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
-  });
+    test('AuthController should be defined', () => {
+      expect(controller).toBeDefined();
+    })
 
-  describe('login endpoint', () => {
+    test('AuthService should be defined', () => {
+      expect(authService).toBeDefined();
+    })
+
+  })
+
+
+  describe('AutherService - login method', () => {
     let auth: IAuthentication;
     const client = clientStub();
     const tokens = TokensStub();
@@ -65,7 +97,8 @@ describe('AuthController', () => {
     });
   });
 
-  describe('logout endpoint ', () => {
+
+  describe('AutherService - logout method', () => {
     const req = {
       user: userStub(),
     };
@@ -82,4 +115,5 @@ describe('AuthController', () => {
       expect(authService.logout).toHaveBeenCalledWith(req.user.uuid);
     });
   });
+
 });

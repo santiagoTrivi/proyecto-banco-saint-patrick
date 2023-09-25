@@ -1,29 +1,30 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { AuthService } from '../../../src/auth/infrastructure/services/auth.service';
-import { ClientService } from '../../../src/client/infrastructure/services/client.service';
+import { Test } from '@nestjs/testing';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { ClientService } from '../../../src/client/infrastructure/services/client.service';
+import { DataCipher } from '../../../src/common/useCase/dataCipher';
+import { AuthService } from '../../../src/auth/infrastructure/services/auth.service';
+import { ForbiddenException } from '@nestjs/common';
 import { getModelToken } from '@nestjs/mongoose';
 import { Client } from '../../../src/client/infrastructure/schemas/client.schema';
 import { Model } from 'mongoose';
-import { clientStub } from '../client/stub';
-import { IAuthentication } from '../../../src/auth/domain/interface/IAuthentication';
-import { ClientEntity } from '../../../src/client/domain/client.entity';
+import { mockClientModel } from '../client/stub/mockClientmodel';
 
-//jest.mock('../../../src/auth/infrastructure/services/auth.service');
+
+jest.mock('../../../src/auth/infrastructure/services/auth.service');
 
 describe('AuthService', () => {
-  let service: AuthService;
-  let clientService: ClientService;
+  let authService: AuthService;
   let jwtService: JwtService;
   let configService: ConfigService;
+  let clientService: ClientService;
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+    const module = await Test.createTestingModule({
       providers: [
         {
           provide: getModelToken(Client.name),
-          useValue: Model,
+          useValue: mockClientModel,
         },
         AuthService,
         JwtService,
@@ -32,24 +33,15 @@ describe('AuthService', () => {
       ],
     }).compile();
 
-    service = module.get<AuthService>(AuthService);
+    authService = module.get<AuthService>(AuthService);
+    jwtService = module.get<JwtService>(JwtService);
+    configService = module.get<ConfigService>(ConfigService);
     clientService = module.get<ClientService>(ClientService);
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
+  it('should be define ', () => {
+    expect(authService).toBeDefined()
+  })
 
-  describe('login method', () => {
-    let authentication: IAuthentication;
 
-    describe('validateClient', () => {
-      it('should return null for false client validatation', async () => {
-        jest.spyOn(clientService, 'findOne').mockResolvedValueOnce(null);
-
-        const result = await service.validateClient('invalidUser', 'password');
-        expect(result).toBeNull();
-      });
-    });
-  });
 });

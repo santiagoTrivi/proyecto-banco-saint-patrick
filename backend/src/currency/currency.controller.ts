@@ -1,10 +1,9 @@
 import { Body, Controller, Get, HttpCode, Post } from '@nestjs/common';
-import { RegisterCurrency } from './useCase/registerCurrency';
+import { RegisterCurrency, GetCurrencyInfo } from './useCase';
 import {
   CreateCurrencyDto,
   CurrencyObjectData,
 } from './infrastructure/Dto/create-currency.dto';
-import { GetCurrencyInfo } from './useCase/getCurrencyInfo';
 import {
   ApiBadRequestResponse,
   ApiBody,
