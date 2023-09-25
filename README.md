@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://idforideas.com/assets/images/sanpatricio.png" width="70" height="70">
+  <img src="https://github.com/santiagoTrivi/proyecto-banco-saint-patrick/blob/main/frontend/public/logo.png" width="70" height="70">
 </p>
 <h1 align="center" ><strong>BANCO SAINT PATRICK</strong></h1>
 <p align="center"><strong>Home banking para transacciones.</strong></p>
