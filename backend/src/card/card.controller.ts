@@ -30,12 +30,10 @@ import {
   UnauthorizedResponseSchema,
 } from '../common/infrastructure/errors.schemas';
 import { JwtAuthGuard } from '../auth/infrastructure/guards';
-import { AddCardProcess } from './usecase/addCardProcess';
 import { CardDto } from './infrastructure/Dto/card.dto';
 import { UdpateCardDto } from './infrastructure/Dto/update-card.dto';
-import { UpdateCardtInfo } from './usecase/updateCardInfo';
-import { GetCardInfo } from './usecase/getCardInfo';
 import { CardDetail } from './infrastructure/Dto/cardDetail';
+import { AddCardProcess, GetCardInfo, UpdateCardtInfo } from './usecase';
 
 @ApiTags('card')
 @Controller('card')

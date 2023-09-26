@@ -8,8 +8,9 @@ import { Client } from '../../../src/client/infrastructure/schemas/client.schema
 import { Model } from 'mongoose';
 import { TokensStub, clientStub, userStub } from '../client/stub';
 import { IAuthentication } from '../../../src/auth/domain/interface/IAuthentication';
-import { JwtService } from '@nestjs/jwt';
+import { JwtModule, JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { RegisterClient } from '../../../src/auth/useCase/registerClient';
 
 jest.mock('../../../src/auth/useCase/getClientInfo');
 
@@ -21,16 +22,23 @@ describe('AuthController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [AuthController],
+      imports: [JwtModule],
       providers: [
         {
           provide: getModelToken(Client.name),
           useValue: Model,
         },
+        {
+          provide: ConfigService,
+          useValue: {
+            get: jest.fn()
+          }
+        },
+        ClientService,
         AuthService,
         GetClientInfo,
-        ClientService,
-        JwtService,
-        ConfigService,
+        RegisterClient,
+        JwtService
       ],
     }).compile();
 
@@ -41,7 +49,7 @@ describe('AuthController', () => {
 
   it('should be defined', () => {
     expect(controller).toBeDefined();
-  });
+  }); 
 
   describe('get client info', () => {
     const req = {

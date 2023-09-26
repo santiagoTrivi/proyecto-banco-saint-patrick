@@ -9,7 +9,7 @@ export class RegisterCurrency {
 
   async run(createCurrency: ICurrency): Promise<CurrencyEntity> {
     const { name, code, symbol, flag_link } = createCurrency;
-    const IS_CURRENCY_REGISTERED = await this.currencyService.findOne({ name });
+    const IS_CURRENCY_REGISTERED = await this.currencyService.findOne({ code });
 
     if (IS_CURRENCY_REGISTERED) {
       throw new BadRequestException('CURRENCY_ALREADY_REGISTERED');

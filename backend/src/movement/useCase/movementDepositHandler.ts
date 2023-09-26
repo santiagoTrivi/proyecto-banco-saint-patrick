@@ -10,8 +10,8 @@ import { ICreateMovementDto } from '../domain/interface/ICreateMovementDto';
 import { MovementDeposit } from '../domain/MovementDeposit.Entity';
 import { FundsHandlerService } from '../infrastructure/services/fundsHandler.service';
 import { CardService } from '../../card/infrastructure/service/card.service';
-import { InjectConnection } from '@nestjs/mongoose';
-import { Connection } from 'mongoose';
+import { CurrencyService } from '../../currency/infrastructure/services/currency.service';
+
 
 @Injectable()
 export class MovementDepositHandler {
@@ -22,14 +22,15 @@ export class MovementDepositHandler {
     private readonly fundsHandlerService: FundsHandlerService,
     private readonly movementService: MovementService,
     private readonly cardService: CardService,
-    @InjectConnection() private readonly connection: Connection,
+    private readonly currencyService: CurrencyService
   ) {
     this.dataCipher = new DataCipher();
   }
 
   async run(createMovementDto: ICreateMovementDto) {
     const { cardId, PIN, amount, concept } = createMovementDto;
-    const session = await this.connection.startSession();
+
+    const session = await this.startSession.startSession();
 
     try {
       await session.startTransaction();
@@ -48,13 +49,13 @@ export class MovementDepositHandler {
       if (!PIN_VALIDATION) throw new UnauthorizedException('WORNG PIN');
 
       await this.fundsHandlerService.add(foundCard, amount);
-      //await this.cardService.update(foundCard._id, {current_balance: + amount})
 
-      const _cardId = foundCard._id;
-      const currencyId = foundCard.currency._id.toString();
+
+      const currency = await this.currencyService.findOne({code: foundCard.currency.code});
+      const currencyId = currency._id;
 
       const deposit = MovementDeposit.createNew({
-        cardId: _cardId,
+        cardId: foundCard._id,
         amount,
         currencyId,
         concept,

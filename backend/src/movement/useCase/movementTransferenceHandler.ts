@@ -8,9 +8,9 @@ import { DataCipher } from '../../common/useCase/dataCipher';
 import { StartSession } from '../infrastructure/services/startSession.service';
 import { MovementService } from '../infrastructure/services/movement.service';
 import { ICreateMovementDto } from '../domain/interface/ICreateMovementDto';
-import { MovementDeposit } from '../domain/MovementDeposit.Entity';
 import { FundsHandlerService } from '../infrastructure/services/fundsHandler.service';
 import { MovementTransference } from '../domain/MovementTransference.Entity';
+import { CurrencyService } from '../../currency/infrastructure/services/currency.service';
 
 @Injectable()
 export class MovementTransferenceHandler {
@@ -20,6 +20,7 @@ export class MovementTransferenceHandler {
     private readonly startSession: StartSession,
     private readonly fundsHandlerService: FundsHandlerService,
     private readonly movementService: MovementService,
+    private readonly currencyService: CurrencyService
   ) {
     this.dataCipher = new DataCipher();
   }
@@ -54,7 +55,7 @@ export class MovementTransferenceHandler {
       }
 
       if (
-        foundCard.currency._id.toString() !== _tocard.currency._id.toString()
+        foundCard.currency.code !== _tocard.currency.code
       ) {
         throw new BadRequestException('CURRENCY_DOES_NOT_MATCH');
       }
@@ -66,13 +67,12 @@ export class MovementTransferenceHandler {
       await this.fundsHandlerService.subtract(foundCard, amount);
       await this.fundsHandlerService.add(_tocard, amount);
 
-      const _cardId = foundCard._id;
-      const tocardId = _tocard._id;
-      const currencyId = foundCard.currency._id.toString();
+      const currency = await this.currencyService.findOne({code: foundCard.currency.code});
+      const currencyId = currency._id;
 
       const transference = MovementTransference.createNew({
-        cardId: _cardId,
-        toCardId: tocardId,
+        cardId: foundCard._id,
+        toCardId: _tocard._id,
         amount,
         currencyId,
         concept,

@@ -45,6 +45,6 @@ describe('clientService', () => {
 
     test('should  call findOne with the provided username', async () => {
       expect(findOneSpy).toHaveBeenCalledWith({ username });
-    });
+    }); 
   });
 });

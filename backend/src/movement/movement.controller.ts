@@ -21,8 +21,7 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { CreateMovementDto } from './infrastructure/Dto/create-movement.dto';
-import { MainMovementHandler } from './useCase/mainMovementHandler';
-import { GetMovementData } from './useCase/getMovementData';
+import { MainMovementHandler, GetMovementData } from './useCase';
 import { IPaginationOption } from '../common/domain/interface/IpaginationOpstions';
 import {
   DataValidationErrorResponseSchema,

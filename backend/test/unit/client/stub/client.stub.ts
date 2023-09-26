@@ -17,3 +17,13 @@ export const clientStub = (): ClientEntity => {
     refreshToken: null,
   };
 };
+
+
+export const newClient = () => {
+  return {
+    firstName: "test0",
+    lastName: "test0",
+    username: "test0Username",
+    password: "test0Username"
+  }
+}
