@@ -6,8 +6,6 @@ export type CurrencyDocument = Currency & Document;
 
 @Schema()
 export class Currency implements ICurrency {
-  @Prop({ default: new mongoose.Types.ObjectId() })
-  _id: mongoose.Types.ObjectId;
 
   @Prop()
   name: string;

@@ -14,12 +14,15 @@ import { MovementTransferenceHandler } from './useCase/movementTransferenceHandl
 import { MainMovementHandler } from './useCase/mainMovementHandler';
 import { CardService } from '../card/infrastructure/service/card.service';
 import { GetMovementData } from './useCase/getMovementData';
+import { CurrencyService } from '../currency/infrastructure/services/currency.service';
+import { Currency, CurrencySchema } from '../currency/infrastructure/schemas/currency.schema';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: Movement.name, schema: MovementSchema },
       { name: Card.name, schema: CardSchema },
+      { name: Currency.name, schema: CurrencySchema}
     ]),
   ],
   controllers: [MovementController],
@@ -32,6 +35,7 @@ import { GetMovementData } from './useCase/getMovementData';
     MovementTransferenceHandler,
     MainMovementHandler,
     GetMovementData,
+    CurrencyService
   ],
 })
 export class MovementModule {}

@@ -37,3 +37,13 @@ export const currenciesListStub = () => {
         }
     ]
 }
+
+export const newCurrency = () => {
+    return {
+        name: 'Tet currency',
+        code: 'TST',
+        symbol: '%',
+        isAvailable: true,
+        flag_link: 'www.testLinkForCurrency'
+    }
+}
