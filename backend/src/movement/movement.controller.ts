@@ -86,6 +86,6 @@ export class MovementController {
     @Param('cardId') cardId: string,
     @Query() paginations: IPaginationOption,
   ) {
-    return this.getMovementData.PoaginationMovementByCard(cardId, paginations);
+    return this.getMovementData.PaginationMovementByCard(cardId, paginations);
   }
 }
