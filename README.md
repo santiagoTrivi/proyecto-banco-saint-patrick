@@ -74,7 +74,7 @@ Ir al directorio del proyecto
 ### Usando Docker-compose
 Este proyecto cuenta en la configura de las imágenes de Docker a través de DockerFile y Docker-compose. Por lo cual, asegúrese de tener instalado [Docker](https://www.docker.com/products/docker-desktop/) y [Docker compose](https://docs.docker.com/compose/) 
 
-Construya la imágenes y ejecutes los contenedores 
+Construya la imágenes y ejecute los contenedores 
 
 ```bash
   docker-compose --env-file .env.ci up
@@ -107,7 +107,7 @@ Inicializar el replica set
 ```bash
   rs.initiate(config);
 ```
-Finalmente, en la parte SECONDARY, coloque `db` y luego `exit` para salir de la connexion del contenedor 
+Finalmente, en la parte SECONDARY, coloque `db` y luego `exit` para salir de la connexion del contenedor. Para la indicaciones, [click Aqui](https://www.youtube.com/watch?v=PcUGdyiFyvo&t=316s)
 
 
 ## :construction_worker: Sobre los desarrolladores
