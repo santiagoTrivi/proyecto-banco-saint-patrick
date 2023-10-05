@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://idforideas.com/assets/images/sanpatricio.png" width="70" height="70">
+  <img src="https://github.com/santiagoTrivi/proyecto-banco-saint-patrick/blob/main/frontend/public/logo.png" width="70" height="70">
 </p>
 <h1 align="center" ><strong>BANCO SAINT PATRICK</strong></h1>
 <p align="center"><strong>Home banking para transacciones.</strong></p>
@@ -39,6 +39,8 @@ Este proyecto FullStack permite a los clientes registrados realizar transferenci
 
 Para ejecutar este proyecto, necesitaras añadir las siguientes variables de entorno a tu archivo .env
 
+### Backend
+
 `PORT`
 
 `PRODUCTION_DATABASE_URL`
@@ -48,6 +50,12 @@ Para ejecutar este proyecto, necesitaras añadir las siguientes variables de ent
 `PRIVATE_KEY`
 
 `REFRESH_KEY`
+
+### Fronted
+
+`VITE_APP_ROOT`
+
+`VITE_APP_API_URL`
 
 ## :rocket: Como instalar y ejecutar este proyect
 

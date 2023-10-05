@@ -6,10 +6,10 @@ services:
       - 3000:3000
     environment:
       PORT: 3000
-      PRODUCTION_DATABASE_URL: mongodb://mongodb:27017
-      DEVELOPMENT_DATABASE_URL: mongodb://mongodb:27017
-      PRIVATE_KEY: MIICXQIBAAKBgQCSgwP+By4GmUAAlMM7kdbescMSjN/q9fwsjcmoLoPRuTtwl/CzJ7x9+kf63im4zPdejJVNM/h1b4XsRpvIWNFm90T2z7t3+yfVr+yfQ3zY9Gh3sNmaOD64DRa3cGC+adMKqazybF03vJsnCo+PgPSjK0BR7l+El9UDK0QQ2jUsbQIDAQABAoGANBzz+5R0M5apJEvF0deDFT0nhN6k+v86DmL0mqTI8H0xflAdJqx4qFqw5bPGJVyKlI/uv0JAGw1rFmrbGH03Jh2yg5BjJLMV8FPeVFlq9cteeuYzwaaHjwnKtM2e8XyRKrMxZ8+0RIYaAoKnuAFhavtZSqE6nIDHnI6TROcuCGUCQQDPF0pgMo/QXsIOMHbFUfGcASlJ8i54sY9g5N+g71bfp2to+KHc11BFvyf2cnVz5oitzsco+a4aRFwuYIycSNFfAkEAtR0cJSKnMgmaHmUO2lBLfGvZjsAQMEz5ZDucQz1FogQYW43VfB36xDik8UbFXkA7Z8uM37gHliFhLHFEJXeZswJBAI9ddlXmav07vGgKUQ8FTZhMjYLtsBJKChJwIAjP6Hpo8sj250d1n9LJJSdN0dXs0M5SijnpsAfrL03D9VP0bU0CQQCC5+R07uQcJZaQy4h9wTWeW7GnHSlWT/yeNvvOGdZfsUgNvKmGiYC8HRkTD40Of6ywbA6JkVFicQP0hHW2AwlDAkAs8B2A9aYnLZ/7qJlFCH9ySJ969kl+JSSRbrf3aQVknh0bxdMsDZPZlR47oYXktWz7Dadl1EwVxvIwBZ6zbE/F
-      REFRESH_KEY: MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCSgwP+By4GmUAAlMM7kdbescMSjN/q9fwsjcmoLoPRuTtwl/CzJ7x9+kf63im4zPdejJVNM/h1b4XsRpvIWNFm90T2z7t3+yfVr+yfQ3zY9Gh3sNmaOD64DRa3cGC+adMKqazybF03vJsnCo+PgPSjK0BR7l+El9UDK0QQ2jUsbQIDAQAB
+      PRODUCTION_DATABASE_URL: mongodb://mongodb:27017/?replicaSet=dbrs
+      DEVELOPMENT_DATABASE_URL: mongodb://mongodb:27017/?replicaSet=dbrs
+      PRIVATE_KEY: ${PRIVATE_KEY}
+      REFRESH_KEY: ${REFRESH_KEY}
     networks:
       - bank-full-stack-app
     depends_on:
@@ -27,6 +27,7 @@ services:
       - backend-api
   serviceDatabase:
     image: mongo:4.4.25
+    command: [--replSet, dbrs, --bind_ip_all, --port, "27017"]
     container_name: mongodb
     ports:
       - 27018:27017
