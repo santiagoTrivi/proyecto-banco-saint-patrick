@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://idforideas.com/assets/images/sanpatricio.png" width="70" height="70">
+  <img src="https://github.com/santiagoTrivi/proyecto-banco-saint-patrick/blob/main/frontend/public/logo.png" width="70" height="70">
 </p>
 <h1 align="center" ><strong>BANCO SAINT PATRICK</strong></h1>
 <p align="center"><strong>Home banking para transacciones.</strong></p>
@@ -39,6 +39,8 @@ Este proyecto FullStack permite a los clientes registrados realizar transferenci
 
 Para ejecutar este proyecto, necesitaras añadir las siguientes variables de entorno a tu archivo .env
 
+### Backend
+
 `PORT`
 
 `PRODUCTION_DATABASE_URL`
@@ -49,7 +51,64 @@ Para ejecutar este proyecto, necesitaras añadir las siguientes variables de ent
 
 `REFRESH_KEY`
 
-## :rocket: Como instalar y ejecutar este proyect
+### Fronted
+
+`VITE_APP_ROOT`
+
+`VITE_APP_API_URL`
+
+## :rocket: Como instalar y ejecutar este proyecto
+
+Clonar el proyecto
+
+```bash
+  git clone https://github.com/santiagoTrivi/proyecto-banco-saint-patrick.git
+```
+
+Ir al directorio del proyecto
+
+```bash
+  cd proyecto-banco-saint-patrick
+```
+
+### Usando Docker-compose
+Este proyecto cuenta en la configura de las imágenes de Docker a través de DockerFile y Docker-compose. Por lo cual, asegúrese de tener instalado [Docker](https://www.docker.com/products/docker-desktop/) y [Docker compose](https://docs.docker.com/compose/) 
+
+Construya la imágenes y ejecutes los contenedores 
+
+```bash
+  docker-compose --env-file .env.ci up
+```
+Es importante ejecutar los contenedores con `-–env-file .env.ci`; ya que en el archivo `.env.ci` estan las variables de entorno necesarias para `docker-compose.yml`
+
+Para detener los contenedores, ejecute
+
+```bash
+  docker-compose down
+```
+
+## Configuración de MongoDB | Replica set
+
+Con la incorporación de transacciones ACID en MongoDB 4.0 o superior, se requiere la configuración de ReplicaSet, conecido como [Replication](https://www.mongodb.com/docs/manual/replication/), no en el entorno standalone. Replica set en MongoDB es un grupo de procesos de mongod que mantiene el sismo set de datos. Debido al estilo del proyecto (trasferencias y depósitos de cliente) se implemento las transacciones de MongoDB para evitar los errores. 
+
+para la Configuración del contenedor de mongo ejecutado por  
+`docker-compose.yml`, Acceda al contenedor 
+
+```bash
+  docker exec -it mongodb mongo
+```
+Agrega el replica set
+
+```bash
+  config={_id:'dbrs', members:[{_id:0, host:"mongodb:27017"}]};
+```
+Inicializar el replica set
+
+```bash
+  rs.initiate(config);
+```
+Finalmente, en la parte SECONDARY, coloque `db` y luego `exit` para salir de la connexion del contenedor 
+
 
 ## :construction_worker: Sobre los desarrolladores
 

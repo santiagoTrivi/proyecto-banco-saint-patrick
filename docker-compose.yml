@@ -1,0 +1,44 @@
+version: '3'
+services:
+  backend-api:
+    build: ./backend
+    ports:
+      - 3000:3000
+    environment:
+      PORT: 3000
+      PRODUCTION_DATABASE_URL: mongodb://mongodb:27017/?replicaSet=dbrs
+      DEVELOPMENT_DATABASE_URL: mongodb://mongodb:27017/?replicaSet=dbrs
+      PRIVATE_KEY: ${PRIVATE_KEY}
+      REFRESH_KEY: ${REFRESH_KEY}
+    networks:
+      - bank-full-stack-app
+    depends_on:
+      - serviceDatabase
+  fronted-website:
+    build: ./frontend
+    ports:
+      - 5173:5173
+    environment:
+      VITE_APP_ROOT: http://backend-api/
+      VITE_APP_API_URL: http://backend-api/
+    networks:
+      - bank-full-stack-app
+    depends_on:
+      - backend-api
+  serviceDatabase:
+    image: mongo:4.4.25
+    command: [--replSet, dbrs, --bind_ip_all, --port, "27017"]
+    container_name: mongodb
+    ports:
+      - 27018:27017
+    networks:
+      - bank-full-stack-app
+    volumes:
+      - data-Service:/data/db
+
+networks:
+  bank-full-stack-app:
+    driver: bridge
+
+volumes:
+  data-Service: {}
