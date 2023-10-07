@@ -1,7 +1,7 @@
 import { VariantProps, tv } from 'tailwind-variants';
 
 export const InputStyles = tv({
-	base: 'font-nunito px-2 py-1 font-medium text-md outline-none transition-all duration-150',
+	base: 'font-font1 px-2 py-1 font-medium text-md outline-none transition-all duration-150',
 
 	variants: {
 		colorSheme: {

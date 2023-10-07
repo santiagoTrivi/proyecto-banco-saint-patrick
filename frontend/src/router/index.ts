@@ -1,2 +1,3 @@
 export * from './App.router';
-export * from './Auth.router';
+export * from './Public.router';
+

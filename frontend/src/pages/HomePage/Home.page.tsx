@@ -1,77 +1,69 @@
-import { useAuthStore, useAuthenticatedStore } from '@/auth/state';
-import { Card } from '@/cards/components';
-import { formatMoney, groupChars } from '@/shared/utils';
-import { timeFormatter } from '@/shared/utils/timeFormat';
-import { TransactionsNestedRepository } from '@/transactions/services';
-import { transactionsQueryKeys } from '@/transactions/utils';
-import { Heading, Select, Text } from '@/ui/components';
 import { useQuery } from '@tanstack/react-query';
 
-export function HomePage() {
-	const { card, user } = useAuthenticatedStore();
-	const changeCard = useAuthStore((state) => state.changeCard);
+import { useAuthStore, useAuthenticatedStore } from '@/auth/state';
+import { Card } from '@/cards/components';
+import { CardSelector } from '@/cards/components/CardSelector';
+import { MovementDetail, MovementPreview } from '@/movements/components';
+import { MovementsRepository } from '@/movements/domain';
+import { MovementsNestRepository } from '@/movements/services';
+import { transactionsQueryKeys } from '@/movements/utils';
+import { Dialog, Layout } from '@/shared/components';
+import { Heading } from '@/ui/components';
+import { UserCard } from '@/users/components';
 
-	const { data } = useQuery(
+type HomePageProps = {
+	movementRepository?: MovementsRepository;
+};
+
+export function HomePage({
+	movementRepository = MovementsNestRepository()
+}: HomePageProps) {
+	const { card, user } = useAuthenticatedStore();
+	const onChangeCard = useAuthStore((state) => state.changeCard);
+
+	const { data: movementList } = useQuery(
 		transactionsQueryKeys.findTransactions(card?.id),
 		async () => {
-			return await TransactionsNestedRepository().findTransactions(card.id);
+			return await movementRepository.findMovements(card.id);
 		},
-		{
-			enabled: !!card
-		}
+		{ enabled: !!card }
 	);
 
 	return (
-		<div className="text-primary-100">
-			<header className="p-4 bg-secondary-700">
-				<Heading>
-					{user.firstName} {user.lastName}
-				</Heading>
-			</header>
-
-			<div className="m-4">
-				<Card
-					className="mx-auto max-w-md"
-					card={card}
-					cardSelector={
-						<Select
-							onChange={changeCard}
-							value={card.id}
-							className="tracking-widest mx-auto mt-4 mb-8 text-center"
-						>
-							{user.cardList.map((c) => (
-								<option key={c.id} value={c.id} className="bg-bg1-800 p-2 m-2">
-									{groupChars(c.cardNumber, 4)}
-								</option>
-							))}
-						</Select>
-					}
-				/>
-
-				<Heading className="my-4">Latest Movements</Heading>
-
-				<div className="flex flex-col gap-y-2">
-					{data?.map((transaction) => (
-						<div
-							key={transaction.id}
-							className="p-4 flex items-center border border-tertiary-500/40 rounded-md bg-tertiary-500/10"
-						>
-							<div className="flex flex-col">
-								<Text>{transaction.senderId}</Text>
-
-								<div>
-									<Text fontSize="xs">
-										{timeFormatter(transaction.createdAt).fromNow()} -{' '}
-										{transaction.concept}
-									</Text>
-								</div>
-							</div>
-
-							<Text className="ml-auto">{formatMoney(transaction.amount)}</Text>
-						</div>
-					))}
+		<Layout>
+			<div className="my-8 flex flex-col">
+				<div className="mx-auto grid grid-cols-[min(100%,100rem)] gap-4 md:grid-cols-[0.4fr_1.2fr]">
+					<UserCard user={user} className="md:min-w-max" />
+					<Card
+						className="max-w-sm"
+						card={card}
+						cardSelector={
+							<CardSelector
+								card={card}
+								cardList={user.cardList}
+								onChange={onChangeCard}
+							/>
+						}
+					/>
 				</div>
+
+				<Heading className="mt-8" component="h2">
+					Recent Movements
+				</Heading>
+
+				<hr className="mb-8 mt-2" />
+
+				<ol className="grid grid-cols-[repeat(auto-fit,minmax(min(24rem,100%),1fr))] gap-4">
+					{movementList?.map((movement) => (
+						<Dialog
+							key={movement.id}
+							trigger={<MovementPreview movement={movement} />}
+							title={`${movement.type}`}
+							description={<MovementDetail movement={movement} />}
+						/>
+					))}
+				</ol>
 			</div>
-		</div>
+		</Layout>
 	);
 }

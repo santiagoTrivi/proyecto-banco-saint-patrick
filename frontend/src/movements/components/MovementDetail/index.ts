@@ -1,0 +1,1 @@
+export { MovementDetail } from './MovementDetail';

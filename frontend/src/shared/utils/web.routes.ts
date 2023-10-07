@@ -3,6 +3,7 @@ const authRoot = `${root}auth/` as const;
 const transactionsRoot = `${root}transactions/` as const;
 
 const authRoutes = {
+	path: 'auth',
 	root: authRoot,
 	login: {
 		relative: 'login',
@@ -19,6 +20,7 @@ const authRoutes = {
 } as const;
 
 const transactionRoutes = {
+	path: 'transactions',
 	root: transactionsRoot,
 	new: {
 		relative: 'new',

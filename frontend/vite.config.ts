@@ -5,12 +5,16 @@ import { defineConfig } from 'vite';
 // https://vitejs.dev/config/
 export default defineConfig({
 	plugins: [react()],
-	base: './',
+	base: '/',
 	resolve: {
 		alias: [
 			{
-				find: '@/transactions',
-				replacement: path.resolve(__dirname, 'src/transactions')
+				find: '@/currencies',
+				replacement: path.resolve(__dirname, 'src/currencies')
+			},
+			{
+				find: '@/movements',
+				replacement: path.resolve(__dirname, 'src/movements')
 			},
 			{
 				find: '@/cards',

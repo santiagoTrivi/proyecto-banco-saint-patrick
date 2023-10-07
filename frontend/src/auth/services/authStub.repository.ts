@@ -1,83 +1,35 @@
-import { AuthRepository, Credentials, Token } from '@/auth/domain';
+import { AuthRepository, Credentials } from '@/auth/domain';
 import { useAuthStore } from '@/auth/state';
-import { formatMoney, groupChars } from '@/shared/utils';
+import { userStub1, userStub2 } from '@/tests/users';
 import { User } from '@/users/domain';
 
-export const cardStub1: User = {
-	id: '1',
-	username: 'jhon',
-	firstName: 'John',
-	lastName: 'Doe',
-	isActive: true,
-	cardList: [
-		{
-			id: '1',
-			cardNumber: '1234567890123456',
-			balance: 1000,
-			isActive: true,
-			balanceFormatted: formatMoney(1000),
-			cardNumberFormatted: groupChars('1234567890123456', 4),
-			username: 'jhon'
-		}
-	]
+export const credentialStub1: Credentials = {
+	username: userStub1.username,
+	password: '12345678'
 };
 
-export const credentialStub1: Credentials & Token = {
-	username: cardStub1.username,
-	password: '12345678',
-	accessToken: '',
-	refreshToken: ''
-};
-
-export const cardStub2: User = {
-	id: '2',
-	firstName: 'Jane',
-	lastName: 'Doe',
-	username: 'jane',
-	isActive: true,
-	cardList: [
-		{
-			id: '2',
-			cardNumber: '1234567890123457',
-			balance: 1000,
-			isActive: true,
-			balanceFormatted: formatMoney(1000),
-			cardNumberFormatted: groupChars('1234567890123457', 4),
-			username: 'jane'
-		}
-	]
-};
-
-export const credentialStub2: Credentials & Token = {
-	username: cardStub2.username,
-	password: '12345678',
-	accessToken: '',
-	refreshToken: ''
+export const credentialStub2: Credentials = {
+	username: userStub2.username,
+	password: '12345678'
 };
 
 export function AuthStubRepository(): AuthRepository {
-	let authInMemory: (Credentials & Token)[] = [
-		credentialStub1,
-		credentialStub2
-	];
-	const cardInMemory: User[] = [cardStub1, cardStub2];
+	let credentialInMemory: Credentials[] = [credentialStub1, credentialStub2];
+	const userInMemory: User[] = [userStub1, userStub2];
 
 	return {
 		login: async (credentials) => {
-			const cardFound = authInMemory.find(
-				(auth) =>
-					auth.username === credentials.username &&
-					auth.password === credentials.password
+			const cardFound = credentialInMemory.find(
+				(c) =>
+					c.username === credentials.username &&
+					c.password === credentials.password
 			);
 
 			if (!cardFound) {
 				throw new Error('Card not found');
 			}
 
-			cardFound.accessToken = new Date().toISOString();
-			cardFound.refreshToken = new Date().toISOString();
-
-			authInMemory = authInMemory.map((auth) => {
+			credentialInMemory = credentialInMemory.map((auth) => {
 				if (
 					auth.username === credentials.username &&
 					auth.password === credentials.password
@@ -88,8 +40,12 @@ export function AuthStubRepository(): AuthRepository {
 				return auth;
 			});
 
-			return cardFound;
+			return {
+				accessToken: credentials.username,
+				refreshToken: credentials.username
+			};
 		},
+
 		logout: async (_accessToken) => {
 			console.log(_accessToken);
 			return;
@@ -102,23 +58,23 @@ export function AuthStubRepository(): AuthRepository {
 				throw new Error('Access token not found');
 			}
 
-			const authFound = authInMemory.find(
-				(auth) => auth.accessToken === accessToken
+			const authFound = credentialInMemory.find(
+				(auth) => auth.username === accessToken
 			);
 
 			if (!authFound) {
 				throw new Error('Auth not found');
 			}
 
-			const card = cardInMemory.find(
+			const user = userInMemory.find(
 				(card) => card.username === authFound.username
 			);
 
-			if (!card) {
+			if (!user) {
 				throw new Error('Card not found');
 			}
 
-			return card;
+			return user;
 		},
 
 		refreshSession: async () => {
@@ -128,26 +84,26 @@ export function AuthStubRepository(): AuthRepository {
 				throw new Error('Access token not found');
 			}
 
-			const authFound = authInMemory.find(
-				(auth) => auth.accessToken === accessToken
+			const credential = credentialInMemory.find(
+				(auth) => auth.username === accessToken
 			);
 
-			if (!authFound) {
-				throw new Error('Auth not found');
+			if (!credential) {
+				throw new Error('Credential not found');
 			}
 
-			authFound.accessToken = new Date().toISOString();
-			authFound.refreshToken = new Date().toISOString();
-
-			authInMemory = authInMemory.map((auth) => {
-				if (auth.accessToken === accessToken) {
-					return authFound;
+			credentialInMemory = credentialInMemory.map((c) => {
+				if (c.username === accessToken) {
+					return credential;
 				}
 
-				return auth;
+				return c;
 			});
 
-			return authFound;
+			return {
+				accessToken: credential.username,
+				refreshToken: credential.username
+			};
 		}
 	};
 }

@@ -17,7 +17,7 @@ export enum AuthStatus {
 interface AuthStore {
 	user: User | null;
 	card: Card | null;
-	accessToken?: string;
+	accessToken: string;
 	authStatus: AuthStatus;
 	setAccessToken: (accessToken: Token['accessToken']) => void;
 	setUser: (user: User) => void;
@@ -30,7 +30,7 @@ interface AuthStore {
 const initialState = {
 	card: null,
 	user: null,
-	accessToken: undefined,
+	accessToken: '',
 	authStatus: AuthStatus.INIT
 } as const;
 

@@ -1,7 +1,7 @@
 import { tv, VariantProps } from 'tailwind-variants';
 
 export const HeadingStyles = tv({
-	base: 'uppercase font-bold text-primary-50',
+	base: 'font-font1 uppercase font-bold text-primary-50',
 	variants: {
 		size: {
 			xs: 'text-sm',

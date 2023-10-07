@@ -21,7 +21,8 @@
 		"noFallthroughCasesInSwitch": true,
 		"baseUrl": ".",
 		"paths": {
-			"@/transactions/*": ["src/transactions/*"],
+			"@/currencies/*": ["src/currencies/*"],
+			"@/movements/*": ["src/movements/*"],
 			"@/cards/*": ["src/cards/*"],
 			"@/users/*": ["src/users/*"],
 			"@/shared/*": ["src/shared/*"],

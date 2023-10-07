@@ -17,10 +17,10 @@ describe('<LoginForm />', () => {
 
 		// WHEN
 		fireEvent.change(cardNumberInput, {
-			target: { value: credentialStub1.password }
+			target: { value: credentialStub1.username }
 		});
 		fireEvent.blur(cardNumberInput);
-		fireEvent.change(pinInput, { target: { value: '12345678' } });
+		fireEvent.change(pinInput, { target: { value: credentialStub1.password } });
 		fireEvent.blur(pinInput);
 
 		expect(

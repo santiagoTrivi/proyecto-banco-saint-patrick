@@ -4,7 +4,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
-import { AuthRepository } from '@/auth/domain';
+import { AuthRepository, Credentials } from '@/auth/domain';
 import * as AuthSchemas from '@/auth/schemas';
 import { AuthNestRepository } from '@/auth/services';
 import { useAuthStore } from '@/auth/state';
@@ -25,8 +25,9 @@ export const LoginForm = ({ authRepository = AuthNestRepository() }: Props) => {
 		formState: { errors, isValid }
 	} = useForm<AuthSchemas.Credentials>({
 		defaultValues: {
-			username: 'erickperez',
-			password: 'erickperez'
+			// username: 'erickperez',
+			username: 'tommaxwell',
+			password: 'tommaxwell'
 		},
 		mode: 'onBlur',
 		progressive: true,
@@ -38,8 +39,9 @@ export const LoginForm = ({ authRepository = AuthNestRepository() }: Props) => {
 		data,
 		isSuccess,
 		isError
-	} = useMutation((credentials: AuthSchemas.Credentials) =>
-		authRepository.login(credentials)
+	} = useMutation(
+		async (credentials: AuthSchemas.Credentials) =>
+			await authRepository.login(Credentials.create(credentials))
 	);
 
 	const onSubmit = handleSubmit((data) => login(data));
