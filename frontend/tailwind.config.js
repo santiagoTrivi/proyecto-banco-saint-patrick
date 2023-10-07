@@ -3,22 +3,23 @@ export default {
 	content: ['./src/**/*.{js,ts,jsx,tsx}'],
 	theme: {
 		fontFamily: {
-			nunito: ['Nunito', 'sans-serif']
+			nunito: ['Nunito', 'sans-serif'],
+			font1: ['Ysabeau Infant', 'sans-serif']
 		},
 		extend: {
 			colors: {
 				bg1: {
-					DEFAULT: '#16172b',
-					50: '#edeffb',
-					100: '#cccee5',
-					200: '#abadd2',
-					300: '#8a8cbf',
-					400: '#696bac',
-					500: '#505194',
-					600: '#3d3f73',
-					700: '#2c2d52',
-					800: '#1a1b33',
-					900: '#080815'
+					DEFAULT: '#080816',
+					50: '#ececf8',
+					100: '#c8c7e6',
+					200: '#a2a2d6',
+					300: '#7e7dc7',
+					400: '#5b58b9',
+					500: '#423ea0',
+					600: '#34317c',
+					700: '#252358',
+					800: '#151435',
+					900: '#070713'
 				},
 				primary: {
 					DEFAULT: '#fdd981',
@@ -60,6 +61,23 @@ export default {
 					800: '#004250',
 					900: '#00181f'
 				}
+			},
+			keyframes: {
+				overlayShow: {
+					from: { opacity: '0' },
+					to: { opacity: '1' }
+				},
+				contentShow: {
+					from: {
+						opacity: '0',
+						transform: 'translate(-50%, -80%) scale(0.5)'
+					},
+					to: { opacity: '1', transform: 'translate(-50%, -50%) scale(1)' }
+				}
+			},
+			animation: {
+				overlayShow: 'overlayShow 250ms cubic-bezier(0.16, 1, 0.3, 1)',
+				contentShow: 'contentShow 250ms cubic-bezier(0.16, 1, 0.3, 1)'
 			}
 		}
 	},

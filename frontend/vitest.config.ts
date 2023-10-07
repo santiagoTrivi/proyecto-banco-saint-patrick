@@ -15,8 +15,12 @@ export default mergeConfig(viteConfig, {
 		exclude: [...configDefaults.exclude],
 		alias: [
 			{
-				find: '@/transactions',
-				replacement: path.resolve(__dirname, 'src/transactions')
+				find: '@/currencies',
+				replacement: path.resolve(__dirname, 'src/currencies')
+			},
+			{
+				find: '@/movements',
+				replacement: path.resolve(__dirname, 'src/movements')
 			},
 			{
 				find: '@/cards',

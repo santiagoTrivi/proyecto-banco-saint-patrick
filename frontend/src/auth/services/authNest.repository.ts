@@ -1,12 +1,12 @@
 import { UserEndpointToModel } from '@/auth/adapters';
-import { AuthRepository } from '@/auth/domain';
+import { AuthRepository, Token } from '@/auth/domain';
 import { tokenEndpoint, userEndpoint } from '@/auth/schemas';
 import { useAuthStore } from '@/auth/state';
 import { sessionKeys, sessionStorageRepository } from '@/shared/services';
 import { envVariables, httpReq } from '@/shared/utils';
 
 export function AuthNestRepository(): AuthRepository {
-	const baseUrl = envVariables.VITE_APP_API_URL + 'auth';
+	const baseUrl = envVariables.API_URL + 'auth';
 
 	return {
 		login: async (credentials) => {
@@ -22,7 +22,7 @@ export function AuthNestRepository(): AuthRepository {
 			const result = await response.json();
 			const resultValidated = tokenEndpoint.parse(result);
 
-			return resultValidated;
+			return Token.create(resultValidated);
 		},
 
 		refreshSession: async () => {
@@ -48,7 +48,7 @@ export function AuthNestRepository(): AuthRepository {
 				resultValidated.refreshToken
 			);
 
-			return resultValidated;
+			return Token.create(resultValidated);
 		},
 
 		logout: async (accessToken: string) => {

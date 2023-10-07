@@ -1,1 +1,2 @@
-export { TransactionsPage } from './Transactions.page';
+export * from './Transactions.page';
+export * from './TransactionsNew.page';

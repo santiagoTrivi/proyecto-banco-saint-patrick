@@ -4,9 +4,9 @@ import { Heading } from '@/ui/components';
 
 export const LoginPage = () => {
 	return (
-		<div className="flex flex-col flex-1 relative">
-			<Bubble className="w-32 h-32 -top-12 -left-5" />
-			<Bubble className="w-44 h-44 -bottom-12 -right-5" />
+		<div className="flex flex-col flex-1">
+			<Bubble className="w-32 h-32 -top-12 -left-5 fixed" />
+			<Bubble className="w-44 h-44 -bottom-12 -right-5 fixed" />
 
 			<main className="flex flex-col flex-1 justify-center items-center">
 				<div className="flex flex-col items-center max-w-[300px] text-center mb-8 relative">

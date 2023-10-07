@@ -1,21 +1,20 @@
 import { CardEndpoint } from '@/auth/schemas';
-import { Card } from '@/cards/domain';
-import { formatMoney, groupChars } from '@/shared/utils';
+import { Card, CardNumber } from '@/cards/domain';
+import { Money } from '@/shared/domain';
 import { User } from '@/users/domain';
 
 export function cardEndpointToModel(
 	c: CardEndpoint,
 	username: User['username']
 ): Card {
-	const groupBy = 4;
-
-	return {
+	return Card.create({
 		id: c._id,
-		cardNumber: c.card_number,
-		cardNumberFormatted: groupChars(c.card_number, groupBy),
-		balance: c.current_balance,
-		balanceFormatted: formatMoney(c.current_balance),
+		cardNumber: CardNumber.create(c.card_number),
+		balance: Money.create({
+			value: c.current_balance,
+			currencyCode: c.currency.code
+		}),
 		isActive: c.isActive,
 		username
-	};
+	});
 }

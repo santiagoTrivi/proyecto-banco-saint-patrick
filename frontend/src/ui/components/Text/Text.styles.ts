@@ -1,7 +1,7 @@
 import { VariantProps, tv } from 'tailwind-variants';
 
 export const TextStyles = tv({
-	base: 'font-nunito font-medium tracking-wider',
+	base: 'font-font1 font-medium tracking-wider',
 	variants: {
 		fontSize: {
 			xs: 'text-sm',
