@@ -80,6 +80,18 @@ export class MovementController {
     required: false,
     description: 'Page number',
   })
+  @ApiQuery({
+    name: 'from',
+    type: Date,
+    required: false,
+    description: 'to obtain data from a minimum date',
+  })
+  @ApiQuery({
+    name: 'until',
+    type: Date,
+    required: false,
+    description: 'to obtain data up to a maximum date',
+  })
   @UseGuards(JwtAuthGuard)
   @Get(':cardId')
   async getPaginationmmovement(

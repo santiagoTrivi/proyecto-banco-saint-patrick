@@ -3,4 +3,6 @@ export interface PaginationResult<T> {
   totalItems: number;
   totalPages: number;
   currentPage: number;
+  from: Date;
+  until: Date;
 }

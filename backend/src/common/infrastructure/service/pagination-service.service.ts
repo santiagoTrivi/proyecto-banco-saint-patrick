@@ -28,11 +28,14 @@ export class PaginationService<T extends Document> {
     const totalItems = await this.model.countDocuments(query).exec();
     const totalPages = Math.ceil(totalItems / limit);
 
+    const {from, until} = paginationDto;
     const paginationResult: PaginationResult<T> = {
       data,
       totalItems,
       totalPages,
       currentPage: page,
+      from,
+      until
     };
 
     return paginationResult;

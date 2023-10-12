@@ -1,7 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ValidateObjectIdService } from '../../common/infrastructure/service/validMongoObjectId';
 import { MovementService } from '../infrastructure/services/movement.service';
 import { IPaginationOption } from '../../common/domain/interface/IpaginationOpstions';
+import * as moment from 'moment';
 
 @Injectable()
 export class GetMovementData {
@@ -16,6 +17,16 @@ export class GetMovementData {
     paginationDto: IPaginationOption,
   ) {
     await this.validateObjectIdService.validate(cardId);
+
+    let {from, until} = paginationDto;
+
+    if(from && until){
+      paginationDto.from = moment(from, 'YYYY/MM/DD').toDate();
+      paginationDto.until = moment(until,'YYYY/MM/DD').toDate();
+    }else{
+      paginationDto.from = moment().startOf('month').toDate();
+      paginationDto.until = moment().endOf('month').toDate();
+    }
 
     return await this.movementService.getMovementHistory(cardId, paginationDto);
   }
