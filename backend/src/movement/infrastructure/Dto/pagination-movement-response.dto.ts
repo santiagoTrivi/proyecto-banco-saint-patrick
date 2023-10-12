@@ -28,4 +28,10 @@ export class HistoryMovementDto {
 
   @ApiProperty()
   currentPage: number;
+
+  @ApiProperty()
+  from: Date;
+
+  @ApiProperty()
+  until: Date;
 }

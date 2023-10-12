@@ -1,5 +1,6 @@
 version: '3'
 services:
+
   backend-api:
     build: ./backend
     ports:
@@ -14,6 +15,7 @@ services:
       - bank-full-stack-app
     depends_on:
       - serviceDatabase
+
   fronted-website:
     build: ./frontend
     ports:
@@ -25,6 +27,7 @@ services:
       - bank-full-stack-app
     depends_on:
       - backend-api
+
   serviceDatabase:
     image: mongo:4.4.25
     command: [--replSet, dbrs, --bind_ip_all, --port, "27017"]

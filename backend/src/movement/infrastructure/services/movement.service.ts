@@ -29,7 +29,13 @@ export class MovementService implements IMovementRepository {
     throw new Error('Method not implemented.');
   }
   async getMovementHistory(cardId: string, opction: IPaginationOption) {
-    const query = { $or: [{ cardId }, { toCardId: cardId }] };
+    const query = { 
+      $or: [{ cardId }, { toCardId: cardId }],
+      "createdAt": {
+        $gte: opction.from,
+        $lt: opction.until
+      }
+     };
     const populate = {
       path: 'currencyId',
       select: { __v: 0, createdAt: 0, updatedAt: 0 },
