@@ -74,8 +74,6 @@ describe('Home', () => {
 		const movementListItems =
 			await within(movementList).findAllByRole('button');
 
-		console.log(movementListItems);
-
 		// THEN
 		expect(movementListItems).toHaveLength(1);
 	});

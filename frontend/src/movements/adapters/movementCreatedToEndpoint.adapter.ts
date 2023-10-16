@@ -34,6 +34,6 @@ export function movementCreatedToEndpoint(
 		createdAt: m.createdAt,
 		updatedAt: m.updatedAt,
 		type: m.type,
-		toCardId: m.toCard
+		toCardId: m.toCardId
 	});
 }

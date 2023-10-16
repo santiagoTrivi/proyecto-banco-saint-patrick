@@ -14,7 +14,7 @@ export const movementCreatedEndpoint = z.discriminatedUnion('type', [
 	z
 		.object({
 			type: z.literal(MovementType.TRANSFERENCE),
-			toCard: z.string()
+			toCardId: z.string()
 		})
 		.merge(movementCreatedBase)
 ]);

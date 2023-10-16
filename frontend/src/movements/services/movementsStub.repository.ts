@@ -1,4 +1,5 @@
 import { currencyStub1 } from '@/currencies/services';
+import { movementCreatedToEndpoint } from '@/movements/adapters';
 import {
 	Movement,
 	MovementFactory,
@@ -27,15 +28,20 @@ export function movementsStubRepository(): MovementsRepository {
 			return movementInMemory.filter((movement) => movement.cardId === cardId);
 		},
 		async create(movement) {
-			const movementCreated = MovementFactory({
-				...movement,
-				id: movementInMemory.length.toString()
-				// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			} as any);
+			const m = movementCreatedToEndpoint(
+				{
+					...movement,
+					_id: (movementInMemory.length + 1).toString(),
+					currencyId: currencyStub1.id,
+					createdAt: new Date(),
+					updatedAt: new Date()
+				},
+				currencyStub1
+			);
 
-			movementInMemory.push(movementCreated);
+			movementInMemory.push(m);
 
-			return movementCreated;
+			return m;
 		}
 	};
 }

@@ -10,7 +10,7 @@ type Props = {
 export const CardSelector = ({ card, cardList, onChange }: Props) => {
 	return (
 		<Select
-			onChange={onChange}
+			onChange={(e) => onChange(e.target.value as Card['id'])}
 			value={card.id}
 			className="mx-auto mb-4 mt-2 text-center tracking-widest md:mb-8 md:mt-4"
 		>
