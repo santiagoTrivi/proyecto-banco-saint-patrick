@@ -6,10 +6,10 @@ import { webRoutes } from '@/shared/utils';
 import {
 	HomePage,
 	LoginPage,
+	MovementsNewPage,
+	MovementsPage,
 	RegisterPage,
-	SessionClosedPage,
-	TransactionsNewPage,
-	TransactionsPage
+	SessionClosedPage
 } from '@/src/pages';
 import { PrivateRouter } from './Private.router';
 import { PublicRouter } from './Public.router';
@@ -27,7 +27,7 @@ export const AppRouter = () => {
 	}
 
 	return (
-		<div className="bg-bg1 flex flex-col fixed inset-0 overflow-auto">
+		<div className="fixed inset-0 flex min-h-full flex-col overflow-auto bg-bg1">
 			<BrowserRouter>
 				<Routes>
 					<Route
@@ -43,11 +43,11 @@ export const AppRouter = () => {
 					>
 						<Route
 							path={webRoutes.transactions.path}
-							element={<TransactionsPage />}
+							element={<MovementsPage />}
 						/>
 						<Route
 							path={webRoutes.transactions.new.relative}
-							element={<TransactionsNewPage />}
+							element={<MovementsNewPage />}
 						/>
 					</Route>
 					<Route

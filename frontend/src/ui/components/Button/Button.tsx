@@ -5,11 +5,11 @@ import { ButtonStyles, ButtonVariants } from './Button.styles';
 
 type Tag = 'button' | 'a';
 
-type ButtonProps<T extends Tag> = {
+type ButtonProps<T extends Tag = 'button'> = {
 	children?: React.ReactNode;
 	component?: T;
 } & ButtonVariants &
-	(T extends 'a' ? Parameters<typeof Link>['0'] : React.ComponentProps<T>);
+	(T extends 'button' ? React.ComponentProps<T> : Parameters<typeof Link>['0']);
 
 export const Button = React.forwardRef(function Button<T extends Tag>(
 	{

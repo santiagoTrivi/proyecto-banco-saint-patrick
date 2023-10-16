@@ -18,6 +18,8 @@ export const currencyStub2 = Currency.create({
 	symbol: '€'
 });
 
+export const currencyListStub = [currencyStub1, currencyStub2];
+
 export function CurrenciesStubRepository(): CurrenciesRepository {
 	const currencyInMemory: Currency[] = [currencyStub1, currencyStub2];
 

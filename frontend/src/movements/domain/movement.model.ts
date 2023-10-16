@@ -94,10 +94,8 @@ export type Movement = Deposit | Transference;
 
 export function MovementFactory(movement: DepositProps): Deposit;
 export function MovementFactory(movement: TransferenceProps): Transference;
-export function MovementFactory(
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	movement: Movement
-): Movement {
+export function MovementFactory(movement: Movement): Movement;
+export function MovementFactory(movement: Movement): Movement {
 	if (MovementType.DEPOSIT === movement.type) {
 		return Deposit.create(movement);
 	}
