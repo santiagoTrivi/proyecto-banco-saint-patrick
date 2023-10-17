@@ -2,14 +2,17 @@ import { Injectable } from '@nestjs/common';
 import { ValidateObjectIdService } from '../../common/infrastructure/service/validMongoObjectId';
 import { MovementService } from '../infrastructure/services/movement.service';
 import { IPaginationOption } from '../../common/domain/interface/IpaginationOpstions';
-import * as moment from 'moment';
+import { DateHandler } from '../../common/useCase/DateHandler';
 
 @Injectable()
 export class GetMovementData {
   private validateObjectIdService: ValidateObjectIdService;
+  private dateHandler: DateHandler;
 
   constructor(private readonly movementService: MovementService) {
     this.validateObjectIdService = new ValidateObjectIdService();
+    this.dateHandler = new DateHandler();
+
   }
 
   async PaginationMovementByCard(
@@ -17,17 +20,17 @@ export class GetMovementData {
     paginationDto: IPaginationOption,
   ) {
     await this.validateObjectIdService.validate(cardId);
-
+    
     let {from, until} = paginationDto;
 
     if(from && until){
-      paginationDto.from = moment(from, 'YYYY/MM/DD').toDate();
-      paginationDto.until = moment(until,'YYYY/MM/DD').toDate();
+      paginationDto.from = new Date(from)
+      paginationDto.until = new Date(until)
     }else{
-      paginationDto.from = moment().startOf('month').toDate();
-      paginationDto.until = moment().endOf('month').toDate();
+      paginationDto.from = this.dateHandler.firstDay();
+      paginationDto.until = this.dateHandler.lastDay();
     }
-
+    
     return await this.movementService.getMovementHistory(cardId, paginationDto);
   }
 

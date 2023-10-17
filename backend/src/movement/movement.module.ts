@@ -16,6 +16,7 @@ import { CardService } from '../card/infrastructure/service/card.service';
 import { GetMovementData } from './useCase/getMovementData';
 import { CurrencyService } from '../currency/infrastructure/services/currency.service';
 import { Currency, CurrencySchema } from '../currency/infrastructure/schemas/currency.schema';
+import { DateHandler } from 'src/common/useCase/DateHandler';
 
 @Module({
   imports: [
@@ -35,7 +36,8 @@ import { Currency, CurrencySchema } from '../currency/infrastructure/schemas/cur
     MovementTransferenceHandler,
     MainMovementHandler,
     GetMovementData,
-    CurrencyService
+    CurrencyService,
+    DateHandler
   ],
 })
 export class MovementModule {}
