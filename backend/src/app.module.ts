@@ -14,7 +14,7 @@ import { MovementModule } from './movement/movement.module';
 @Module({
   imports: [
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '...' ,'/swagger-static'),
+      rootPath: join(__dirname, '..' ,'/swagger-static'),
       serveRoot: process.env.NODE_ENV === 'development' ? '/' : '/swagger',
     }),
     DATABASE_CONFIG(),
