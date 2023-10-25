@@ -801,7 +801,7 @@ window.onload = function() {
     },
     "info": {
       "title": "API Documentation for bank process",
-      "description": "The cats API description",
+      "description": "Saint Patrick Bank API allows client to register and have multiple cards to make movements such as deposit or transference.",
       "version": "1.0",
       "contact": {}
     },
