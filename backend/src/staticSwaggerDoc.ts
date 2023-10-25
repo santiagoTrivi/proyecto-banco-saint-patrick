@@ -4,15 +4,14 @@ import { get } from 'http';
 export function STATIC_SWAGGER_DOC() {
   const dir = __dirname + '/swagger-static';
 
-  if (!fs.existsSync(dir)) {
+  if (!fs.existsSync(dir) && process.env.NODE_ENV === 'development') {
     fs.mkdirSync(dir);
   }
 
   const serverUrl = 'http://localhost:3000';
   // get the swagger json file (if app is running in development mode)
   if (
-    process.env.NODE_ENV === 'development' ||
-    process.env.NODE_ENV === 'production'
+    process.env.NODE_ENV === 'development'
   ) {
     // write swagger ui files
     get(`${serverUrl}/swagger/swagger-ui-bundle.js`, function (response) {
