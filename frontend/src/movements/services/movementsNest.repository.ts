@@ -8,24 +8,23 @@ import {
 	movementCreatedEndpoint,
 	movementPaginatedGet
 } from '@/movements/schemas';
+import { Pagination, PaginationResult } from '@/shared/domain';
 import { envVariables, formatBearerToken, httpReq } from '@/shared/utils';
 
 export function MovementsNestRepository(): MovementsRepository {
 	const baseUrl = envVariables.API_URL + 'movement';
 
 	return {
-		async findMovements(
-			cardId,
-			pagination = {
-				page: 1,
-				limit: 10
-			}
-		) {
+		async findMovements(cardId, criteria) {
 			const accessToken = useAuthStore.getState().accessToken;
+			const pagination = criteria?.pagination ?? Pagination.default();
+			const movementFilter = criteria?.movementFilter;
 
 			const params = new URLSearchParams();
 			params.append('page', pagination.page.toString());
 			params.append('limit', pagination.limit.toString());
+			params.append('from', movementFilter?.from?.toISOString() ?? '');
+			params.append('until', movementFilter?.until?.toISOString() ?? '');
 
 			const response = await fetch(baseUrl + `/${cardId}?${params}`, {
 				method: httpReq.get,
@@ -42,8 +41,11 @@ export function MovementsNestRepository(): MovementsRepository {
 			}
 
 			const resultValidated = movementPaginatedGet.parse(result);
-
-			return resultValidated.data.map(movementEndpointToModel);
+			return PaginationResult.create(
+				resultValidated.data.map(movementEndpointToModel),
+				resultValidated.totalItems,
+				resultValidated.totalPages
+			);
 		},
 
 		async create(movement, currencyList = []) {
@@ -78,6 +80,3 @@ export function MovementsNestRepository(): MovementsRepository {
 		}
 	};
 }
-
-
-

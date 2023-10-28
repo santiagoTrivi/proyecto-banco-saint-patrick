@@ -49,7 +49,7 @@ export const Card = ({ card, cardSelector, className, ...props }: Props) => {
 
 					<Button
 						component="a"
-						to={webRoutes.transactions.new.absolute}
+						to={webRoutes.movements.root}
 						colorScheme="primary"
 					>
 						Movements

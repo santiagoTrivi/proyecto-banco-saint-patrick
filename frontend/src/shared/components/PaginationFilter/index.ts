@@ -1,0 +1,1 @@
+export { PaginationFilter } from './PaginationFilter';

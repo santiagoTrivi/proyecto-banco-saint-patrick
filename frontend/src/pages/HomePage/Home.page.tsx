@@ -1,10 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { useAuthStore, useAuthenticatedStore } from '@/auth/state';
-import { Card } from '@/cards/components';
-import { CardSelector } from '@/cards/components/CardSelector';
+import { Card, CardSelector } from '@/cards/components';
 import { MovementDetail, MovementPreview } from '@/movements/components';
-import { MovementsRepository } from '@/movements/domain';
+import { MovementFilter, MovementsRepository } from '@/movements/domain';
 import { MovementsNestRepository } from '@/movements/services';
 import { transactionsQueryKeys } from '@/movements/utils';
 import { Dialog, Layout } from '@/shared/components';
@@ -15,6 +14,8 @@ type HomePageProps = {
 	movementRepository?: MovementsRepository;
 };
 
+const movementFilter = MovementFilter.month();
+
 export function HomePage({
 	movementRepository = MovementsNestRepository()
 }: HomePageProps) {
@@ -22,9 +23,14 @@ export function HomePage({
 	const onChangeCard = useAuthStore((state) => state.changeCard);
 
 	const { data: movementList } = useQuery(
-		transactionsQueryKeys.findTransactions(card?.id),
+		transactionsQueryKeys.findTransactions({
+			cardId: card?.id,
+			movementFilter
+		}),
 		async () => {
-			return await movementRepository.findMovements(card.id);
+			return await movementRepository.findMovements(card.id, {
+				movementFilter
+			});
 		},
 		{ enabled: !!card }
 	);
@@ -54,7 +60,7 @@ export function HomePage({
 				<hr className="mb-8 mt-2" />
 
 				<ol className="grid grid-cols-[repeat(auto-fit,minmax(min(24rem,100%),1fr))] gap-4">
-					{movementList?.map((movement) => (
+					{movementList?.items?.map((movement) => (
 						<Dialog
 							key={movement.id}
 							trigger={<MovementPreview movement={movement} />}

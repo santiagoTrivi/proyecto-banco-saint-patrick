@@ -1,5 +1,5 @@
 import { tv } from 'tailwind-variants';
 
 export const LabelStyles = tv({
-	base: ''
+	base: 'font-bold tracking-wide text-primary'
 });

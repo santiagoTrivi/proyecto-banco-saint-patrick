@@ -74,7 +74,7 @@ describe('Home', () => {
 		const movementListItems =
 			await within(movementList).findAllByRole('button');
 
-		// THEN
-		expect(movementListItems).toHaveLength(1);
+		// THEN;
+		expect(movementListItems).toHaveLength(2);
 	});
 });

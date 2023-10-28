@@ -2,11 +2,11 @@ import React from 'react';
 
 import { HeadingStyleProps, HeadingStyles } from './Heading.styles';
 
-type Tag = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
-type Props<T extends Tag = 'h1'> = {
-	component?: 'h1' | T;
+type Tag = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'legend';
+type Props<T extends Tag> = {
+	component?: T;
 } & HeadingStyleProps &
-	React.ComponentPropsWithRef<T>;
+	React.ComponentProps<T>;
 
 export const Heading = React.forwardRef(function Heading<T extends Tag>(
 	{ size, component, className, ...props }: Props<T>,
@@ -21,7 +21,8 @@ export const Heading = React.forwardRef(function Heading<T extends Tag>(
 				className,
 				size
 			})}
-			ref={ref}
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			ref={ref as any}
 		/>
 	);
 }) as <T extends Tag>(props: Props<T>) => React.ReactElement;
