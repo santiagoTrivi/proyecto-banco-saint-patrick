@@ -38,7 +38,6 @@ interface TransferenceCreateProps extends MovementCreateBase {
 export class TransferenceCreate implements TransferenceCreateProps {
 	amount: number;
 	cardId: Card['id'];
-	// toCard: '6509342f9db7c53d6731b39c'
 	toCard: Card['id'];
 	concept: string;
 	PIN: string;

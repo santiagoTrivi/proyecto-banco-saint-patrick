@@ -12,7 +12,7 @@ export const Text = React.forwardRef(function Text<T extends Tag>(
 	{ component, fontSize, className, ...props }: Props<T>,
 	ref: Props<T>['ref']
 ) {
-	const Tag = component ? (component as T) : 'span';
+	const Tag = component ? (component as T) : 'p';
 
 	return (
 		<Tag

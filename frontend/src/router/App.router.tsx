@@ -20,7 +20,7 @@ export const AppRouter = () => {
 
 	if (authStatus === AuthStatus.INIT || authStatus === AuthStatus.LOADING) {
 		return (
-			<div className="fixed flex flex-col min-h-screen min-w-full items-center justify-center bg-bg1 text-primary">
+			<div className="fixed flex min-h-screen min-w-full flex-col items-center justify-center bg-bg1 text-primary">
 				<div>🔃 Loading...</div>
 			</div>
 		);
@@ -38,15 +38,15 @@ export const AppRouter = () => {
 					</Route>
 
 					<Route
-						path={webRoutes.transactions.path}
+						path={webRoutes.movements.path}
 						element={<PrivateRouter isAuthenticated={isAuthenticated} />}
 					>
 						<Route
-							path={webRoutes.transactions.path}
+							path={webRoutes.movements.root}
 							element={<MovementsPage />}
 						/>
 						<Route
-							path={webRoutes.transactions.new.relative}
+							path={webRoutes.movements.new.relative}
 							element={<MovementsNewPage />}
 						/>
 					</Route>

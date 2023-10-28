@@ -1,6 +1,6 @@
 const root = '/' as const;
 const authRoot = `${root}auth/` as const;
-const transactionsRoot = `${root}transactions/` as const;
+const movementsRoot = `${root}movements/` as const;
 
 const authRoutes = {
 	path: 'auth',
@@ -19,21 +19,21 @@ const authRoutes = {
 	}
 } as const;
 
-const transactionRoutes = {
-	path: 'transactions',
-	root: transactionsRoot,
+const movementRoutes = {
+	path: 'movements',
+	root: movementsRoot,
 	new: {
 		relative: 'new',
-		absolute: `${transactionsRoot}new`
+		absolute: `${movementsRoot}new`
 	},
 	confirm: {
 		relative: 'confirm',
-		absolute: `${transactionsRoot}confirm`
+		absolute: `${movementsRoot}confirm`
 	}
 };
 
 export const webRoutes = {
 	root,
 	auth: authRoutes,
-	transactions: transactionRoutes
+	movements: movementRoutes
 } as const;
