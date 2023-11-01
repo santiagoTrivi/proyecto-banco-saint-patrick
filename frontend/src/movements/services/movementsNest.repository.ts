@@ -21,10 +21,17 @@ export function MovementsNestRepository(): MovementsRepository {
 			const movementFilter = criteria?.movementFilter;
 
 			const params = new URLSearchParams();
-			params.append('page', pagination.page.toString());
+      params.append('page', pagination.page.toString());
 			params.append('limit', pagination.limit.toString());
-			params.append('from', movementFilter?.from?.toISOString() ?? '');
-			params.append('until', movementFilter?.until?.toISOString() ?? '');
+			params.append(
+				'from',
+				movementFilter?.from?.toISOString() ??
+					new Date('1970-01-01').toISOString()
+			);
+			params.append(
+				'until',
+				movementFilter?.until?.toISOString() ?? new Date().toISOString()
+			);
 
 			const response = await fetch(baseUrl + `/${cardId}?${params}`, {
 				method: httpReq.get,
