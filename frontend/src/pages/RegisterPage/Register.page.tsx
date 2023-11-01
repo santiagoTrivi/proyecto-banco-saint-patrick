@@ -1,14 +1,9 @@
-import { Link } from 'react-router-dom';
-
-import { webRoutes } from '@/src/shared/utils';
+import { PublicLayout, RegisterForm } from '@/auth/components';
 
 export function RegisterPage() {
 	return (
-		<div>
-			<Link to={webRoutes.root}> Home </Link>
-			<Link to={webRoutes.auth.login.absolute}> Login </Link>
-
-			<h1>Register Page</h1>
-		</div>
+		<PublicLayout>
+			<RegisterForm className="flex w-full max-w-xs flex-col gap-y-4" />
+		</PublicLayout>
 	);
 }

@@ -18,6 +18,35 @@ export function AuthStubRepository(): AuthRepository {
 	const userInMemory: User[] = [userStub1, userStub2];
 
 	return {
+		register: async (userCreate) => {
+			const userFound = userInMemory.find(
+				(c) => c.username === userCreate.username
+			);
+
+			if (userFound) {
+				throw new Error('User already exists');
+			}
+
+			credentialInMemory.push({
+				username: userCreate.username,
+				password: userCreate.password
+			});
+			userInMemory.push(
+				User.create({
+					...userCreate,
+					cardList: [],
+					createdAt: new Date(),
+					updatedAt: new Date(),
+					isActive: true,
+					id: '1'
+				})
+			);
+
+			return {
+				accessToken: userCreate.username,
+				refreshToken: userCreate.username
+			};
+		},
 		login: async (credentials) => {
 			const cardFound = credentialInMemory.find(
 				(c) =>

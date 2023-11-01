@@ -6,7 +6,9 @@ export const sessionKeys = {
 
 export type Keys = typeof sessionKeys;
 
-export const sessionStorageRepository: StorageRepository<Keys> = {
+export type SessionStorageRepository = StorageRepository<Keys>;
+
+export const sessionStorageRepository: SessionStorageRepository = {
 	getItem: (key) => {
 		return sessionStorage.getItem(sessionKeys[key]);
 	},

@@ -1,5 +1,5 @@
 import { AppWrapper } from '@/tests/utils';
-import { fireEvent, prettyDOM, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 
 import { MovementFilterControl } from '@/movements/components';
 import { cardStub1, cardStub2 } from '@/tests/cards/fixtures';
@@ -76,8 +76,6 @@ describe('<MovementFilterControl />', () => {
 		// WHEN
 		const fromDateInput = screen.getByLabelText(/from/i);
 		fireEvent.change(fromDateInput, { target: { value: fromDate } });
-
-		console.log(prettyDOM(fromDateInput));
 
 		// THEN
 		expect(onChangeFrom).toBeCalledTimes(0);

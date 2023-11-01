@@ -4,16 +4,22 @@ import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
 import { Card as CardModel } from '@/cards/domain';
 import { webRoutes } from '@/shared/utils';
 import { Button, Text } from '@/ui/components';
+import { User } from '@/users/domain';
 import { CardStyles } from './Card.styles';
 
 type Props = {
 	card: CardModel;
+	username: User['username'];
 	cardSelector: React.ReactNode;
 } & React.ComponentProps<'div'>;
 
-
-
-export const Card = ({ card, cardSelector, className, ...props }: Props) => {
+export const Card = ({
+	username,
+	card,
+	cardSelector,
+	className,
+	...props
+}: Props) => {
 	const [showBalance, setShowBalance] = React.useState(false);
 
 	return (
@@ -65,7 +71,7 @@ export const Card = ({ card, cardSelector, className, ...props }: Props) => {
 				{cardSelector}
 
 				<div className="flex justify-between">
-					<Text fontSize="xs">{card.username}</Text>
+					<Text fontSize="xs">{username}</Text>
 					<Text fontSize="xs">
 						{card.isActive ? '✅ Active' : '⛔ Inactive'}
 					</Text>

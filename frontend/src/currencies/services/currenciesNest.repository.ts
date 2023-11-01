@@ -5,10 +5,6 @@ import { currencyEndpointList } from '@/src/currencies/schemas';
 export function CurrenciesNestRepository(): CurrenciesRepository {
 	const baseUrl = envVariables.API_URL + 'currency';
 	return {
-		create: async (currency) => {
-			return currency;
-		},
-
 		findCurrencies: async () => {
 			const res = await fetch(baseUrl, {
 				method: httpReq.get,

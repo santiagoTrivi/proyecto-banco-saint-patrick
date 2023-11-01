@@ -13,6 +13,7 @@ describe('<Card />', () => {
 		render(
 			<Card
 				card={card}
+				username={userStub1.username}
 				cardSelector={
 					<CardSelector
 						card={card}
@@ -38,6 +39,7 @@ describe('<Card />', () => {
 		render(
 			<Card
 				card={card}
+				username={userStub1.username}
 				cardSelector={
 					<CardSelector
 						card={card}
@@ -67,6 +69,7 @@ describe('<Card />', () => {
 		render(
 			<Card
 				card={card}
+				username={userStub1.username}
 				cardSelector={
 					<CardSelector
 						card={card}
@@ -92,6 +95,7 @@ describe('<Card />', () => {
 		render(
 			<Card
 				card={card}
+				username={userStub1.username}
 				cardSelector={
 					<CardSelector
 						card={card}
@@ -117,6 +121,7 @@ describe('<Card />', () => {
 		render(
 			<Card
 				card={card}
+				username={userStub1.username}
 				cardSelector={
 					<CardSelector
 						card={card}
@@ -142,6 +147,7 @@ describe('<Card />', () => {
 		render(
 			<Card
 				card={card}
+				username={userStub1.username}
 				cardSelector={
 					<CardSelector
 						card={card}

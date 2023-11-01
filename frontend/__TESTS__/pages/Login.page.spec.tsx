@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { LoginPage } from '@/src/pages';
 import { AppWrapper } from '@/tests/utils';
 
-describe('<HomePage />', () => {
+describe('<LoginPage />', () => {
 	it('should contain a heading', () => {
 		// GIVEN
 		render(<LoginPage />, { wrapper: AppWrapper() });
