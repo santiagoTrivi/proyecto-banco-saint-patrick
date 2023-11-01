@@ -26,9 +26,6 @@ export function CurrenciesStubRepository(): CurrenciesRepository {
 	return {
 		async findCurrencies() {
 			return currencyInMemory;
-		},
-		async create(currency) {
-			return currency;
 		}
 	};
 }

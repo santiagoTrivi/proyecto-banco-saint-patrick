@@ -2,6 +2,7 @@ import { UserEndpointToModel } from '@/auth/adapters';
 import { AuthRepository, Token } from '@/auth/domain';
 import { tokenEndpoint, userEndpoint } from '@/auth/schemas';
 import { useAuthStore } from '@/auth/state';
+import { CardsNestRepository } from '@/cards/services/cardsNest.repository';
 import { sessionKeys, sessionStorageRepository } from '@/shared/services';
 import { envVariables, httpReq } from '@/shared/utils';
 
@@ -9,6 +10,31 @@ export function AuthNestRepository(): AuthRepository {
 	const baseUrl = envVariables.API_URL + 'auth';
 
 	return {
+		register: async (userCreate, cardCreate) => {
+			const cardsNestRepository = CardsNestRepository();
+
+			const response = await fetch(baseUrl + '/client', {
+				method: httpReq.post,
+				headers: {
+					'Content-Type': 'application/json',
+					accept: 'application/json'
+				},
+				body: JSON.stringify(userCreate)
+			});
+
+			const result = await response.json();
+
+			if (!response.ok) throw result;
+
+			const resultValidated = tokenEndpoint.parse(result);
+
+			const token = Token.create(resultValidated);
+
+			await cardsNestRepository.create(cardCreate, token.accessToken);
+
+			return token;
+		},
+
 		login: async (credentials) => {
 			const response = await fetch(baseUrl + '/login', {
 				method: httpReq.post,

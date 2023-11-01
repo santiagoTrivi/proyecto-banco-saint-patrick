@@ -11,9 +11,5 @@ export const PublicRouter = ({ isAuthenticated }: PublicRouterProps) => {
 		return <Navigate to={webRoutes.root} />;
 	}
 
-	return (
-		<>
-			<Outlet />
-		</>
-	);
+	return <Outlet />;
 };

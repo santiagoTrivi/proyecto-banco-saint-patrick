@@ -1,6 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
-
 import { CurrenciesRepository } from '@/currencies/domain';
+import { useCurrenciesListQuery } from '@/currencies/hooks';
 import { CurrenciesNestRepository } from '@/currencies/services';
 import { MovementCreateForm } from '@/movements/components';
 import { MovementsRepository } from '@/movements/domain';
@@ -17,9 +16,7 @@ export const MovementsNewPage = ({
 	currenciesRepository = CurrenciesNestRepository(),
 	movementsRepository = MovementsNestRepository()
 }: MovementsNewPageProps) => {
-	const { data: currencyList } = useQuery([], async () => {
-		return await currenciesRepository.findCurrencies();
-	});
+	const { data: currencyList } = useCurrenciesListQuery(currenciesRepository);
 
 	return (
 		<Layout>

@@ -10,13 +10,18 @@ import { AuthNestRepository } from '@/auth/services';
 import { useAuthStore } from '@/auth/state';
 import { authTestId } from '@/auth/utils';
 import { sessionKeys, sessionStorageRepository } from '@/shared/services';
+import { webRoutes } from '@/shared/utils';
 import { Button, ErrorMessagge, FormControl, Input } from '@/ui/components';
 
 type Props = {
 	authRepository?: AuthRepository;
+	className?: string;
 };
 
-export const LoginForm = ({ authRepository = AuthNestRepository() }: Props) => {
+export const LoginForm = ({
+	className,
+	authRepository = AuthNestRepository()
+}: Props) => {
 	const setAccessToken = useAuthStore((state) => state.setAccessToken);
 	const {
 		register,
@@ -70,14 +75,11 @@ export const LoginForm = ({ authRepository = AuthNestRepository() }: Props) => {
 	]);
 
 	return (
-		<form
-			onSubmit={onSubmit}
-			className="flex flex-col gap-y-4 max-w-[280px] w-full"
-			role="form"
-		>
+		<form onSubmit={onSubmit} className={className} role="form">
 			<FormControl>
 				<Input
 					{...register('username')}
+					autoFocus
 					type="text"
 					placeholder="Credit card number"
 					defaultValue={getValues('username')}
@@ -103,6 +105,18 @@ export const LoginForm = ({ authRepository = AuthNestRepository() }: Props) => {
 
 			<Button type="submit" disabled={!isValid}>
 				Login
+			</Button>
+
+			<hr className="my-4 border-t border-primary-400/20" />
+
+			<Button
+				component="a"
+				to={webRoutes.auth.register.absolute}
+				className="text-center"
+				colorScheme="secondary"
+				variant="outline"
+			>
+				Register
 			</Button>
 		</form>
 	);

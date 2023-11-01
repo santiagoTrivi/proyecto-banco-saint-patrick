@@ -20,6 +20,7 @@ describe('<LoginForm />', () => {
 			target: { value: credentialStub1.username }
 		});
 		fireEvent.blur(cardNumberInput);
+
 		fireEvent.change(pinInput, { target: { value: credentialStub1.password } });
 		fireEvent.blur(pinInput);
 

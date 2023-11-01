@@ -4,7 +4,7 @@ import { z } from 'zod';
 export const cardEndpoint = z.object({
 	_id: z.string(),
 	card_number: z.string().length(16),
-	current_balance: z.number().positive(),
+	current_balance: z.number().min(0).nonnegative(),
 	isActive: z.boolean(),
 	currency: currencyEndpoint
 });

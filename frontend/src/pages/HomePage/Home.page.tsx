@@ -41,6 +41,7 @@ export function HomePage({
 				<div className="mx-auto grid grid-cols-[min(100%,100rem)] gap-4 md:grid-cols-[0.4fr_1.2fr]">
 					<UserCard user={user} className="md:min-w-max" />
 					<Card
+						username={user.username}
 						className="max-w-sm"
 						card={card}
 						cardSelector={
