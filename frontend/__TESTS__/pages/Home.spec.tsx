@@ -70,7 +70,8 @@ describe('Home', () => {
 		});
 
 		// WHEN
-		const movementList = await screen.findByRole('list');
+    const main = await screen.findByRole('main');
+		const movementList = within(main).getByRole('list');
 		const movementListItems =
 			await within(movementList).findAllByRole('button');
 

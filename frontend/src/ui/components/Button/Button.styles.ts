@@ -1,7 +1,7 @@
 import { VariantProps, tv } from 'tailwind-variants';
 
 export const ButtonStyles = tv({
-	base: 'font-semibold px-2 py-1 rounded-md disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:shadow-md',
+	base: 'inline-flex items-center justify-center gap-2 rounded-md px-2 py-1 text-center font-semibold transition-all hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50',
 	variants: {
 		colorScheme: {
 			primary: '',
@@ -21,7 +21,7 @@ export const ButtonStyles = tv({
 			outline: '',
 			solid: '',
 			ghost: '',
-			link: 'no-underline hover:shadow-none hover:underline'
+			link: 'no-underline hover:underline hover:shadow-none'
 		}
 	},
 	compoundVariants: [
@@ -46,8 +46,7 @@ export const ButtonStyles = tv({
 		{
 			colorScheme: 'primary',
 			variant: 'solid',
-			className:
-				'bg-primary-400 text-primary-900 hover:bg-primary-500'
+			className: 'bg-primary-400 text-primary-900 hover:bg-primary-500'
 		},
 		{
 			colorScheme: 'secondary',

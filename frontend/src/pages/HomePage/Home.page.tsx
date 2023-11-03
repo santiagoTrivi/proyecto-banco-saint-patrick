@@ -37,7 +37,7 @@ export function HomePage({
 
 	return (
 		<Layout>
-			<div className="my-8 flex flex-col">
+			<main className="my-8 flex flex-col">
 				<div className="mx-auto grid grid-cols-[min(100%,100rem)] gap-4 md:grid-cols-[0.4fr_1.2fr]">
 					<UserCard user={user} className="md:min-w-max" />
 					<Card
@@ -70,7 +70,7 @@ export function HomePage({
 						/>
 					))}
 				</ol>
-			</div>
+			</main>
 		</Layout>
 	);
 }
