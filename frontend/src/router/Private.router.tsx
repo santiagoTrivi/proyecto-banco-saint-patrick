@@ -1,5 +1,6 @@
 import { Navigate, Outlet } from 'react-router-dom';
 
+import { useCloseSessionOnInactivity } from '@/shared/hooks';
 import { webRoutes } from '@/shared/utils';
 
 type PrivateRouterProps = {
@@ -7,11 +8,11 @@ type PrivateRouterProps = {
 };
 
 export function PrivateRouter({ isAuthenticated }: PrivateRouterProps) {
-	// const { isLoggingOut } = useCloseSessionOnInactivity();
+	const { isLoggingOut } = useCloseSessionOnInactivity();
 
-	// if (isLoggingOut) {
-	// 	return <Navigate to={webRoutes.auth.closedSession.absolute} />;
-	// }
+	if (isLoggingOut) {
+		return <Navigate to={webRoutes.auth.closedSession.absolute} />;
+	}
 
 	if (!isAuthenticated) {
 		return <Navigate to={webRoutes.auth.login.absolute} />;
