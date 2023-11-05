@@ -9,5 +9,11 @@ const SkeletonStyles = tv({
 });
 
 export function Skeleton({ className }: Props) {
-	return <div className={SkeletonStyles({ className })} />;
+	return (
+		<div
+			role="alert"
+			aria-busy="true"
+			className={SkeletonStyles({ className })}
+		/>
+	);
 }

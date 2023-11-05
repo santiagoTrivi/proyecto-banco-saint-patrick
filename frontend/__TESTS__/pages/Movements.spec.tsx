@@ -51,7 +51,7 @@ describe('<MovementsPage />', () => {
 		});
 
 		// WHEN
-		const link = screen.getByRole('link', { name: /Movement/i });
+		const link = screen.getByRole('link', { name: 'Movement' });
 
 		// THEN
 		expect(link).toBeInTheDocument();
@@ -79,7 +79,8 @@ describe('<MovementsPage />', () => {
 		});
 
 		// WHEN
-		const movementsList = await screen.findByRole('list');
+		const main = screen.findByRole('main');
+		const movementsList = within(await main).getByRole('list');
 
 		const movementItems = within(movementsList).getAllByRole('listitem');
 
