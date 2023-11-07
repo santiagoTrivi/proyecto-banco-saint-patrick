@@ -65,10 +65,12 @@ export const Card = ({
 				<img
 					src="/chip-logo.png"
 					alt="chip"
-					className="mr-auto mt-4 w-12 md:w-14"
+					className="mr-auto mt-4 w-10 md:w-12"
 				/>
 
-				{cardSelector}
+				<div className="mx-auto mb-4 mt-2 flex items-center justify-center gap-2 md:mb-8 md:mt-4">
+					{cardSelector}
+				</div>
 
 				<div className="flex justify-between">
 					<Text fontSize="xs">{username}</Text>

@@ -12,7 +12,7 @@ export const CardSelector = ({ card, cardList, onChange }: Props) => {
 		<Select
 			onChange={(e) => onChange(e.target.value as Card['id'])}
 			value={card.id}
-			className="mx-auto mb-4 mt-2 text-center tracking-widest md:mb-8 md:mt-4"
+			className="text-center tracking-widest"
 		>
 			{cardList.map((c) => (
 				<option key={c.id} value={c.id} className="m-2 bg-bg1-800 p-2">
