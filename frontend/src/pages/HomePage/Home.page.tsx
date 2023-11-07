@@ -1,7 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 
+import { AuthRepository } from '@/auth/domain';
+import { AuthNestRepository } from '@/auth/services';
 import { useAuthStore, useAuthenticatedStore } from '@/auth/state';
-import { Card, CardSelector } from '@/cards/components';
+import { Card, CardCreateDialog, CardSelector } from '@/cards/components';
+import { CardRepository } from '@/cards/domain';
+import { CardsNestRepository } from '@/cards/services/cardsNest.repository';
+import { CurrenciesRepository } from '@/currencies/domain';
+import { useCurrenciesListQuery } from '@/currencies/hooks';
+import { CurrenciesNestRepository } from '@/currencies/services';
 import { MovementDetail, MovementPreview } from '@/movements/components';
 import { MovementFilter, MovementsRepository } from '@/movements/domain';
 import { MovementsNestRepository } from '@/movements/services';
@@ -13,15 +20,23 @@ import { UserCard } from '@/users/components';
 
 type HomePageProps = {
 	movementRepository?: MovementsRepository;
+	cardsRepository?: CardRepository;
+	currenciesRepository?: CurrenciesRepository;
+	authRepository?: AuthRepository;
 };
 
 const movementFilter = MovementFilter.month();
 
 export function HomePage({
-	movementRepository = MovementsNestRepository()
+	movementRepository = MovementsNestRepository(),
+	cardsRepository = CardsNestRepository(),
+	currenciesRepository = CurrenciesNestRepository(),
+	authRepository = AuthNestRepository()
 }: HomePageProps) {
 	const { card, user } = useAuthenticatedStore();
 	const onChangeCard = useAuthStore((state) => state.changeCard);
+
+	const { data: currenciesList } = useCurrenciesListQuery(currenciesRepository);
 
 	const { data: movementList, isLoading: isMovementsLoading } = useQuery(
 		transactionsQueryKeys.findTransactions({
@@ -46,11 +61,19 @@ export function HomePage({
 						className="max-w-sm"
 						card={card}
 						cardSelector={
-							<CardSelector
-								card={card}
-								cardList={user.cardList}
-								onChange={onChangeCard}
-							/>
+							<>
+								<CardSelector
+									card={card}
+									cardList={user.cardList}
+									onChange={onChangeCard}
+								/>
+								<CardCreateDialog
+									cardList={user.cardList}
+									cardRepository={cardsRepository}
+									authRepository={authRepository}
+									currenciesList={currenciesList}
+								/>
+							</>
 						}
 					/>
 				</div>
@@ -86,7 +109,7 @@ export function HomePage({
 									key={movement.id}
 									trigger={<MovementPreview movement={movement} />}
 									title={`${movement.type}`}
-									description={<MovementDetail movement={movement} />}
+									body={<MovementDetail movement={movement} />}
 								/>
 							))}
 						</ol>

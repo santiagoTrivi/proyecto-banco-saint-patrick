@@ -1,3 +1,4 @@
+import { cardCreate } from '@/cards/schemas';
 import { z } from 'zod';
 
 export const userCreate = z
@@ -13,10 +14,9 @@ export const userCreate = z
 			.string()
 			.min(8, 'Password must be between 8 and 50 characters long')
 			.max(50, 'Password must be between 8 and 50 characters long'),
-		confirmPassword: z.string().nonempty('Confirm password cannot be empty'),
-		PIN: z.string().length(4, 'PIN must be exactly 4 characters long'),
-		currencyId: z.string().nonempty('Currency must be selected')
+		confirmPassword: z.string().nonempty('Confirm password cannot be empty')
 	})
+	.merge(cardCreate)
 	.superRefine((data, ctx) => {
 		if (data.password !== data.confirmPassword) {
 			return ctx.addIssue({
